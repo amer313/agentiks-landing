@@ -4,11 +4,11 @@ import { GeistMono } from "geist/font/mono"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Agentiks — AI-Powered Digital Marketing Agency",
-  description: "We build AI-driven marketing strategies that grow renovation and home services businesses. Data-backed campaigns, stunning websites, and measurable results.",
+  title: "Agentiks — AI Agent Consulting & Development",
+  description: "Agentiks designs and builds custom AI agent systems that automate workflows, scale operations, and give your team superpowers. Any industry. Any size.",
   openGraph: {
-    title: "Agentiks — AI-Powered Digital Marketing Agency",
-    description: "AI-driven marketing strategies that grow renovation and home services businesses.",
+    title: "Agentiks — AI Agent Consulting & Development",
+    description: "Custom AI agent systems that automate workflows, scale operations, and give your team superpowers.",
   },
 }
 
