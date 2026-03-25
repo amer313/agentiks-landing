@@ -185,11 +185,12 @@ function AgentCard({ workflow, cx, cy, size, index, inView }: {
 
 export function Orchestrator() {
   const [lineIdx, setLineIdx] = useState(0)
-  const [visibleLines, setVisibleLines] = useState<number[]>([])
+  const [visibleLines, setVisibleLines] = useState<{ idx: number; key: number }[]>([])
   const containerRef = useRef<HTMLDivElement>(null)
   const inView = useInView(containerRef, { once: true, margin: "-100px" })
   const [size, setSize] = useState(0)
   const [mounted, setMounted] = useState(false)
+  const keyCounter = useRef(0)
 
   useEffect(() => {
     setMounted(true)
@@ -207,12 +208,14 @@ export function Orchestrator() {
     const timer = setInterval(() => {
       setLineIdx((prev) => {
         const next = (prev + 1) % terminalLines.length
-        if (next === 0) setVisibleLines([0])
-        else setVisibleLines((lines) => [...lines.slice(-7), next])
+        const k = ++keyCounter.current
+        if (next === 0) setVisibleLines([{ idx: 0, key: k }])
+        else setVisibleLines((lines) => [...lines.slice(-7), { idx: next, key: k }])
         return next
       })
     }, 1200)
-    setVisibleLines([0])
+    keyCounter.current = 0
+    setVisibleLines([{ idx: 0, key: 0 }])
     return () => clearInterval(timer)
   }, [])
 
@@ -364,9 +367,9 @@ export function Orchestrator() {
               </div>
               <div className="p-3 h-[200px] overflow-hidden flex flex-col justify-end">
                 <AnimatePresence>
-                  {visibleLines.map((idx) => (
+                  {visibleLines.map((line) => (
                     <motion.div
-                      key={`${idx}-${Math.floor(lineIdx / terminalLines.length)}`}
+                      key={line.key}
                       initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0 }}
@@ -376,14 +379,14 @@ export function Orchestrator() {
                       <span
                         className="font-mono text-[10px] leading-relaxed"
                         style={{
-                          color: terminalLines[idx].text.includes("\u2713")
+                          color: terminalLines[line.idx].text.includes("\u2713")
                             ? "#10B981"
-                            : terminalLines[idx].text.startsWith("\u25b6")
+                            : terminalLines[line.idx].text.startsWith("\u25b6")
                               ? "#3B82F6"
                               : "rgba(255,255,255,0.35)",
                         }}
                       >
-                        {terminalLines[idx].text}
+                        {terminalLines[line.idx].text}
                       </span>
                     </motion.div>
                   ))}
