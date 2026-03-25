@@ -4,11 +4,11 @@ import { GeistMono } from "geist/font/mono"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Agentiks — AI Agent Consulting & Development",
-  description: "Agentiks designs and builds custom AI agent systems that automate workflows, scale operations, and give your team superpowers. Any industry. Any size.",
+  title: "Agentiks — AI Agent Systems for Every Business",
+  description: "We design, build, and deploy custom AI agent systems that automate workflows, scale operations, and give your team superpowers. Any industry. Any size.",
   openGraph: {
-    title: "Agentiks — AI Agent Consulting & Development",
-    description: "Custom AI agent systems that automate workflows, scale operations, and give your team superpowers.",
+    title: "Agentiks — AI Agent Systems for Every Business",
+    description: "Custom AI agent systems that automate workflows, scale operations, and give your team superpowers. Any industry. Any size.",
   },
 }
 

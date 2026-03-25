@@ -21,7 +21,7 @@ const footerLinks = {
   Connect: [
     { label: "LinkedIn", href: "#", external: true },
     { label: "GitHub", href: "#", external: true },
-    { label: "Email", href: "mailto:hello@agentiks.com" },
+    { label: "Email", href: "mailto:team@agentiks.dev" },
   ],
 }
 
