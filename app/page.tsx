@@ -4,6 +4,8 @@ import { HalftoneDivider } from "@/components/sections/halftone-divider"
 import { SocialProof } from "@/components/sections/social-proof"
 import { Setup } from "@/components/sections/setup"
 import { StatsBar } from "@/components/sections/stats-bar"
+import { Orchestrator } from "@/components/sections/orchestrator"
+import { AIEdge } from "@/components/sections/ai-edge"
 import { Capabilities } from "@/components/sections/capabilities"
 import { Pricing } from "@/components/sections/pricing"
 import { FAQ } from "@/components/sections/faq"
@@ -18,10 +20,13 @@ export default function Home() {
       {/* Dark: Hero */}
       <Hero />
 
+      {/* Dark: Orchestrator animation */}
+      <Orchestrator />
+
       {/* Transition: dark -> light */}
       <HalftoneDivider direction="dark-to-light" lightColor="#ffffff" darkColor="#050508" />
 
-      {/* Light: Social proof + how it works + stats */}
+      {/* Light: Social proof + How it works + stats */}
       <div className="light-zone">
         <SocialProof />
         <Setup />
@@ -37,8 +42,9 @@ export default function Home() {
       {/* Transition: dark -> light */}
       <HalftoneDivider direction="dark-to-light" lightColor="#ffffff" darkColor="#050508" />
 
-      {/* Light: Pricing + FAQ */}
+      {/* Light: AI Edge + Pricing + FAQ */}
       <div className="light-zone">
+        <AIEdge />
         <Pricing />
         <FAQ />
       </div>

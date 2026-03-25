@@ -30,7 +30,7 @@ export function Hero() {
           transition={{ duration: 0.8 }}
         >
           <Badge variant="outline" className="mb-8 font-mono text-xs tracking-widest uppercase border-ag-line-hover text-muted-foreground">
-            AI agent consulting & development
+            AI agent systems for every business
           </Badge>
         </motion.div>
 

@@ -24,16 +24,16 @@ export function CTA() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="mailto:hello@agentiks.com"
+              href="mailto:team@agentiks.dev"
               className="inline-flex items-center gap-2 text-sm font-semibold px-8 py-3.5 rounded-xl bg-brand hover:bg-brand-dark text-white transition-colors"
             >
               Book a Free Call <ArrowRight className="w-4 h-4" />
             </a>
             <a
-              href="mailto:hello@agentiks.com"
+              href="mailto:team@agentiks.dev"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors font-mono"
             >
-              hello@agentiks.com
+              team@agentiks.dev
             </a>
           </div>
         </div>
