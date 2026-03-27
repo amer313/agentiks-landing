@@ -5,12 +5,10 @@ import { useInView } from "framer-motion"
 import { ScrollReveal } from "@/components/scroll-reveal"
 
 const stats = [
-  { value: 50, suffix: "+", label: "Agents Deployed" },
-  { value: 12, suffix: "", label: "Industries Served" },
-  { value: 3, suffix: "x", label: "Avg. Efficiency Gain" },
   { value: 4, suffix: "wk", label: "Avg. Time to Deploy" },
+  { value: 3, suffix: "x", label: "Avg. Efficiency Gain" },
   { value: 0, suffix: "", label: "Vendor Lock-in", override: "Zero" },
-  { value: 98, suffix: "%", label: "Client Satisfaction" },
+  { value: 100, suffix: "%", label: "Code Ownership" },
 ]
 
 function Counter({ target, prefix, suffix, active, override }: { target: number; prefix?: string; suffix: string; active: boolean; override?: string }) {
@@ -49,7 +47,7 @@ export function StatsBar() {
   return (
     <section className="max-w-[1200px] mx-auto px-6 md:px-12 py-12" ref={ref}>
       <ScrollReveal>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 border border-dashed border-ag-line rounded-xl overflow-hidden">
+        <div className="grid grid-cols-2 lg:grid-cols-4 border border-dashed border-ag-line rounded-xl overflow-hidden">
           {stats.map((stat) => (
             <div key={stat.label} className="text-center border-r border-b border-dashed border-ag-line last:border-r-0 p-6">
               <div className="text-3xl md:text-4xl font-light tracking-tight text-foreground mb-1">

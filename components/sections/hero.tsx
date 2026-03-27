@@ -78,7 +78,9 @@ export function Hero() {
           transition={{ duration: 1, delay: 0.5 }}
         >
           <a
-            href="#contact"
+            href="https://cal.com/agentiks/strategy-call"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-sm font-semibold px-8 py-3.5 rounded-xl bg-brand hover:bg-brand-dark text-white transition-colors"
           >
             Book a Strategy Call <ArrowRight className="w-4 h-4" />

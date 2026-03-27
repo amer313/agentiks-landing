@@ -14,14 +14,9 @@ const footerLinks = {
     { label: "FAQ", href: "#faq" },
     { label: "Contact", href: "#contact" },
   ],
-  Resources: [
-    { label: "Case Studies", href: "#" },
-    { label: "Blog", href: "#" },
-  ],
   Connect: [
-    { label: "LinkedIn", href: "#", external: true },
-    { label: "GitHub", href: "#", external: true },
     { label: "Email", href: "mailto:team@agentiks.dev" },
+    { label: "Book a Call", href: "https://cal.com/agentiks/strategy-call", external: true },
   ],
 }
 

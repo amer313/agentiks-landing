@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button"
 import { Menu, X, Zap } from "lucide-react"
 
 const navLinks = [
-  { label: "Services", href: "#services" },
-  { label: "Process", href: "#process" },
-  { label: "Clients", href: "#clients" },
-  { label: "About", href: "#about" },
+  { label: "Services", href: "#capabilities" },
+  { label: "Process", href: "#how" },
+  { label: "Pricing", href: "#pricing" },
+  { label: "FAQ", href: "#faq" },
 ]
 
 function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
