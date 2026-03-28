@@ -5,6 +5,7 @@ import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
+import { CornerButton } from "@/components/ui/corner-button"
 import { AgentiksLogo } from "@/components/ui/agentiks-logo"
 
 const navLinks = [
@@ -92,11 +93,9 @@ export function Nav() {
         </div>
 
         <div className="flex items-center gap-3">
-          <Button size="sm" asChild className="bg-brand hover:bg-brand-dark text-white border-0 shadow-[0_0_12px_rgba(220,38,38,0.15)]">
-            <a href="#contact" className="font-mono text-xs tracking-wide">
-              Get Started
-            </a>
-          </Button>
+          <CornerButton href="#contact" className="!px-5 !py-2 !text-xs font-mono tracking-wide">
+            Get Started
+          </CornerButton>
           <button
             className="md:hidden text-foreground/70 hover:text-foreground transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}

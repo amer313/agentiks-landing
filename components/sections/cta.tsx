@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import { ArrowRight } from "lucide-react"
+import { CornerButton } from "@/components/ui/corner-button"
 import { AgentiksLogo } from "@/components/ui/agentiks-logo"
 
 export function CTA() {
@@ -27,14 +28,9 @@ export function CTA() {
             Book a free strategy call. We&apos;ll audit your operations and show you exactly where AI agents will drive the most value.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="https://cal.com/agentiks/strategy-call"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm font-semibold px-8 py-3.5 rounded-xl bg-brand hover:bg-brand-dark text-white transition-colors"
-            >
+            <CornerButton href="https://cal.com/agentiks/strategy-call" external>
               Book a Free Call <ArrowRight className="w-4 h-4" />
-            </a>
+            </CornerButton>
             <a
               href="mailto:team@agentiks.dev"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors font-mono"

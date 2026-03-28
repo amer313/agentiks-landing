@@ -3,12 +3,13 @@
 import { motion } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight } from "lucide-react"
+import { CornerButton } from "@/components/ui/corner-button"
 import { HeroBackground } from "@/components/ui/hero-background"
 import { AgentiksLogo } from "@/components/ui/agentiks-logo"
 
 export function Hero() {
   return (
-    <section className="min-h-[90vh] flex flex-col items-center justify-center max-w-[1400px] mx-auto px-6 md:px-12 pt-28 pb-16 relative text-center overflow-hidden">
+    <section className="min-h-[90vh] relative overflow-hidden">
       <HeroBackground />
 
       {/* Brand mark watermark */}
@@ -16,7 +17,7 @@ export function Hero() {
         <AgentiksLogo className="w-[45vh] h-[45vh] text-brand/[0.04]" />
       </div>
 
-      <div className="relative z-10">
+      <div className="relative z-10 min-h-[90vh] flex flex-col items-center justify-center max-w-[1400px] mx-auto px-6 md:px-12 pt-28 pb-16 text-center">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -53,23 +54,14 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.5 }}
         >
-          <a
-            href="https://cal.com/agentiks/strategy-call"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm font-semibold px-8 py-3.5 rounded-xl bg-brand hover:bg-brand-dark text-white transition-colors"
-          >
+          <CornerButton href="https://cal.com/agentiks/strategy-call" external>
             Book a Strategy Call <ArrowRight className="w-4 h-4" />
-          </a>
-          <a
-            href="#capabilities"
-            className="inline-flex items-center gap-2 text-sm font-medium px-8 py-3.5 rounded-xl border border-white/[0.1] text-foreground/70 hover:text-foreground hover:border-white/[0.2] transition-all"
-          >
+          </CornerButton>
+          <CornerButton href="#capabilities" variant="secondary">
             See What We Build
-          </a>
+          </CornerButton>
         </motion.div>
       </div>
-
     </section>
   )
 }
