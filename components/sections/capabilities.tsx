@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Bot, Workflow, Plug, HeadphonesIcon } from "lucide-react"
 import { SectionHeader } from "@/components/section-header"
 import { ScrollReveal } from "@/components/scroll-reveal"
+import { AgentiksLogo } from "@/components/ui/agentiks-logo"
 
 const capabilities = [
   {
@@ -67,6 +68,9 @@ export function Capabilities() {
   return (
     <section className="max-w-[1200px] mx-auto px-6 md:px-12 py-16 relative overflow-visible" id="capabilities">
       <div className="absolute -top-[200px] -left-[200px] w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(220,38,38,0.04)_0%,rgba(239,68,68,0.02)_40%,transparent_70%)] rounded-full blur-[80px] animate-[drift_25s_ease-in-out_infinite] pointer-events-none z-0" />
+      <div className="absolute -bottom-16 -right-16 pointer-events-none z-0">
+        <AgentiksLogo className="w-[200px] h-[200px] text-white/[0.02]" />
+      </div>
 
       <div className="relative z-10">
         <SectionHeader title="End-to-end agentic solutions." label="capabilities" />

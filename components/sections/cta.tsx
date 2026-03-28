@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import { ArrowRight } from "lucide-react"
+import { AgentiksLogo } from "@/components/ui/agentiks-logo"
 
 export function CTA() {
   return (
@@ -14,6 +15,9 @@ export function CTA() {
         className="relative rounded-3xl border border-brand/20 bg-gradient-to-br from-brand/[0.06] via-ag-surface to-ag-cyan/[0.03] p-12 md:p-20 text-center overflow-hidden"
       >
         <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(220,38,38,0.12),transparent_70%)] pointer-events-none" />
+        <div className="absolute -right-10 top-1/2 -translate-y-1/2 pointer-events-none">
+          <AgentiksLogo className="w-[250px] h-[250px] text-white/[0.03]" />
+        </div>
 
         <div className="relative z-10">
           <h2 className="text-3xl md:text-5xl font-medium tracking-tight mb-4">
