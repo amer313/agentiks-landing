@@ -5,6 +5,7 @@ import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
+import { AgentiksLogo } from "@/components/ui/agentiks-logo"
 
 const navLinks = [
   { label: "Services", href: "#capabilities" },
@@ -60,8 +61,9 @@ export function Nav() {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all ${scrolled ? "bg-[#06060A]/90 backdrop-blur-xl border-b border-white/[0.06] shadow-[0_1px_20px_rgba(0,0,0,0.4)]" : "bg-transparent border-b border-transparent"}`}>
       <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex items-center justify-between h-[60px]">
-        <Link href="/" className="font-semibold text-lg tracking-tight">
-          Agentiks
+        <Link href="/" className="flex items-center gap-2">
+          <AgentiksLogo className="w-7 h-7" />
+          <span className="font-semibold text-lg tracking-tight">Agentiks</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-7">

@@ -1,4 +1,5 @@
 import { Separator } from "@/components/ui/separator"
+import { AgentiksLogo } from "@/components/ui/agentiks-logo"
 
 const footerLinks = {
   Services: [
@@ -26,7 +27,8 @@ export function Footer() {
 
       <div className="grid grid-cols-2 md:grid-cols-[1fr_repeat(3,auto)] gap-8 md:gap-16 py-12">
         <div className="col-span-2 md:col-span-1">
-          <div className="mb-4">
+          <div className="flex items-center gap-2 mb-4">
+            <AgentiksLogo className="w-6 h-6" />
             <span className="font-semibold text-base tracking-tight">Agentiks</span>
           </div>
           <p className="text-sm text-muted-foreground/50 max-w-[240px] leading-relaxed">
