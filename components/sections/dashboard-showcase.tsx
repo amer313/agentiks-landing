@@ -137,22 +137,52 @@ function DashboardScreen() {
 }
 
 /* ── MacBook frame ── */
+function KeyRow({ keys, wide }: { keys: number; wide?: boolean }) {
+  return (
+    <div className="flex gap-[2px] justify-center">
+      {Array.from({ length: keys }).map((_, i) => (
+        <div
+          key={i}
+          className={`h-[8px] rounded-[1.5px] bg-[#1a1a1c] border border-white/[0.03] ${
+            wide && (i === 0 || i === keys - 1) ? "w-[18px]" : "w-[11px]"
+          }`}
+        />
+      ))}
+    </div>
+  )
+}
+
 function MacBookFrame({ children }: { children: React.ReactNode }) {
   return (
     <div className="w-full max-w-[800px] mx-auto">
-      {/* Screen */}
-      <div className="relative bg-[#1a1a1a] rounded-t-xl p-[6px] pt-[18px] border border-white/[0.06]">
-        {/* Notch */}
-        <div className="absolute top-[6px] left-1/2 -translate-x-1/2 w-[60px] h-[8px] bg-[#0C0C0F] rounded-b-md" />
-        {/* Screen content */}
-        <div className="rounded-sm overflow-hidden aspect-[16/10] bg-[#0C0C0F]">
+      {/* Screen lid */}
+      <div className="relative bg-[#1c1c1e] rounded-t-[12px] p-[5px] pt-[14px] border border-white/[0.06] shadow-[0_-2px_40px_rgba(0,0,0,0.5)]">
+        {/* Camera notch */}
+        <div className="absolute top-[4px] left-1/2 -translate-x-1/2 w-[56px] h-[10px] bg-[#0C0C0F] rounded-b-md flex items-center justify-center">
+          <div className="w-[4px] h-[4px] rounded-full bg-[#2a2a2e] border border-white/[0.05]" />
+        </div>
+        {/* Screen */}
+        <div className="rounded-[3px] overflow-hidden aspect-[16/10] bg-[#0C0C0F]">
           {children}
         </div>
       </div>
-      {/* Keyboard base */}
-      <div className="relative">
-        <div className="h-[12px] bg-gradient-to-b from-[#2a2a2e] to-[#1a1a1d] rounded-b-lg border-x border-b border-white/[0.04]" />
-        <div className="h-[4px] mx-[30%] bg-[#2a2a2e] rounded-b-lg border-x border-b border-white/[0.06]" />
+
+      {/* Hinge */}
+      <div className="h-[3px] mx-[4px] bg-gradient-to-b from-[#333] to-[#222] rounded-[1px]" />
+
+      {/* Keyboard deck */}
+      <div className="bg-gradient-to-b from-[#2a2a2d] to-[#1e1e20] rounded-b-[12px] border-x border-b border-white/[0.05] px-[14px] py-[8px] shadow-[0_4px_30px_rgba(0,0,0,0.4)]">
+        {/* Keyboard rows */}
+        <div className="flex flex-col gap-[2px] mb-[6px]">
+          <KeyRow keys={14} />
+          <KeyRow keys={13} wide />
+          <KeyRow keys={12} wide />
+          <KeyRow keys={11} wide />
+          <KeyRow keys={13} />
+        </div>
+
+        {/* Trackpad */}
+        <div className="mx-auto w-[45%] h-[50px] rounded-md bg-[#1a1a1c] border border-white/[0.04] shadow-inner" />
       </div>
     </div>
   )
@@ -185,7 +215,7 @@ export function DashboardShowcase() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          Command Center
+          Built for your business
         </motion.p>
         <motion.h2
           className="text-3xl md:text-5xl font-medium tracking-tight"
@@ -194,8 +224,8 @@ export function DashboardShowcase() {
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
         >
-          Your entire operation.{" "}
-          <span className="text-brand">One dashboard.</span>
+          Custom agentic solutions.{" "}
+          <span className="text-brand">Real results.</span>
         </motion.h2>
       </div>
 
