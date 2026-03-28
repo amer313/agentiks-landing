@@ -112,6 +112,17 @@
   100% { top: 105%; }
 }
 
+/* devices.css overrides — taller keyboard base with dark keys */
+.device-macbook-pro .device-power,
+.device-macbook-pro.device-spacegray .device-power {
+  height: 56px !important;
+  position: relative;
+}
+.device-macbook-pro .device-screen {
+  width: 100% !important;
+  height: 100% !important;
+}
+
 @keyframes marquee {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
