@@ -3,6 +3,7 @@ import { Hero } from "@/components/sections/hero"
 import { HalftoneDivider } from "@/components/sections/halftone-divider"
 import { Setup } from "@/components/sections/setup"
 import { StatsBar } from "@/components/sections/stats-bar"
+import { ScrollStatement } from "@/components/sections/scroll-statement"
 import { Orchestrator } from "@/components/sections/orchestrator"
 import { AIEdge } from "@/components/sections/ai-edge"
 import { Capabilities } from "@/components/sections/capabilities"
@@ -18,6 +19,9 @@ export default function Home() {
 
       {/* Dark: Hero */}
       <Hero />
+
+      {/* Dark: Scroll-driven statement */}
+      <ScrollStatement />
 
       {/* Dark: Orchestrator animation */}
       <Orchestrator />
