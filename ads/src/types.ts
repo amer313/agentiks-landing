@@ -131,3 +131,29 @@ export interface VoiceSettings {
   style: number;
   speed: number;
 }
+
+// --- Per-Sentence Sync Types ---
+
+/** Timing entry for a single sentence in the per-sentence architecture */
+export interface SentenceTimingEntry {
+  /** Unique sentence key (e.g., "v1-s2") */
+  key: string;
+  /** Visual component name to render */
+  visual: string;
+  /** Start frame within the composition (absolute) */
+  startFrame: number;
+  /** Duration in frames */
+  durationFrames: number;
+  /** Audio file for this sentence (null for text-only) */
+  audioFile: string | null;
+  /** Display text for text-only visuals */
+  displayText?: string;
+}
+
+/** Complete timing JSON for a video (saved as v{N}-timing.json) */
+export interface VideoTimingData {
+  videoId: string;
+  fps: number;
+  totalDurationFrames: number;
+  sentences: SentenceTimingEntry[];
+}

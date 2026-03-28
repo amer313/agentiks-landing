@@ -1,0 +1,78 @@
+{
+  "videoId": "video1",
+  "fps": 30,
+  "totalDurationFrames": 1185,
+  "sentences": [
+    {
+      "key": "v1-s1",
+      "visual": "TextSlam",
+      "startFrame": 0,
+      "durationFrames": 90,
+      "audioFile": null,
+      "displayText": "Your team is drowning."
+    },
+    {
+      "key": "v1-s2",
+      "visual": "SpreadsheetCopyPaste",
+      "startFrame": 90,
+      "durationFrames": 169,
+      "audioFile": "v1-s2.mp3"
+    },
+    {
+      "key": "v1-s3",
+      "visual": "TicketRouting",
+      "startFrame": 259,
+      "durationFrames": 131,
+      "audioFile": "v1-s3.mp3"
+    },
+    {
+      "key": "v1-s4",
+      "visual": "EveryCompany",
+      "startFrame": 390,
+      "durationFrames": 98,
+      "audioFile": "v1-s4.mp3"
+    },
+    {
+      "key": "v1-s5",
+      "visual": "SadChatbot",
+      "startFrame": 488,
+      "durationFrames": 91,
+      "audioFile": "v1-s5.mp3"
+    },
+    {
+      "key": "v1-s6",
+      "visual": "ThatsAdorable",
+      "startFrame": 579,
+      "durationFrames": 48,
+      "audioFile": "v1-s6.mp3"
+    },
+    {
+      "key": "v1-s7",
+      "visual": "LogoRevealSync",
+      "startFrame": 627,
+      "durationFrames": 122,
+      "audioFile": "v1-s7.mp3"
+    },
+    {
+      "key": "v1-s8",
+      "visual": "PillarCards",
+      "startFrame": 749,
+      "durationFrames": 180,
+      "audioFile": "v1-s8.mp3"
+    },
+    {
+      "key": "v1-s9",
+      "visual": "PercentCounter",
+      "startFrame": 929,
+      "durationFrames": 113,
+      "audioFile": "v1-s9.mp3"
+    },
+    {
+      "key": "v1-s10",
+      "visual": "CTAEndCard",
+      "startFrame": 1042,
+      "durationFrames": 143,
+      "audioFile": "v1-s10.mp3"
+    }
+  ]
+}

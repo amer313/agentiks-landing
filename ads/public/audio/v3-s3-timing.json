@@ -1,0 +1,60 @@
+{
+  "videoId": "video3",
+  "sceneKey": "v3-s3",
+  "text": "That's our job.",
+  "alignment": {
+    "characters": [
+      "T",
+      "h",
+      "a",
+      "t",
+      "'",
+      "s",
+      " ",
+      "o",
+      "u",
+      "r",
+      " ",
+      "j",
+      "o",
+      "b",
+      "."
+    ],
+    "characterStartTimesSeconds": [
+      0,
+      0.081,
+      0.139,
+      0.174,
+      0.209,
+      0.244,
+      0.279,
+      0.313,
+      0.348,
+      0.383,
+      0.418,
+      0.488,
+      0.534,
+      0.697,
+      0.778
+    ],
+    "characterEndTimesSeconds": [
+      0.081,
+      0.139,
+      0.174,
+      0.209,
+      0.244,
+      0.279,
+      0.313,
+      0.348,
+      0.383,
+      0.418,
+      0.488,
+      0.534,
+      0.697,
+      0.778,
+      1.115
+    ]
+  },
+  "totalDurationSeconds": 1.115,
+  "totalDurationFrames": 33
+}

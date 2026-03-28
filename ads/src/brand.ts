@@ -77,41 +77,68 @@ export const CAROUSEL_CARDS: CarouselCard[] = [
   { id: "cta", heading: "Ready to go agentic?", subheading: "Book a free strategy call", body: "team@agentiks.dev" },
 ];
 
-/** Voiceover scripts for ElevenLabs TTS -- FINALIZED APPROVED VERSIONS */
-export const VO_SCRIPTS = {
+/** Sentence config for per-sentence audio generation and visual sync */
+export interface SentenceConfig {
+  /** Unique key used for audio filenames (e.g., "v1-s1") */
+  key: string;
+  /** Text for TTS. null = text-only visual (no audio generated) */
+  text: string | null;
+  /** Name of the visual component to render during this sentence */
+  visual: string;
+  /** Fixed duration in frames (only for text-only sentences with no audio) */
+  fixedDurationFrames?: number;
+  /** Display text for text-only visuals (when text is null) */
+  displayText?: string;
+}
+
+export interface VideoSentences {
+  sentences: SentenceConfig[];
+  /** Whether to add a 3s silence leader before the first audio sentence */
+  addSilenceLeader: boolean;
+}
+
+/** Voiceover scripts -- per-sentence architecture for guaranteed audio-visual sync */
+export const VO_SCRIPTS: Record<string, VideoSentences> = {
   video1: {
-    /** 0:03-0:16 Problem + sneak-diss */
-    scene1: "You ever watch your top performer -- the one you pay six figures -- spend half their day copy-pasting between spreadsheets? Or your ops lead manually routing tickets at 11 PM because nobody else knows how? Yeah. Every company has that. And nobody talks about it because... what's the alternative, right? And sure, some companies will sell you one chatbot, or one prompt template, and call it a day. That's... adorable.",
-    /** 0:16-0:28 Agentiks intro */
-    scene2: "So that's where we come in. We're Agentiks -- and we don't do one thing. We build entire AI agent ecosystems. Strategy. Custom development. Multi-agent orchestration. Plugged into every system you already use. Your CRM, your ERP, your databases -- all of it, talking to each other, running on autopilot.",
-    /** 0:28-0:38 Proof */
-    scene3: "We're talking forty, fifty, sixty percent of your team's time -- given back. Not by cutting corners. By putting intelligent agents on the work that used to need a human at every step. Your people go back to doing what actually grows the business.",
-    /** 0:38-0:45 CTA */
-    scene4: "We start every engagement with a free strategy call. No pitch, no commitment -- just a map of where agents will hit hardest for your business. Agentiks dot dev. The future is agentic.",
+    addSilenceLeader: true,
+    sentences: [
+      { key: "v1-s1", text: null, visual: "TextSlam", fixedDurationFrames: 90, displayText: "Your team is drowning." },
+      { key: "v1-s2", text: "Your top performer -- six figures -- spends half their day copy-pasting between spreadsheets.", visual: "SpreadsheetCopyPaste" },
+      { key: "v1-s3", text: "Your ops lead is routing tickets at 11 PM because nobody else knows how.", visual: "TicketRouting" },
+      { key: "v1-s4", text: "Every company has this problem. Nobody talks about it.", visual: "EveryCompany" },
+      { key: "v1-s5", text: "Some companies sell you one chatbot and call it a day.", visual: "SadChatbot" },
+      { key: "v1-s6", text: "That's... adorable.", visual: "ThatsAdorable" },
+      { key: "v1-s7", text: "We're Agentiks. We build entire AI agent ecosystems.", visual: "LogoRevealSync" },
+      { key: "v1-s8", text: "Strategy. Development. Multi-agent orchestration. Plugged into every system you use.", visual: "PillarCards" },
+      { key: "v1-s9", text: "Forty, fifty, sixty percent of your team's time -- given back.", visual: "PercentCounter" },
+      { key: "v1-s10", text: "Book a free strategy call at agentiks dot dev. The future is agentic.", visual: "CTAEndCard" },
+    ],
   },
   video2: {
-    /** 0:03-0:16 Before state */
-    scene1: "You know that feeling when it's Thursday and your team's already fried -- but the pipeline's backed up, reports are due, and someone still has to qualify those two hundred leads sitting in the CRM? That used to just be... the cost of doing business. It's not anymore.",
-    /** 0:16-0:26 After state */
-    scene2: "AI agents don't follow scripts -- they reason, they adapt, they execute. Twenty-four seven. Lead scoring, invoicing, customer intake, reporting -- done. And not done like a half-baked automation that breaks every other week. Done like a teammate who never sleeps, never forgets, and gets faster the longer it works.",
-    /** 0:26-0:34 Results */
-    scene3: "That's what our clients see. Forty, fifty, sixty percent of their workload -- handled. Their teams stop firefighting and start scaling. Revenue goes up. Costs go down. That's not a pitch -- that's what we build at Agentiks.",
-    /** 0:34-0:42 CTA */
-    scene4: "Book a free strategy call. We'll map your workflows and show you the ROI before you spend a dollar. Visit agentiks.dev.",
+    addSilenceLeader: true,
+    sentences: [
+      { key: "v2-s1", text: null, visual: "CounterOpen", fixedDurationFrames: 90, displayText: "60%" },
+      { key: "v2-s2", text: "It's Thursday. Your team's fried. Pipeline's backed up. Two hundred leads sitting untouched.", visual: "ThursdayBurnout" },
+      { key: "v2-s3", text: "That used to be the cost of doing business. Not anymore.", visual: "CostOfBusiness" },
+      { key: "v2-s4", text: "AI agents don't follow scripts -- they reason, adapt, and execute. Twenty-four seven.", visual: "AgentsReason" },
+      { key: "v2-s5", text: "Done like a teammate who never sleeps, never forgets, and gets faster every day.", visual: "PerfectTeammate" },
+      { key: "v2-s6", text: "Forty to sixty percent of your workload -- handled.", visual: "WorkloadCounter" },
+      { key: "v2-s7", text: "Revenue goes up. Costs go down. That's what we build at Agentiks.", visual: "RevenueUpCostsDown" },
+      { key: "v2-s8", text: "Book a free strategy call. Visit agentiks dot dev.", visual: "CTAEndCard" },
+    ],
   },
   video3: {
-    /** 0:00-0:03 Avatar open */
-    scene1: "Last week, three new AI models dropped. Two new frameworks. One new protocol that changes everything. Did you catch that?",
-    /** 0:03-0:12 Headline cascade */
-    scene2: "AI moves faster than any industry in history. New models every week. New capabilities every day. Most businesses can't keep up -- and they shouldn't have to. That's our job.",
-    /** 0:12-0:24 Value props */
-    scene3: "We track every breakthrough. When something matters for your business, we integrate it in days -- not quarters. Your AI systems get smarter behind the scenes while you focus on what you do best. Running your business.",
-    /** 0:24-0:34 Avatar return */
-    scene4: "Most AI companies build you something and disappear. We build you something and then make it better. Every single week. Your agents evolve as the technology evolves. You'll never fall behind.",
-    /** 0:34-0:42 Stakes */
-    scene5: "And here's the thing nobody wants to say out loud -- the companies that figure this out now are going to be untouchable in two years. The ones that wait? They're going to spend twice as much trying to catch up. That's just how this works.",
-    /** 0:42-0:48 CTA */
-    scene6: "Visit agentiks.dev and book a free strategy call. Let us show you what's possible.",
+    addSilenceLeader: false,
+    sentences: [
+      { key: "v3-s1", text: "Last week, three new AI models dropped. Two new frameworks. Did you catch that?", visual: "ModelDrop" },
+      { key: "v3-s2", text: "AI moves faster than any industry in history. Most businesses can't keep up.", visual: "NewModelsWeekly" },
+      { key: "v3-s3", text: "That's our job.", visual: "ThatsOurJob" },
+      { key: "v3-s4", text: "We track every breakthrough and integrate what matters in days, not quarters.", visual: "TrackBreakthroughs" },
+      { key: "v3-s5", text: "Most AI companies build you something and disappear. We make it better every single week.", visual: "BuildAndDisappear" },
+      { key: "v3-s6", text: "The companies that figure this out now will be untouchable in two years.", visual: "Untouchable" },
+      { key: "v3-s7", text: "The ones that wait... won't.", visual: "CatchUpCost" },
+      { key: "v3-s8", text: "Visit agentiks dot dev. Book a free strategy call.", visual: "CTAEndCard" },
+    ],
   },
 } as const;
 
@@ -120,10 +147,10 @@ export const FPS = 30;
 
 /** Default voice settings for ElevenLabs TTS */
 export const DEFAULT_VOICE_SETTINGS: VoiceSettings = {
-  stability: 0.38,
+  stability: 0.25,
   similarityBoost: 0.75,
   style: 0.0,
-  speed: 1.0,
+  speed: 1.05,
 };
 
 /** Per-video voice settings overrides (if needed) */

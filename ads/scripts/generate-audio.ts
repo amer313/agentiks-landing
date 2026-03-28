@@ -1,31 +1,32 @@
 import { generateSpeechWithTimestamps } from "./utils/elevenlabs-client.js";
-import { VO_SCRIPTS, VIDEO_VOICE_SETTINGS } from "../src/brand.js";
+import { VO_SCRIPTS, DEFAULT_VOICE_SETTINGS, FPS } from "../src/brand.js";
 import { PATHS, ensureDir } from "./utils/file-helpers.js";
-import { checkFfmpeg, concatWavFiles } from "./utils/ffmpeg.js";
+import { checkFfmpeg, getAudioDuration } from "./utils/ffmpeg.js";
 import path from "path";
 import { execSync } from "child_process";
 import { writeFileSync, unlinkSync } from "fs";
 
+import type { SentenceConfig, VideoSentences } from "../src/brand.js";
+import type { SentenceTimingEntry, VideoTimingData } from "../src/types.js";
+
 /**
- * Generate voiceover audio with word-level timestamps for all videos.
+ * Per-sentence audio generation pipeline.
  *
- * For each scene in each video, this script:
- *  1. Calls ElevenLabs convertWithTimestamps to get audio + character alignment
- *  2. Saves the audio as MP3
- *  3. Saves the timing data as JSON (used by PhraseTimeline for visual sync)
- *  4. Concatenates scene audio into mixed WAV files with silence padding
+ * For each sentence in each video:
+ *  1. Generate individual MP3 via ElevenLabs (skip text-only sentences)
+ *  2. Probe each MP3 for its actual duration
+ *  3. Build a timing JSON with { key, visual, startFrame, durationFrames, audioFile }
+ *  4. Concatenate all sentence audio into a mixed WAV (with silence leader if needed)
  *
- * Output files:
- *  - public/audio/v{N}-{sceneKey}.mp3  (per-scene audio)
- *  - public/audio/v{N}-{sceneKey}-timing.json  (per-scene timing data)
- *  - public/audio/v{N}-mixed.wav  (concatenated full-video audio)
+ * Output:
+ *  - public/audio/{key}.mp3         (per-sentence audio)
+ *  - public/audio/v{N}-timing.json  (per-video timing data)
+ *  - public/audio/v{N}-mixed.wav    (concatenated full-video audio)
  */
 
 const SILENCE_DURATION_SECONDS = 3; // 3s silence leader for V1/V2
 
-/**
- * Generate a silence WAV file of the given duration.
- */
+/** Generate a silence WAV file */
 function generateSilenceWav(outputPath: string, durationSeconds: number): void {
   execSync(
     `ffmpeg -y -f lavfi -i anullsrc=r=44100:cl=mono -t ${durationSeconds} "${outputPath}"`,
@@ -34,9 +35,7 @@ function generateSilenceWav(outputPath: string, durationSeconds: number): void {
   console.log(`  Generated silence: ${outputPath} (${durationSeconds}s)`);
 }
 
-/**
- * Convert MP3 to WAV for concatenation.
- */
+/** Convert MP3 to WAV for concatenation */
 function mp3ToWav(mp3Path: string, wavPath: string): void {
   execSync(
     `ffmpeg -y -i "${mp3Path}" -ar 44100 -ac 1 "${wavPath}"`,
@@ -44,38 +43,12 @@ function mp3ToWav(mp3Path: string, wavPath: string): void {
   );
 }
 
-/**
- * Concatenate audio files (silence + scenes) into a single mixed WAV.
- * Uses ffmpeg concat filter to handle mixed formats safely.
- */
+/** Concatenate WAV files into a single mixed WAV */
 function concatenateToMixedWav(
-  sceneMp3Paths: string[],
-  outputPath: string,
-  addSilenceLeader: boolean
+  wavParts: string[],
+  outputPath: string
 ): void {
-  const tempWavPaths: string[] = [];
-  const tempDir = path.dirname(outputPath);
-
-  // Convert each MP3 to WAV first for reliable concatenation
-  for (let i = 0; i < sceneMp3Paths.length; i++) {
-    const tempWav = path.join(tempDir, `_temp_scene_${i}.wav`);
-    mp3ToWav(sceneMp3Paths[i], tempWav);
-    tempWavPaths.push(tempWav);
-  }
-
-  // Build the list of files to concatenate
-  const filesToConcat: string[] = [];
-
-  if (addSilenceLeader) {
-    const silencePath = path.join(tempDir, "_temp_silence.wav");
-    generateSilenceWav(silencePath, SILENCE_DURATION_SECONDS);
-    filesToConcat.push(silencePath);
-  }
-
-  filesToConcat.push(...tempWavPaths);
-
-  // Use ffmpeg concat demuxer
-  const listContent = filesToConcat.map((p) => `file '${p}'`).join("\n");
+  const listContent = wavParts.map((p) => `file '${p}'`).join("\n");
   const listPath = outputPath.replace(/\.wav$/, "-list.txt");
   writeFileSync(listPath, listContent);
 
@@ -84,9 +57,9 @@ function concatenateToMixedWav(
     { stdio: "pipe" }
   );
 
-  // Clean up temp files
+  // Clean up
   unlinkSync(listPath);
-  for (const tmpPath of filesToConcat) {
+  for (const tmpPath of wavParts) {
     try { unlinkSync(tmpPath); } catch { /* ignore */ }
   }
 
@@ -95,77 +68,134 @@ function concatenateToMixedWav(
 
 interface VideoConfig {
   label: string;
+  videoId: string;
   prefix: string;
-  scenes: Record<string, string>;
-  voiceSettingsKey: string;
-  addSilenceLeader: boolean;
+  config: VideoSentences;
 }
 
 async function main() {
-  console.log("=== Generating Voiceover Audio with Timestamps ===\n");
+  console.log("=== Generating Per-Sentence Voiceover Audio ===\n");
 
-  // Preflight: check FFmpeg availability (needed for concatenation)
   if (!checkFfmpeg()) {
-    console.error("ERROR: FFmpeg is required for audio concatenation.");
-    console.error("Install FFmpeg: brew install ffmpeg (macOS) or apt-get install ffmpeg (Linux)");
+    console.error("ERROR: FFmpeg is required for audio processing.");
+    console.error("Install: brew install ffmpeg (macOS) or apt-get install ffmpeg (Linux)");
     process.exit(1);
   }
 
   await ensureDir(PATHS.audio);
 
   const videoConfigs: VideoConfig[] = [
-    {
-      label: "Video 1: The Problem",
-      prefix: "v1",
-      scenes: VO_SCRIPTS.video1,
-      voiceSettingsKey: "video1",
-      addSilenceLeader: true,
-    },
-    {
-      label: "Video 2: The Transformation",
-      prefix: "v2",
-      scenes: VO_SCRIPTS.video2,
-      voiceSettingsKey: "video2",
-      addSilenceLeader: true,
-    },
-    {
-      label: "Video 3: The Edge",
-      prefix: "v3",
-      scenes: VO_SCRIPTS.video3,
-      voiceSettingsKey: "video3",
-      addSilenceLeader: false, // V3 starts immediately
-    },
+    { label: "Video 1: The Problem", videoId: "video1", prefix: "v1", config: VO_SCRIPTS.video1 },
+    { label: "Video 2: The Transformation", videoId: "video2", prefix: "v2", config: VO_SCRIPTS.video2 },
+    { label: "Video 3: The Edge", videoId: "video3", prefix: "v3", config: VO_SCRIPTS.video3 },
   ];
 
-  for (const config of videoConfigs) {
-    console.log(`\n--- ${config.label} ---`);
-    const sceneMp3Paths: string[] = [];
-    const voiceSettings = VIDEO_VOICE_SETTINGS[config.voiceSettingsKey];
-    const sceneEntries = Object.entries(config.scenes);
+  for (const vc of videoConfigs) {
+    console.log(`\n--- ${vc.label} ---`);
+    const sentences = vc.config.sentences;
+    const timingEntries: SentenceTimingEntry[] = [];
+    const audioPaths: { key: string; mp3Path: string }[] = [];
 
-    for (const [key, text] of sceneEntries) {
-      const audioPath = path.join(PATHS.audio, `${config.prefix}-${key}.mp3`);
-      const timingPath = path.join(PATHS.audio, `${config.prefix}-${key}-timing.json`);
+    // Step 1: Generate audio for each sentence with text
+    for (const sentence of sentences) {
+      if (sentence.text === null) {
+        console.log(`  [${sentence.key}] Text-only visual (no audio) -- ${sentence.fixedDurationFrames} frames`);
+        continue;
+      }
+
+      const mp3Path = path.join(PATHS.audio, `${sentence.key}.mp3`);
+      const timingPath = path.join(PATHS.audio, `${sentence.key}-timing.json`);
+
       await generateSpeechWithTimestamps(
-        text,
-        audioPath,
+        sentence.text,
+        mp3Path,
         timingPath,
-        config.voiceSettingsKey,
-        key,
-        voiceSettings,
+        vc.videoId,
+        sentence.key,
+        DEFAULT_VOICE_SETTINGS,
       );
-      sceneMp3Paths.push(audioPath);
+
+      audioPaths.push({ key: sentence.key, mp3Path });
     }
 
-    // Concatenate all scenes into a mixed WAV
-    const mixedPath = path.join(PATHS.audio, `${config.prefix}-mixed.wav`);
-    console.log(`\n  Concatenating ${sceneEntries.length} scenes into ${config.prefix}-mixed.wav...`);
-    concatenateToMixedWav(sceneMp3Paths, mixedPath, config.addSilenceLeader);
+    // Step 2: Probe each audio file for duration and build timing
+    let currentFrame = 0;
+
+    // If silence leader, it occupies the first 3s = 90 frames
+    // BUT the first sentence (text-only) already uses those 90 frames
+    // So the silence leader IS the text-only sentence's duration
+
+    for (const sentence of sentences) {
+      if (sentence.text === null) {
+        // Text-only: fixed duration
+        const frames = sentence.fixedDurationFrames || 90;
+        timingEntries.push({
+          key: sentence.key,
+          visual: sentence.visual,
+          startFrame: currentFrame,
+          durationFrames: frames,
+          audioFile: null,
+          displayText: sentence.displayText,
+        });
+        currentFrame += frames;
+      } else {
+        // Audio sentence: probe for actual duration
+        const mp3Path = path.join(PATHS.audio, `${sentence.key}.mp3`);
+        const durationSeconds = getAudioDuration(mp3Path);
+        const durationFrames = Math.ceil(durationSeconds * FPS);
+
+        timingEntries.push({
+          key: sentence.key,
+          visual: sentence.visual,
+          startFrame: currentFrame,
+          durationFrames,
+          audioFile: `${sentence.key}.mp3`,
+        });
+
+        console.log(`  [${sentence.key}] ${durationSeconds.toFixed(2)}s = ${durationFrames} frames (starts at frame ${currentFrame})`);
+        currentFrame += durationFrames;
+      }
+    }
+
+    const totalFrames = currentFrame;
+
+    // Step 3: Write timing JSON
+    const timingData: VideoTimingData = {
+      videoId: vc.videoId,
+      fps: FPS,
+      totalDurationFrames: totalFrames,
+      sentences: timingEntries,
+    };
+
+    const timingJsonPath = path.join(PATHS.audio, `${vc.prefix}-timing.json`);
+    writeFileSync(timingJsonPath, JSON.stringify(timingData, null, 2));
+    console.log(`  Timing JSON: ${timingJsonPath} (${totalFrames} total frames, ${(totalFrames / FPS).toFixed(1)}s)`);
+
+    // Step 4: Build mixed WAV
+    // Convert each sentence MP3 to WAV, prepend silence if needed
+    const wavParts: string[] = [];
+    const tempDir = PATHS.audio;
+
+    if (vc.config.addSilenceLeader) {
+      const silencePath = path.join(tempDir, `_temp_${vc.prefix}_silence.wav`);
+      generateSilenceWav(silencePath, SILENCE_DURATION_SECONDS);
+      wavParts.push(silencePath);
+    }
+
+    for (const ap of audioPaths) {
+      const tempWav = path.join(tempDir, `_temp_${ap.key}.wav`);
+      mp3ToWav(ap.mp3Path, tempWav);
+      wavParts.push(tempWav);
+    }
+
+    const mixedPath = path.join(PATHS.audio, `${vc.prefix}-mixed.wav`);
+    console.log(`\n  Concatenating ${wavParts.length} parts into ${vc.prefix}-mixed.wav...`);
+    concatenateToMixedWav(wavParts, mixedPath);
   }
 
-  console.log("\n=== All VO tracks, timing data, and mixed WAVs generated ===");
-  console.log("Timing JSONs saved alongside audio files in public/audio/");
-  console.log("Mixed WAVs ready for Remotion compositions: v1-mixed.wav, v2-mixed.wav, v3-mixed.wav");
+  console.log("\n=== All per-sentence audio generated ===");
+  console.log("Timing JSONs: v1-timing.json, v2-timing.json, v3-timing.json");
+  console.log("Mixed WAVs: v1-mixed.wav, v2-mixed.wav, v3-mixed.wav");
 }
 
 main().catch((e) => {

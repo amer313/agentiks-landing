@@ -92,8 +92,8 @@ export const PhraseTimeline: React.FC<PhraseTimelineProps> = ({
         if (nextConfig) {
           const nextOpacity = interpolate(
             framesUntilNext,
-            [CROSSFADE_FRAMES, 0],
-            [0, 1],
+            [0, CROSSFADE_FRAMES],
+            [1, 0],
             { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
           );
           const NextComponent = nextConfig.component;
