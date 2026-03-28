@@ -1,6 +1,7 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, useScroll, useTransform } from "framer-motion"
+import { useRef } from "react"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight } from "lucide-react"
 import { CornerButton } from "@/components/ui/corner-button"
@@ -8,14 +9,25 @@ import { HeroBackground } from "@/components/ui/hero-background"
 import { AgentiksLogo } from "@/components/ui/agentiks-logo"
 
 export function Hero() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] })
+  const logoY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"])
+  const logoScale = useTransform(scrollYProgress, [0, 1], [1, 1.15])
+  const logoOpacity = useTransform(scrollYProgress, [0, 0.8], [0.04, 0])
+
   return (
-    <section className="min-h-[90vh] relative overflow-hidden">
+    <section ref={sectionRef} className="min-h-[90vh] relative overflow-hidden">
       <HeroBackground />
 
-      {/* Brand mark watermark */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-        <AgentiksLogo className="w-[45vh] h-[45vh] text-brand/[0.04]" />
-      </div>
+      {/* Parallax brand mark watermark */}
+      <motion.div
+        className="absolute inset-0 flex items-center justify-center pointer-events-none z-0"
+        style={{ y: logoY, scale: logoScale }}
+      >
+        <motion.div style={{ opacity: logoOpacity }}>
+          <AgentiksLogo className="w-[45vh] h-[45vh] text-brand" />
+        </motion.div>
+      </motion.div>
 
       <div className="relative z-10 min-h-[90vh] flex flex-col items-center justify-center max-w-[1400px] mx-auto px-6 md:px-12 pt-28 pb-16 text-center">
         <motion.div

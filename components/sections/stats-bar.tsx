@@ -13,6 +13,7 @@ const stats = [
 
 function Counter({ target, prefix, suffix, active, override }: { target: number; prefix?: string; suffix: string; active: boolean; override?: string }) {
   const [count, setCount] = useState(0)
+  const [done, setDone] = useState(false)
 
   useEffect(() => {
     if (!active) return
@@ -25,16 +26,17 @@ function Counter({ target, prefix, suffix, active, override }: { target: number;
       const eased = 1 - Math.pow(1 - p, 3)
       setCount(Math.floor(eased * target))
       if (p < 1) raf = requestAnimationFrame(tick)
+      else setDone(true)
     }
 
     raf = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(raf)
   }, [active, target])
 
-  if (override) return <span>{override}</span>
+  if (override) return <span className={done ? "text-brand transition-colors duration-500" : ""}>{override}</span>
 
   return (
-    <span className="tabular-nums">
+    <span className={`tabular-nums transition-colors duration-500 ${done ? "text-brand" : ""}`}>
       {prefix}{count.toLocaleString()}{suffix}
     </span>
   )

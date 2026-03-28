@@ -70,9 +70,8 @@ export function Pricing() {
     <section className="max-w-[1200px] mx-auto px-6 md:px-12 py-16 pb-16" id="pricing">
       <SectionHeader title="Pricing" label="pricing" center />
 
-      <ScrollReveal variant="scale-up">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-          {tiers.map((tier) => {
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {tiers.map((tier, i) => {
             const card = (
               <Card
                 key={tier.name}
@@ -121,16 +120,19 @@ export function Pricing() {
                 </CardFooter>
               </Card>
             )
-            return tier.highlight ? (
-              <ShineBorder key={tier.name} color="rgba(139, 92, 246, 0.4)" duration={6} borderRadius={12} className="h-full">
-                {card}
-              </ShineBorder>
-            ) : (
-              <div key={tier.name} className="h-full">{card}</div>
+            return (
+              <ScrollReveal key={tier.name} variant="pop-in" delay={i * 0.12}>
+                {tier.highlight ? (
+                  <ShineBorder color="rgba(220, 38, 38, 0.4)" duration={6} borderRadius={12} className="h-full">
+                    {card}
+                  </ShineBorder>
+                ) : (
+                  <div className="h-full">{card}</div>
+                )}
+              </ScrollReveal>
             )
           })}
         </div>
-      </ScrollReveal>
     </section>
   )
 }
