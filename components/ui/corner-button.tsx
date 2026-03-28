@@ -15,40 +15,48 @@ export function CornerButton({ href, children, external, variant = "primary", cl
     <a
       href={href}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className={`group relative inline-flex items-center gap-2 text-sm font-semibold px-8 py-3.5 transition-all duration-200 ${
+      className={`group relative inline-flex items-center gap-2 text-sm font-semibold px-8 py-3.5 transition-all duration-200 overflow-hidden ${
         isPrimary
-          ? "bg-brand text-white hover:bg-brand-dark"
-          : "bg-transparent text-foreground/70 hover:text-foreground border border-white/[0.08] hover:border-white/[0.15]"
+          ? "bg-brand text-white"
+          : "bg-transparent text-foreground/70 hover:text-foreground border border-white/[0.08] hover:border-brand/30"
       } ${className}`}
     >
-      {/* Corner brackets */}
+      {/* Hover fill — expands from center */}
+      <span className={`absolute inset-0 transition-all duration-300 ease-out scale-0 group-hover:scale-100 origin-center ${
+        isPrimary
+          ? "bg-white/[0.12]"
+          : "bg-brand/[0.08]"
+      }`} />
+
+      {/* Corner brackets with fill */}
       <span className="pointer-events-none absolute inset-0">
         {/* Top-left */}
-        <span className={`absolute top-0 left-0 w-2.5 h-2.5 transition-all duration-200 group-hover:w-1/2 group-hover:h-1/2 ${
+        <span className={`absolute top-0 left-0 w-2 h-2 transition-all duration-300 group-hover:w-1/2 group-hover:h-1/2 ${
           isPrimary
-            ? "border-t-2 border-l-2 border-white/40 group-hover:border-white/60"
-            : "border-t border-l border-brand/0 group-hover:border-brand/50"
+            ? "border-t-2 border-l-2 border-white/30 group-hover:border-white/70 group-hover:bg-white/[0.08]"
+            : "border-t border-l border-brand/0 group-hover:border-brand/50 group-hover:bg-brand/[0.06]"
         }`} />
         {/* Top-right */}
-        <span className={`absolute top-0 right-0 w-2.5 h-2.5 transition-all duration-200 group-hover:w-1/2 group-hover:h-1/2 ${
+        <span className={`absolute top-0 right-0 w-2 h-2 transition-all duration-300 group-hover:w-1/2 group-hover:h-1/2 ${
           isPrimary
-            ? "border-t-2 border-r-2 border-white/40 group-hover:border-white/60"
-            : "border-t border-r border-brand/0 group-hover:border-brand/50"
+            ? "border-t-2 border-r-2 border-white/30 group-hover:border-white/70 group-hover:bg-white/[0.08]"
+            : "border-t border-r border-brand/0 group-hover:border-brand/50 group-hover:bg-brand/[0.06]"
         }`} />
         {/* Bottom-left */}
-        <span className={`absolute bottom-0 left-0 w-2.5 h-2.5 transition-all duration-200 group-hover:w-1/2 group-hover:h-1/2 ${
+        <span className={`absolute bottom-0 left-0 w-2 h-2 transition-all duration-300 group-hover:w-1/2 group-hover:h-1/2 ${
           isPrimary
-            ? "border-b-2 border-l-2 border-white/40 group-hover:border-white/60"
-            : "border-b border-l border-brand/0 group-hover:border-brand/50"
+            ? "border-b-2 border-l-2 border-white/30 group-hover:border-white/70 group-hover:bg-white/[0.08]"
+            : "border-b border-l border-brand/0 group-hover:border-brand/50 group-hover:bg-brand/[0.06]"
         }`} />
         {/* Bottom-right */}
-        <span className={`absolute bottom-0 right-0 w-2.5 h-2.5 transition-all duration-200 group-hover:w-1/2 group-hover:h-1/2 ${
+        <span className={`absolute bottom-0 right-0 w-2 h-2 transition-all duration-300 group-hover:w-1/2 group-hover:h-1/2 ${
           isPrimary
-            ? "border-b-2 border-r-2 border-white/40 group-hover:border-white/60"
-            : "border-b border-r border-brand/0 group-hover:border-brand/50"
+            ? "border-b-2 border-r-2 border-white/30 group-hover:border-white/70 group-hover:bg-white/[0.08]"
+            : "border-b border-r border-brand/0 group-hover:border-brand/50 group-hover:bg-brand/[0.06]"
         }`} />
       </span>
-      {children}
+
+      <span className="relative z-10 flex items-center gap-2">{children}</span>
     </a>
   )
 }
