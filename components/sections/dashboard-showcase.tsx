@@ -190,72 +190,74 @@ function MiniChart() {
   )
 }
 
-/* ── Main section ── */
+/* ── Main section — MacBook opens its lid on scroll ── */
 export function DashboardShowcase() {
   const sectionRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "center center"],
+    offset: ["start start", "end end"],
   })
 
-  const rotateX = useTransform(scrollYProgress, [0, 1], [50, 0])
-  const translateZ = useTransform(scrollYProgress, [0, 1], [-250, 0])
-  const translateY = useTransform(scrollYProgress, [0, 1], [180, 0])
-  const opacity = useTransform(scrollYProgress, [0, 0.25], [0, 1])
-  const scale = useTransform(scrollYProgress, [0, 1], [0.75, 1])
+  // Lid opens from closed (85deg) to fully open (0deg)
+  const lidRotate = useTransform(scrollYProgress, [0.05, 0.6], [85, 0])
+  // Screen content fades in as lid opens past ~45deg
+  const screenOpacity = useTransform(scrollYProgress, [0.25, 0.5], [0, 1])
+  // Whole laptop scales up slightly as lid opens
+  const laptopScale = useTransform(scrollYProgress, [0, 0.6], [0.9, 1])
+  // Text fades in early
+  const textOpacity = useTransform(scrollYProgress, [0, 0.15], [0, 1])
+  const textY = useTransform(scrollYProgress, [0, 0.15], [30, 0])
 
   return (
-    <section ref={sectionRef} className="px-4 md:px-8 py-16 md:py-24">
-      <div className="max-w-[1200px] mx-auto rounded-3xl bg-[#000] border border-white/[0.04] py-16 md:py-24 px-6 md:px-12 overflow-hidden relative">
-        {/* Ambient glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[radial-gradient(ellipse_at_center,rgba(220,38,38,0.06),transparent_70%)] pointer-events-none" />
+    <section ref={sectionRef} className="relative h-[200vh]">
+      <div className="sticky top-0 h-screen flex flex-col items-center justify-center px-4 md:px-8">
+        <div className="max-w-[1200px] w-full mx-auto rounded-3xl bg-[#000] border border-white/[0.04] py-12 md:py-20 px-6 md:px-12 overflow-hidden relative">
+          {/* Ambient glow */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[radial-gradient(ellipse_at_center,rgba(220,38,38,0.06),transparent_70%)] pointer-events-none" />
 
-        <div className="text-center mb-14 relative z-10">
-          <motion.p
-            className="font-mono text-xs tracking-[0.2em] uppercase text-brand/70 mb-3"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            Built for your business
-          </motion.p>
-          <motion.h2
-            className="text-3xl md:text-5xl font-medium tracking-tight text-white"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-          >
-            Custom agentic solutions.{" "}
-            <span className="text-brand">Real results.</span>
-          </motion.h2>
-        </div>
+          {/* Heading */}
+          <motion.div className="text-center mb-10 relative z-10" style={{ opacity: textOpacity, y: textY }}>
+            <p className="font-mono text-xs tracking-[0.2em] uppercase text-brand/70 mb-3">
+              Built for your business
+            </p>
+            <h2 className="text-3xl md:text-5xl font-medium tracking-tight text-white">
+              Custom agentic solutions.{" "}
+              <span className="text-brand">Real results.</span>
+            </h2>
+          </motion.div>
 
-        {/* MacBook Pro using devices.css */}
-        <div style={{ perspective: "2200px" }} className="relative z-10 flex justify-center">
+          {/* MacBook with opening lid */}
           <motion.div
-            style={{
-              rotateX,
-              translateZ,
-              translateY,
-              opacity,
-              scale,
-              transformStyle: "preserve-3d",
-            }}
+            className="relative z-10 flex justify-center"
+            style={{ scale: laptopScale, perspective: "1800px" }}
           >
             <div className="device device-macbook-pro device-spacegray">
-              <div className="device-frame">
-                <div className="device-screen">
+              {/* Screen/Lid — hinges from the bottom edge */}
+              <motion.div
+                className="device-frame"
+                style={{
+                  rotateX: lidRotate,
+                  transformOrigin: "bottom center",
+                  transformStyle: "preserve-3d",
+                }}
+              >
+                <motion.div className="device-screen" style={{ opacity: screenOpacity }}>
                   <DashboardScreen />
-                </div>
-              </div>
+                </motion.div>
+                <div className="device-header" />
+              </motion.div>
               <div className="device-stripe" />
-              <div className="device-header" />
               <div className="device-sensors" />
               <div className="device-btns" />
               <div className="device-power" />
             </div>
           </motion.div>
+
+          {/* Screen glow on the base — appears as lid opens */}
+          <motion.div
+            className="mx-auto max-w-[500px] h-[40px] bg-[radial-gradient(ellipse_at_center,rgba(220,38,38,0.08),transparent_70%)] rounded-full blur-xl -mt-2 relative z-0"
+            style={{ opacity: useTransform(scrollYProgress, [0.4, 0.7], [0, 0.6]) }}
+          />
         </div>
       </div>
     </section>
