@@ -13,6 +13,7 @@
     "@vercel/speed-insights": "^2.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "devices.css": "^0.2.0",
     "framer-motion": "^12.34.3",
     "geist": "^1.7.0",
     "lucide-react": "^0.575.0",
@@ -20,6 +21,7 @@
     "radix-ui": "^1.4.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "react-globe.gl": "^2.37.0",
     "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
