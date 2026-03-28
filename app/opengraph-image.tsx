@@ -33,8 +33,8 @@ export default function OGImage() {
               width: "56px",
               height: "56px",
               borderRadius: "12px",
-              background: "rgba(37,99,235,0.2)",
-              border: "1px solid rgba(37,99,235,0.3)",
+              background: "rgba(180,0,255,0.2)",
+              border: "1px solid rgba(180,0,255,0.3)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -58,7 +58,7 @@ export default function OGImage() {
           }}
         >
           AI Agent Systems for
-          <span style={{ color: "#2563EB" }}> Every Business</span>
+          <span style={{ color: "#B400FF" }}> Every Business</span>
         </div>
         <div
           style={{

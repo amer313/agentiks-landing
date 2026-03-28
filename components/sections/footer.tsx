@@ -28,9 +28,7 @@ export function Footer() {
       <div className="grid grid-cols-2 md:grid-cols-[1fr_repeat(3,auto)] gap-8 md:gap-16 py-12">
         <div className="col-span-2 md:col-span-1">
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-7 h-7 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center">
-              <AgentiksLogo className="w-4 h-4" />
-            </div>
+            <AgentiksLogo className="w-7 h-7" />
             <span className="font-semibold text-base tracking-tight">Agentiks</span>
           </div>
           <p className="text-sm text-muted-foreground/50 max-w-[240px] leading-relaxed">

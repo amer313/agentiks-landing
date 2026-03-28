@@ -13,7 +13,7 @@ export function CTA() {
         transition={{ duration: 0.6 }}
         className="relative rounded-3xl border border-brand/20 bg-gradient-to-br from-brand/[0.06] via-ag-surface to-ag-cyan/[0.03] p-12 md:p-20 text-center overflow-hidden"
       >
-        <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.12),transparent_70%)] pointer-events-none" />
+        <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(180,0,255,0.12),transparent_70%)] pointer-events-none" />
 
         <div className="relative z-10">
           <h2 className="text-3xl md:text-5xl font-medium tracking-tight mb-4">
