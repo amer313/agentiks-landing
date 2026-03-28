@@ -33,9 +33,6 @@ export function TechMarquee() {
   return (
     <section className="py-12 overflow-hidden">
       <ScrollReveal>
-        <p className="text-center font-mono text-[10px] tracking-[0.2em] uppercase text-muted-foreground/50 mb-6">
-          Built with the tools you trust
-        </p>
         <MarqueeRow />
         <MarqueeRow reverse />
       </ScrollReveal>
