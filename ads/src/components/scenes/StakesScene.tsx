@@ -1,47 +1,62 @@
 import React from "react";
-import { AbsoluteFill, useCurrentFrame, interpolate } from "remotion";
+import { AbsoluteFill, useCurrentFrame, interpolate, spring } from "remotion";
 import { DarkBackground } from "../backgrounds/DarkBackground";
-import { KineticText } from "../typography/KineticText";
-import { TypewriterText } from "../typography/TypewriterText";
-import { COLORS } from "../../brand";
+import { COLORS, FPS } from "../../brand";
 import { FONT_FAMILY_SANS } from "../../fonts";
+
+// Line reveal timings (frames)
+// Line 1: "The companies that figure this out now"
+const LINE1_START = 0;
+// Line 2: "will be untouchable in two years."
+const LINE2_START = 25;
+// Beat / pause before lines 3-4
+// Line 3: "The ones that wait..."
+const LINE3_START = 80;
+// Line 4: "won't." — appears with emphasis
+const LINE4_START = 115;
+
+function useFadeIn(frame: number, startFrame: number, durationFrames = 12) {
+  const opacity = interpolate(
+    frame,
+    [startFrame, startFrame + durationFrames],
+    [0, 1],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
+  const translateY = interpolate(
+    frame,
+    [startFrame, startFrame + durationFrames],
+    [20, 0],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
+  return { opacity, translateY };
+}
 
 export const StakesScene: React.FC = () => {
   const frame = useCurrentFrame();
 
-  // Phase 1: Typewriter build (0-90)
-  const typewriterOpacity = interpolate(
+  const line1 = useFadeIn(frame, LINE1_START);
+  const line2 = useFadeIn(frame, LINE2_START);
+  const line3 = useFadeIn(frame, LINE3_START);
+
+  // "won't." springs in with a pop
+  const wontSpring = spring({
+    frame: Math.max(0, frame - LINE4_START),
+    fps: FPS,
+    config: { damping: 10, stiffness: 220, mass: 0.7 },
+  });
+  const wontScale = interpolate(wontSpring, [0, 1], [0.6, 1]);
+  const wontOpacity = interpolate(
     frame,
-    [0, 5, 85, 100],
-    [0, 1, 1, 0],
-    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
-  );
-
-  // Phase 2: Kinetic slam (90-150)
-  // KineticText handles its own timing internally
-
-  // Phase 3: Hold (150-200) -- handled by KineticText holdFrames
-
-  // Phase 4: Counter-text (200-240)
-  const counterTextOpacity = interpolate(
-    frame,
-    [200, 220],
+    [LINE4_START, LINE4_START + 6],
     [0, 1],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
 
-  const counterTextY = interpolate(
-    frame,
-    [200, 220],
-    [20, 0],
-    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
-  );
-
-  // Background glow intensification during slam
+  // Background glow ramps up as emphasis builds
   const glowIntensity = interpolate(
     frame,
-    [80, 100, 160, 200],
-    [1, 3, 3, 1.5],
+    [0, LINE3_START, LINE4_START, LINE4_START + 30],
+    [1, 1.5, 2.5, 3],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
 
@@ -49,57 +64,105 @@ export const StakesScene: React.FC = () => {
     <AbsoluteFill>
       <DarkBackground showBrandGlow glowIntensity={glowIntensity} />
 
-      {/* Phase 1: Typewriter text */}
       <AbsoluteFill
         style={{
           display: "flex",
+          flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
           padding: "0 80px",
-          opacity: typewriterOpacity,
+          gap: 0,
         }}
       >
-        <TypewriterText
-          text="The companies that lock in their AI advantage now..."
-          charsPerFrame={1.2}
-          startFrame={0}
-          fontSize={28}
-          color={COLORS.foreground}
-          fontFamily={FONT_FAMILY_SANS}
-        />
-      </AbsoluteFill>
-
-      {/* Phase 2: Kinetic slam */}
-      <KineticText
-        text="will be untouchable in two years."
-        color={COLORS.brand}
-        glitchColor={COLORS.cyan}
-        enterFrame={90}
-        holdFrames={70}
-        fontSize={56}
-      />
-
-      {/* Phase 4: Counter-text */}
-      <AbsoluteFill
-        style={{
-          display: "flex",
-          alignItems: "flex-end",
-          justifyContent: "center",
-          paddingBottom: "25%",
-          opacity: counterTextOpacity,
-          transform: `translateY(${counterTextY}px)`,
-        }}
-      >
+        {/* Block 1: statement */}
         <div
           style={{
-            fontFamily: FONT_FAMILY_SANS,
-            fontSize: 24,
-            fontWeight: 400,
-            color: COLORS.mutedForeground,
-            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 8,
+            marginBottom: 56,
           }}
         >
-          The ones that wait... won't.
+          {/* Line 1 */}
+          <div
+            style={{
+              opacity: line1.opacity,
+              transform: `translateY(${line1.translateY}px)`,
+              fontFamily: FONT_FAMILY_SANS,
+              fontSize: 48,
+              fontWeight: 700,
+              color: COLORS.foreground,
+              textAlign: "center",
+              lineHeight: 1.15,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            The companies that figure this out now
+          </div>
+
+          {/* Line 2 */}
+          <div
+            style={{
+              opacity: line2.opacity,
+              transform: `translateY(${line2.translateY}px)`,
+              fontFamily: FONT_FAMILY_SANS,
+              fontSize: 48,
+              fontWeight: 700,
+              color: COLORS.brand,
+              textAlign: "center",
+              lineHeight: 1.15,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            will be untouchable in two years.
+          </div>
+        </div>
+
+        {/* Block 2: consequence */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 8,
+          }}
+        >
+          {/* Line 3 */}
+          <div
+            style={{
+              opacity: line3.opacity,
+              transform: `translateY(${line3.translateY}px)`,
+              fontFamily: FONT_FAMILY_SANS,
+              fontSize: 48,
+              fontWeight: 500,
+              color: COLORS.mutedForeground,
+              textAlign: "center",
+              lineHeight: 1.15,
+              letterSpacing: "-0.01em",
+            }}
+          >
+            The ones that wait...
+          </div>
+
+          {/* Line 4: "won't." — emphasis pop */}
+          <div
+            style={{
+              opacity: wontOpacity,
+              transform: `scale(${wontScale})`,
+              transformOrigin: "center center",
+              fontFamily: FONT_FAMILY_SANS,
+              fontSize: 72,
+              fontWeight: 800,
+              color: COLORS.foreground,
+              textAlign: "center",
+              lineHeight: 1,
+              letterSpacing: "-0.03em",
+              textShadow: `0 0 40px ${COLORS.brand}80, 0 0 80px ${COLORS.brand}40`,
+            }}
+          >
+            won&apos;t.
+          </div>
         </div>
       </AbsoluteFill>
     </AbsoluteFill>

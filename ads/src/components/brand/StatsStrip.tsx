@@ -22,11 +22,12 @@ export const StatsStrip: React.FC<StatsStripProps> = ({
   return (
     <div
       style={{
-        display: "flex",
-        justifyContent: "center",
-        gap: 0,
+        display: "grid",
+        gridTemplateColumns: `repeat(${stats.length}, 1fr)`,
         width: "100%",
-        maxWidth: 900,
+        border: `1px dashed rgba(255,255,255,0.08)`,
+        borderRadius: 16,
+        overflow: "hidden",
       }}
     >
       {stats.map((stat, i) => {
@@ -36,31 +37,46 @@ export const StatsStrip: React.FC<StatsStripProps> = ({
           <div
             key={stat.label}
             style={{
-              flex: 1,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              padding: "16px 8px",
-              borderLeft: i > 0 ? `1px dashed ${COLORS.line}` : "none",
+              justifyContent: "center",
+              textAlign: "center",
+              padding: "24px 16px",
+              borderRight:
+                i < stats.length - 1
+                  ? `1px dashed rgba(255,255,255,0.08)`
+                  : "none",
             }}
           >
-            <AnimatedCounter
-              startValue={0}
-              endValue={stat.value}
-              durationFrames={30}
-              suffix={stat.suffix}
-              startFrame={cellStartFrame}
-              fontSize={28}
-              color={COLORS.foreground}
-              override={stat.override}
-            />
+            <div
+              style={{
+                fontFamily: FONT_FAMILY_MONO,
+                fontWeight: 300,
+                fontSize: 36,
+                letterSpacing: "-0.02em",
+                color: COLORS.foreground,
+                marginBottom: 4,
+              }}
+            >
+              <AnimatedCounter
+                startValue={0}
+                endValue={stat.value}
+                durationFrames={30}
+                suffix={stat.suffix}
+                startFrame={cellStartFrame}
+                fontSize={36}
+                color={COLORS.foreground}
+                override={stat.override}
+              />
+            </div>
             <div
               style={{
                 fontFamily: FONT_FAMILY_MONO,
                 fontSize: 10,
                 color: COLORS.mutedForeground,
-                marginTop: 4,
-                textAlign: "center",
+                textTransform: "uppercase",
+                letterSpacing: "0.15em",
                 whiteSpace: "nowrap",
               }}
             >

@@ -1,8 +1,9 @@
 import React from "react";
-import { AbsoluteFill, useCurrentFrame, interpolate } from "remotion";
+import { AbsoluteFill, useCurrentFrame, interpolate, spring, useVideoConfig } from "remotion";
 import { DarkBackground } from "../backgrounds/DarkBackground";
 import { COLORS, mulberry32 } from "../../brand";
 import { FONT_FAMILY_SANS, FONT_FAMILY_MONO } from "../../fonts";
+
 // Slack-style messages
 const slackMessages = [
   "Where's the Q3 report?",
@@ -19,8 +20,21 @@ const slackMessages = [
 
 const rng = mulberry32(88);
 
+// Pre-generate spreadsheet data deterministically (outside render)
+const COL_HEADERS = ["A", "B", "C", "D", "E"];
+const ROW_COUNT = 8;
+// Which cells should show a red "error" highlight (row, col) pairs
+const ERROR_CELLS = new Set(["1-2", "3-0", "3-4", "5-1", "6-3", "7-2"]);
+const rngSpread = mulberry32(42);
+const SPREAD_DATA: string[][] = Array.from({ length: ROW_COUNT }, () =>
+  Array.from({ length: 5 }, () =>
+    (Math.floor(rngSpread() * 90000) + 10000).toLocaleString()
+  )
+);
+
 export const BeforeStateScene: React.FC = () => {
   const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
 
   // Phase 1: Spreadsheet (0-90)
   const spreadsheetOpacity = interpolate(
@@ -54,6 +68,21 @@ export const BeforeStateScene: React.FC = () => {
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
 
+  // Notification dots in a perfect circle using trigonometry
+  const dotCount = 8;
+  const centerX = 540; // horizontal center of 1080px frame
+  const centerY = 960; // vertical center of 1920px frame
+  const dotRadius = 220; // consistent radius for all dots
+
+  const dots = Array.from({ length: dotCount }, (_, i) => {
+    const angle = (2 * Math.PI * i) / dotCount;
+    return {
+      x: centerX + Math.cos(angle) * dotRadius,
+      y: centerY + Math.sin(angle) * dotRadius,
+      badgeNum: Math.floor(rng() * 99),
+    };
+  });
+
   return (
     <AbsoluteFill>
       <DarkBackground showBrandGlow={false} />
@@ -63,95 +92,230 @@ export const BeforeStateScene: React.FC = () => {
         <div
           style={{
             position: "absolute",
-            top: "15%",
-            left: "8%",
-            right: "8%",
+            inset: 0,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          {Array.from({ length: 10 }, (_, ri) => (
-            <div key={ri} style={{ display: "flex", gap: 2, marginBottom: 2 }}>
-              {Array.from({ length: 4 }, (_, ci) => {
-                const cellVisible = frame > ri * 3 + ci * 2;
-                return (
+          <div
+            style={{
+              width: 860,
+              backgroundColor: "#0A0B10",
+              border: `1.5px solid ${COLORS.amber}`,
+              borderRadius: 12,
+              overflow: "hidden",
+              boxShadow: `0 0 60px rgba(245,158,11,0.15), 0 0 0 1px rgba(245,158,11,0.1)`,
+            }}
+          >
+            {/* Title bar */}
+            <div
+              style={{
+                padding: "14px 20px",
+                borderBottom: `1px solid rgba(245,158,11,0.3)`,
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                backgroundColor: "rgba(245,158,11,0.05)",
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: FONT_FAMILY_MONO,
+                  fontSize: 18,
+                  color: COLORS.amber,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase" as const,
+                }}
+              >
+                Q3 Operations Report
+              </span>
+              <span
+                style={{
+                  fontFamily: FONT_FAMILY_MONO,
+                  fontSize: 14,
+                  color: COLORS.mutedForeground,
+                  marginLeft: "auto",
+                }}
+              >
+                ops_q3_2024.xlsx
+              </span>
+            </div>
+
+            {/* Column headers */}
+            <div
+              style={{
+                display: "flex",
+                borderBottom: `1px solid rgba(245,158,11,0.25)`,
+                backgroundColor: "rgba(245,158,11,0.04)",
+              }}
+            >
+              {/* Row number gutter */}
+              <div
+                style={{
+                  width: 48,
+                  padding: "10px 8px",
+                  fontFamily: FONT_FAMILY_MONO,
+                  fontSize: 15,
+                  color: "rgba(245,158,11,0.4)",
+                  textAlign: "center" as const,
+                  borderRight: `1px solid rgba(245,158,11,0.2)`,
+                  flexShrink: 0,
+                }}
+              />
+              {COL_HEADERS.map((h) => (
+                <div
+                  key={h}
+                  style={{
+                    flex: 1,
+                    padding: "10px 12px",
+                    fontFamily: FONT_FAMILY_MONO,
+                    fontSize: 15,
+                    color: COLORS.amber,
+                    textAlign: "center" as const,
+                    borderRight: `1px solid rgba(245,158,11,0.15)`,
+                    letterSpacing: "0.1em",
+                  }}
+                >
+                  {h}
+                </div>
+              ))}
+            </div>
+
+            {/* Data rows */}
+            {SPREAD_DATA.map((row, ri) => {
+              const rowOpacity = interpolate(
+                frame,
+                [ri * 4, ri * 4 + 8],
+                [0, 1],
+                { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+              );
+              return (
+                <div
+                  key={ri}
+                  style={{
+                    display: "flex",
+                    borderBottom: ri < ROW_COUNT - 1
+                      ? `1px solid rgba(245,158,11,0.1)`
+                      : "none",
+                    opacity: rowOpacity,
+                    transform: `translateY(${interpolate(rowOpacity, [0, 1], [8, 0])}px)`,
+                  }}
+                >
+                  {/* Row number */}
                   <div
-                    key={ci}
                     style={{
-                      flex: 1,
-                      padding: "6px 10px",
-                      backgroundColor: "rgba(255,255,255,0.02)",
-                      border: `1px solid ${COLORS.line}`,
+                      width: 48,
+                      padding: "12px 8px",
                       fontFamily: FONT_FAMILY_MONO,
-                      fontSize: 12,
-                      color: COLORS.mutedForeground,
-                      opacity: cellVisible ? 0.6 : 0,
-                      textAlign: "right",
+                      fontSize: 14,
+                      color: "rgba(245,158,11,0.35)",
+                      textAlign: "center" as const,
+                      borderRight: `1px solid rgba(245,158,11,0.15)`,
+                      flexShrink: 0,
                     }}
                   >
-                    {Math.floor(rng() * 99999).toLocaleString()}
+                    {ri + 1}
                   </div>
-                );
-              })}
-            </div>
-          ))}
+                  {row.map((cell, ci) => {
+                    const isError = ERROR_CELLS.has(`${ri}-${ci}`);
+                    return (
+                      <div
+                        key={ci}
+                        style={{
+                          flex: 1,
+                          padding: "12px 14px",
+                          fontFamily: FONT_FAMILY_MONO,
+                          fontSize: 16,
+                          color: isError ? COLORS.red : "rgba(255,255,255,0.65)",
+                          textAlign: "right" as const,
+                          borderRight: `1px solid rgba(245,158,11,0.1)`,
+                          backgroundColor: isError
+                            ? "rgba(239,68,68,0.08)"
+                            : "transparent",
+                        }}
+                      >
+                        {cell}
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </AbsoluteFill>
 
-      {/* Phase 2: Slack-like messages */}
+      {/* Phase 2: Slack-like messages -- centered, wide, large text */}
       <AbsoluteFill style={{ opacity: slackPhaseOpacity }}>
         <div
           style={{
             position: "absolute",
-            top: "20%",
-            left: "10%",
-            right: "10%",
+            inset: 0,
             display: "flex",
-            flexDirection: "column",
-            gap: 12,
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          {slackMessages.map((msg, i) => {
-            const msgFrame = (frame - 90) - i * 10;
-            const msgOpacity = interpolate(
-              msgFrame,
-              [0, 8],
-              [0, 1],
-              { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
-            );
-            const msgY = interpolate(
-              msgFrame,
-              [0, 8],
-              [10, 0],
-              { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
-            );
+          {/* Dark card background behind the message list */}
+          <div
+            style={{
+              width: "86%",
+              backgroundColor: "rgba(10, 11, 16, 0.75)",
+              borderRadius: 16,
+              padding: "32px 28px",
+              display: "flex",
+              flexDirection: "column",
+              gap: 14,
+              boxShadow: "0 0 60px rgba(0,0,0,0.6)",
+            }}
+          >
+            {slackMessages.map((msg, i) => {
+              const msgFrame = frame - 90;
+              const springProgress = spring({
+                frame: msgFrame - i * 8,
+                fps,
+                config: { damping: 14, stiffness: 120, mass: 0.8 },
+              });
+              const msgOpacity = interpolate(
+                msgFrame - i * 8,
+                [0, 8],
+                [0, 1],
+                { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+              );
+              const msgY = interpolate(springProgress, [0, 1], [20, 0]);
 
-            return (
-              <div
-                key={i}
-                style={{
-                  opacity: msgOpacity,
-                  transform: `translateY(${msgY}px)`,
-                  padding: "10px 16px",
-                  backgroundColor: "rgba(255,255,255,0.03)",
-                  borderRadius: 8,
-                  borderLeft: `3px solid ${COLORS.amber}`,
-                }}
-              >
-                <span
+              return (
+                <div
+                  key={i}
                   style={{
-                    fontFamily: FONT_FAMILY_SANS,
-                    fontSize: 16,
-                    color: "rgba(255,255,255,0.5)",
+                    opacity: msgOpacity,
+                    transform: `translateY(${msgY}px)`,
+                    padding: "14px 20px",
+                    backgroundColor: "rgba(255,255,255,0.04)",
+                    borderRadius: 10,
+                    borderLeft: `4px solid ${COLORS.amber}`,
                   }}
                 >
-                  {msg}
-                </span>
-              </div>
-            );
-          })}
+                  <span
+                    style={{
+                      fontFamily: FONT_FAMILY_SANS,
+                      fontSize: 28,
+                      color: "rgba(255,255,255,0.75)",
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    {msg}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </AbsoluteFill>
 
-      {/* Phase 3: Email notification badges */}
+      {/* Phase 3: Email notification badges -- centered */}
       <AbsoluteFill style={{ opacity: emailPhaseOpacity }}>
         <div
           style={{
@@ -169,15 +333,16 @@ export const BeforeStateScene: React.FC = () => {
             <path d="M22 7l-8.97 5.7a1.94 1.94 0 01-2.06 0L2 7" />
           </svg>
 
-          {/* Counter */}
+          {/* Counter -- larger font */}
           <div
             style={{
               fontFamily: FONT_FAMILY_SANS,
-              fontSize: 80,
+              fontSize: 96,
               fontWeight: 700,
               color: COLORS.red,
               marginTop: 20,
               fontFeatureSettings: '"tnum" 1',
+              letterSpacing: "-0.02em",
             }}
           >
             {Math.min(
@@ -196,35 +361,24 @@ export const BeforeStateScene: React.FC = () => {
             notifications this week
           </div>
 
-          {/* Red badges scattered */}
-          {Array.from({ length: 8 }, (_, i) => {
+          {/* Notification dots in a perfect circle using trigonometry */}
+          {dots.map(({ x, y, badgeNum }, i) => {
             const badgeFrame = frame - 220 - i * 8;
             const badgeOpacity = interpolate(badgeFrame, [0, 5], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-            const angle = (i / 8) * Math.PI * 2 + 0.5;
-            const radius = 180 + i * 15;
             return (
               <div
                 key={i}
                 style={{
                   position: "absolute",
-                  left: 540 + Math.cos(angle) * radius - 12,
-                  top: 960 + Math.sin(angle) * radius - 12,
-                  width: 24,
-                  height: 24,
+                  left: x - 6,   // 6 = radius (12px diameter / 2)
+                  top: y - 6,
+                  width: 12,
+                  height: 12,
                   borderRadius: "50%",
                   backgroundColor: COLORS.red,
-                  opacity: badgeOpacity * 0.6,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: 10,
-                  fontWeight: 700,
-                  color: "white",
-                  fontFamily: FONT_FAMILY_SANS,
+                  opacity: badgeOpacity * 0.75,
                 }}
-              >
-                {Math.floor(rng() * 99)}
-              </div>
+              />
             );
           })}
         </div>

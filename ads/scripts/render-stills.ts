@@ -30,7 +30,7 @@ async function main() {
 
     execSync(
       `npx remotion still ${job.compositionId} "${outputPath}" ` +
-        `--scale=2 --log=warning`,
+        `--scale=2 --log warn`,
       {
         cwd: ADS_ROOT,
         stdio: "inherit",

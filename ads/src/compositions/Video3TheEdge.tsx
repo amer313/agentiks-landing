@@ -1,43 +1,56 @@
 import React from "react";
 import { Sequence, Audio, staticFile } from "remotion";
-import {
-  AvatarScene,
-  HeadlineCascadeScene,
-  ValuePropsScene,
-  StakesScene,
-  CTAEndCardScene,
-} from "../components/scenes";
+import { PhraseTimeline } from "../components/sync/PhraseTimeline";
+import { CTAEndCardScene } from "../components/scenes";
+import { V3_PHRASE_CONFIGS } from "../timing/v3-phrases";
 
+// Scene durations from original composition (30fps):
+// Scene 1: 8.034s = 242fr, Scene 2: 11.749s = 353fr
+// Scene 3: 15.279s = 459fr, Scene 4: 12.91s = 388fr
+// Scene 5: 14.629s = 439fr, Scene 6: 4.598s = 138fr
+// Total: ~67s = 2019 frames
+// No silence leader -- V3 starts immediately
+
+/**
+ * Video 3 -- "The Edge"
+ *
+ * Structure:
+ *  - 0:00-end   PhraseTimeline drives all visuals synced to VO
+ *  - Final ~5s   CTA end card overlaid
+ *  - Single <Audio> plays the full mixed voiceover track
+ *
+ * Unlike V1/V2, Video 3 has no silence leader. Audio starts immediately.
+ */
 export const Video3TheEdge: React.FC = () => {
+  const SCENE1_FRAMES = 242;
+  const SCENE2_FRAMES = 353;
+  const SCENE3_FRAMES = 459;
+  const SCENE4_FRAMES = 388;
+  const SCENE5_FRAMES = 439;
+  const SCENE6_FRAMES = 138;
+  const TOTAL_FRAMES = SCENE1_FRAMES + SCENE2_FRAMES + SCENE3_FRAMES +
+    SCENE4_FRAMES + SCENE5_FRAMES + SCENE6_FRAMES;
+  const CTA_START = TOTAL_FRAMES - SCENE6_FRAMES;
+
+  const placeholderTimings = buildPlaceholderTimings(
+    V3_PHRASE_CONFIGS.map((c) => c.phrase),
+    TOTAL_FRAMES,
+    0
+  );
+
   return (
     <>
-      {/* 0:00-0:03 Avatar open */}
-      <Sequence from={0} durationInFrames={90}>
-        <AvatarScene avatarSrc="avatars/v3-open.mp4" durationFrames={90} />
+      {/* Full-duration phrase-synced visuals */}
+      <Sequence from={0} durationInFrames={TOTAL_FRAMES}>
+        <PhraseTimeline
+          phraseTimings={placeholderTimings}
+          phraseConfigs={V3_PHRASE_CONFIGS}
+          backgroundGlow={{ brand: true, cyan: true }}
+        />
       </Sequence>
 
-      {/* 0:03-0:12 Headline cascade */}
-      <Sequence from={90} durationInFrames={270}>
-        <HeadlineCascadeScene />
-      </Sequence>
-
-      {/* 0:12-0:24 Value props */}
-      <Sequence from={360} durationInFrames={360}>
-        <ValuePropsScene />
-      </Sequence>
-
-      {/* 0:24-0:34 Avatar return */}
-      <Sequence from={720} durationInFrames={300}>
-        <AvatarScene avatarSrc="avatars/v3-return.mp4" durationFrames={300} />
-      </Sequence>
-
-      {/* 0:34-0:42 Stakes */}
-      <Sequence from={1020} durationInFrames={240}>
-        <StakesScene />
-      </Sequence>
-
-      {/* 0:42-0:48 CTA end card */}
-      <Sequence from={1260} durationInFrames={180}>
+      {/* CTA end card overlay during scene 6 */}
+      <Sequence from={CTA_START} durationInFrames={SCENE6_FRAMES}>
         <CTAEndCardScene />
       </Sequence>
 
@@ -46,3 +59,20 @@ export const Video3TheEdge: React.FC = () => {
     </>
   );
 };
+
+function buildPlaceholderTimings(
+  phrases: string[],
+  totalFrames: number,
+  frameOffset: number
+) {
+  const perPhrase = Math.floor(totalFrames / phrases.length);
+  return phrases.map((phrase, i) => ({
+    phrase,
+    startSeconds: (frameOffset + i * perPhrase) / 30,
+    endSeconds: (frameOffset + (i + 1) * perPhrase) / 30,
+    startFrame: i * perPhrase,
+    endFrame: (i + 1) * perPhrase,
+    durationFrames: perPhrase,
+    wordTimings: [],
+  }));
+}

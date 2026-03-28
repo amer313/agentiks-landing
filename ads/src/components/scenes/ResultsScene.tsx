@@ -23,6 +23,10 @@ const metrics: MetricPanel[] = [
 export const ResultsScene: React.FC = () => {
   const frame = useCurrentFrame();
 
+  // Headline appears at start
+  const headlineOpacity = interpolate(frame, [0, 15], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const headlineY = interpolate(frame, [0, 15], [20, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+
   return (
     <AbsoluteFill>
       <DarkBackground showBrandGlow showCyanGlow />
@@ -33,12 +37,38 @@ export const ResultsScene: React.FC = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          gap: 30,
+          gap: 36,
           padding: "0 60px",
         }}
       >
+        {/* Prominent headline */}
+        <div
+          style={{
+            opacity: headlineOpacity,
+            transform: `translateY(${headlineY}px)`,
+            textAlign: "center",
+            marginBottom: 12,
+          }}
+        >
+          <div
+            style={{
+              fontFamily: FONT_FAMILY_SANS,
+              fontSize: 62,
+              fontWeight: 700,
+              color: COLORS.foreground,
+              lineHeight: 1.15,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            Revenue goes up.
+            <br />
+            <span style={{ color: COLORS.cyan }}>Costs go down.</span>
+          </div>
+        </div>
+
+        {/* Metric panels */}
         {metrics.map((metric, i) => {
-          const panelStartFrame = i * 60;
+          const panelStartFrame = 20 + i * 60;
           const panelOpacity = interpolate(
             frame,
             [panelStartFrame, panelStartFrame + 15],
@@ -54,8 +84,8 @@ export const ResultsScene: React.FC = () => {
           );
 
           // Glow intensification after all panels visible
-          const glowIntensity = frame >= 180
-            ? interpolate(frame, [180, 240], [1, 1.5], { extrapolateRight: "clamp" })
+          const glowIntensity = frame >= 200
+            ? interpolate(frame, [200, 260], [1, 1.5], { extrapolateRight: "clamp" })
             : 1;
 
           return (
@@ -65,21 +95,21 @@ export const ResultsScene: React.FC = () => {
                 opacity: panelOpacity,
                 transform: `translateX(${slideX}px)`,
                 width: "100%",
-                maxWidth: 700,
-                padding: "24px 32px",
+                maxWidth: 820,
+                padding: "28px 40px",
                 backgroundColor: "rgba(10,11,16,0.6)",
                 border: `1px dashed ${COLORS.line}`,
-                borderRadius: 12,
+                borderRadius: 14,
                 display: "flex",
                 alignItems: "center",
-                gap: 24,
-                boxShadow: frame >= 180 ? `0 0 ${20 * glowIntensity}px ${metric.color}15` : "none",
+                gap: 28,
+                boxShadow: frame >= 200 ? `0 0 ${20 * glowIntensity}px ${metric.color}15` : "none",
               }}
             >
               {/* Direction arrow */}
               <svg
-                width="40"
-                height="40"
+                width="48"
+                height="48"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke={metric.color}
@@ -105,8 +135,8 @@ export const ResultsScene: React.FC = () => {
                 style={{
                   flex: 1,
                   fontFamily: FONT_FAMILY_SANS,
-                  fontSize: 24,
-                  fontWeight: 500,
+                  fontSize: 34,
+                  fontWeight: 600,
                   color: COLORS.foreground,
                 }}
               >
@@ -121,7 +151,7 @@ export const ResultsScene: React.FC = () => {
                 prefix={metric.prefix}
                 suffix={metric.suffix}
                 startFrame={panelStartFrame}
-                fontSize={48}
+                fontSize={60}
                 color={metric.color}
               />
             </div>

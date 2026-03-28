@@ -6,12 +6,14 @@ interface CTAButtonProps {
   text?: string;
   showArrow?: boolean;
   width?: number;
+  fontSize?: number;
 }
 
 export const CTAButton: React.FC<CTAButtonProps> = ({
   text = "Book a Strategy Call",
   showArrow = true,
   width = 320,
+  fontSize = 18,
 }) => {
   return (
     <div
@@ -21,9 +23,9 @@ export const CTAButton: React.FC<CTAButtonProps> = ({
         justifyContent: "center",
         gap: 12,
         backgroundColor: COLORS.brand,
-        color: COLORS.foreground,
+        color: "#FFFFFF",
         fontFamily: FONT_FAMILY_SANS,
-        fontSize: 18,
+        fontSize,
         fontWeight: 600,
         padding: "16px 32px",
         borderRadius: 12,

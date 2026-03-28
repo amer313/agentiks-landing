@@ -58,7 +58,7 @@ export const HexGrid: React.FC<HexGridProps> = ({ cx, cy, size, opacity = 1 }) =
             key={i}
             points={hexPoints(h.x, h.y, 10)}
             fill="none"
-            stroke="rgba(37,99,235,0.08)"
+            stroke="rgba(180,0,255,0.08)"
             strokeWidth={0.5}
             opacity={hexOpacity}
           />

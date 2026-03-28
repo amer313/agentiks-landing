@@ -14,7 +14,7 @@ interface TextSlamSceneProps {
 export const TextSlamScene: React.FC<TextSlamSceneProps> = ({
   text,
   glitchColor = COLORS.cyan,
-  fontSize = 72,
+  fontSize = 120,
 }) => {
   return (
     <AbsoluteFill>

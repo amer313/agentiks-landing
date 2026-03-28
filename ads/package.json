@@ -9,7 +9,6 @@
     "render:stills": "tsx scripts/render-stills.ts",
     "generate:audio": "tsx scripts/generate-audio.ts",
     "generate:music": "tsx scripts/generate-music.ts",
-    "generate:avatars": "tsx scripts/generate-avatars.ts",
     "assemble": "tsx scripts/assemble-final.ts",
     "build:all": "tsx scripts/build-all.ts"
   },

@@ -18,7 +18,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="video-1-the-problem"
         component={Video1TheProblem}
-        durationInFrames={1350}
+        durationInFrames={2522}
         fps={FPS}
         width={1080}
         height={1920}
@@ -27,7 +27,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="video-2-the-transformation"
         component={Video2TheTransformation}
-        durationInFrames={1260}
+        durationInFrames={2042}
         fps={FPS}
         width={1080}
         height={1920}
@@ -36,7 +36,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="video-3-the-edge"
         component={Video3TheEdge}
-        durationInFrames={1440}
+        durationInFrames={2019}
         fps={FPS}
         width={1080}
         height={1920}

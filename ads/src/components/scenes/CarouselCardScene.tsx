@@ -2,7 +2,7 @@ import React from "react";
 import { AbsoluteFill } from "remotion";
 import { DarkBackground } from "../backgrounds/DarkBackground";
 import { CTAButton } from "../brand/CTAButton";
-import { COLORS, LOGO_PATH } from "../../brand";
+import { COLORS } from "../../brand";
 import type { CarouselCard } from "../../types";
 import { FONT_FAMILY_SANS, FONT_FAMILY_MONO } from "../../fonts";
 
@@ -34,10 +34,33 @@ export const CarouselCardScene: React.FC<CarouselCardSceneProps> = ({
           gap: 24,
         }}
       >
-        {/* Logo for cover and CTA cards */}
+        {/* Logo for cover and CTA cards — three-ray convergence design */}
         {(isCover || isCTA) && (
-          <svg width="60" height="90" viewBox="0 0 120 150" style={{ marginBottom: 8 }}>
-            <path d={LOGO_PATH} fill={COLORS.brand} />
+          <svg width="72" height="72" viewBox="0 0 200 200" style={{ marginBottom: 8 }}>
+            <defs>
+              <filter id="carouselLogoGlow">
+                <feGaussianBlur stdDeviation="3" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+            <line x1="130" y1="85" x2="55"  y2="40"  stroke="#FFF" strokeWidth="1" opacity="0.18" />
+            <line x1="130" y1="85" x2="155" y2="50"  stroke="#FFF" strokeWidth="1" opacity="0.18" />
+            <line x1="130" y1="85" x2="100" y2="170" stroke="#FFF" strokeWidth="1" opacity="0.18" />
+            <line x1="55"  y1="40" x2="155" y2="50"  stroke="#FFF" strokeWidth="1" opacity="0.18" />
+            <line x1="155" y1="50" x2="100" y2="170" stroke="#FFF" strokeWidth="1" opacity="0.18" />
+            <line x1="100" y1="170" x2="55" y2="40"  stroke="#FFF" strokeWidth="1" opacity="0.18" />
+            <circle cx="130" cy="85" r="3" fill="#FFF" opacity="0.18" />
+            <line x1="100" y1="100" x2="55"  y2="40"  stroke={COLORS.cyan}    strokeWidth="3" strokeLinecap="round" filter="url(#carouselLogoGlow)" />
+            <line x1="100" y1="100" x2="155" y2="50"  stroke={COLORS.magenta} strokeWidth="3" strokeLinecap="round" filter="url(#carouselLogoGlow)" />
+            <line x1="100" y1="100" x2="100" y2="170" stroke={COLORS.purple}  strokeWidth="3" strokeLinecap="round" filter="url(#carouselLogoGlow)" />
+            <circle cx="55"  cy="40"  r="5" fill={COLORS.cyan}    filter="url(#carouselLogoGlow)" />
+            <circle cx="155" cy="50"  r="5" fill={COLORS.magenta} filter="url(#carouselLogoGlow)" />
+            <circle cx="100" cy="170" r="5" fill={COLORS.purple}  filter="url(#carouselLogoGlow)" />
+            <circle cx="100" cy="100" r="10" fill="#07080D" stroke="#FFF" strokeWidth="2" />
+            <circle cx="100" cy="100" r="4"  fill="#FFF" />
           </svg>
         )}
 

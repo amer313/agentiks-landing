@@ -1,10 +1,13 @@
-import type { AgentCardData, TerminalLine, BrandColors, ValueProp, Stat, CarouselCard } from "./types";
+import type { AgentCardData, TerminalLine, BrandColors, ValueProp, Stat, CarouselCard, VoiceSettings } from "./types";
 
 export const COLORS: BrandColors = {
-  brand: "#2563EB",
-  brandLight: "#3B82F6",
-  brandDark: "#1D4ED8",
-  cyan: "#06B6D4",
+  brand: "#B400FF",       // Primary brand — purple (matches website)
+  brandLight: "#CF5FFF",
+  brandDark: "#9000CC",
+  cyan: "#00F0FF",        // Logo cyan
+  magenta: "#FF00AA",     // Logo magenta
+  purple: "#B400FF",      // Logo purple (same as brand)
+  logoCyan: "#00F0FF",
   green: "#10B981",
   amber: "#F59E0B",
   red: "#EF4444",
@@ -59,7 +62,7 @@ export const VALUE_PROPS: ValueProp[] = [
 
 export const STATS: Stat[] = [
   { value: 50, suffix: "+", label: "Agents Deployed" },
-  { value: 12, suffix: "", label: "Industries Served" },
+  { value: 12, suffix: "", label: "Industries" },
   { value: 3, suffix: "x", label: "Avg. Efficiency Gain" },
   { value: 4, suffix: "wk", label: "Time to Deploy" },
   { value: 0, suffix: "", label: "Vendor Lock-in", override: "Zero" },
@@ -114,6 +117,21 @@ export const VO_SCRIPTS = {
 
 /** Frame rate constant */
 export const FPS = 30;
+
+/** Default voice settings for ElevenLabs TTS */
+export const DEFAULT_VOICE_SETTINGS: VoiceSettings = {
+  stability: 0.38,
+  similarityBoost: 0.75,
+  style: 0.0,
+  speed: 1.0,
+};
+
+/** Per-video voice settings overrides (if needed) */
+export const VIDEO_VOICE_SETTINGS: Record<string, VoiceSettings> = {
+  video1: DEFAULT_VOICE_SETTINGS,
+  video2: DEFAULT_VOICE_SETTINGS,
+  video3: DEFAULT_VOICE_SETTINGS,
+};
 
 /** Lightning bolt logo path (from magnet-logo.tsx) */
 export const LOGO_PATH = "M60,0 L35,50 L50,50 L25,100 L45,100 L20,150 L100,60 L75,60 L100,0 Z";

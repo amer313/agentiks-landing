@@ -1,6 +1,6 @@
 import React from "react";
 import { useCurrentFrame, interpolate, spring } from "remotion";
-import { FPS, LOGO_PATH, COLORS, mulberry32 } from "../../brand";
+import { FPS, COLORS } from "../../brand";
 import { FONT_FAMILY_SANS } from "../../fonts";
 
 interface LogoRevealProps {
@@ -10,20 +10,18 @@ interface LogoRevealProps {
   height?: number;
 }
 
-// Generate particle start positions deterministically
-function generateParticles(count: number) {
-  const rng = mulberry32(123);
-  return Array.from({ length: count }, () => ({
-    startX: (rng() - 0.5) * 800,
-    startY: (rng() - 0.5) * 800,
-    targetX: rng() * 120, // within logo bounds (0-120 wide)
-    targetY: rng() * 150, // within logo bounds (0-150 tall)
-    size: 1 + rng() * 2,
-    delay: rng() * 0.3,
-  }));
-}
+// The three-ray logo endpoints (in 200x200 viewBox space)
+const CENTER = { x: 100, y: 100 };
+const ENDPOINTS = [
+  { x: 55,  y: 40,  color: COLORS.logoCyan },  // Ray 1 — Logo Cyan
+  { x: 155, y: 50,  color: COLORS.magenta },    // Ray 2 — Magenta
+  { x: 100, y: 170, color: COLORS.purple },     // Ray 3 — Purple
+];
 
-const particles = generateParticles(200);
+// Back-depth ghost edges between endpoints
+const DEPTH_EDGES = [
+  [0, 1], [1, 2], [2, 0],
+] as const;
 
 export const LogoReveal: React.FC<LogoRevealProps> = ({
   startFrame,
@@ -36,26 +34,48 @@ export const LogoReveal: React.FC<LogoRevealProps> = ({
 
   if (relativeFrame < 0) return null;
 
-  const convergeDuration = Math.floor(durationFrames * 0.6);
+  // Phase 1: rays draw in from endpoints toward center (0 → 60% of duration)
+  const rayDrawDuration = Math.floor(durationFrames * 0.6);
+  // Phase 2: dots appear (50–70%)
+  const dotStartFrame = Math.floor(durationFrames * 0.5);
+  const dotEndFrame   = Math.floor(durationFrames * 0.7);
+  // Phase 3: center ring pulses in (60–80%)
+  const ringStartFrame = Math.floor(durationFrames * 0.6);
+  // Phase 4: text fades in (75–100%)
+  const textStartFrame = Math.floor(durationFrames * 0.75);
 
-  // Logo solidification after convergence
-  const solidOpacity = spring({
-    frame: Math.max(0, relativeFrame - convergeDuration),
+  // Stagger each ray slightly
+  const rayDelays = [0, 0.1, 0.2]; // fraction of rayDrawDuration
+
+  const logoSize = 200;
+  const logoScale = 3.2; // scale up for video frame
+  const logoW = logoSize * logoScale;
+  const logoH = logoSize * logoScale;
+  const logoX = (width - logoW) / 2;
+  const logoY = height / 2 - logoH / 2 - 80;
+
+  // Center ring spring
+  const ringSpring = spring({
+    frame: Math.max(0, relativeFrame - ringStartFrame),
     fps: FPS,
-    config: { damping: 20, stiffness: 100 },
+    config: { damping: 14, stiffness: 120 },
   });
 
-  // Text fade in after logo
+  // Text fade
   const textOpacity = interpolate(
     relativeFrame,
-    [convergeDuration + 10, convergeDuration + 30],
+    [textStartFrame, textStartFrame + 20],
     [0, 1],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
 
-  const logoScale = 1.2;
-  const logoOffsetX = width / 2 - 60 * logoScale;
-  const logoOffsetY = height / 2 - 100 * logoScale;
+  // Overall logo opacity (ghost depth edges fade in first)
+  const depthOpacity = interpolate(
+    relativeFrame,
+    [0, 15],
+    [0, 0.18],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
 
   return (
     <div
@@ -75,8 +95,15 @@ export const LogoReveal: React.FC<LogoRevealProps> = ({
         style={{ position: "absolute", inset: 0 }}
       >
         <defs>
-          <filter id="logoGlow">
-            <feGaussianBlur stdDeviation="4" result="blur" />
+          <filter id="logoRayGlow">
+            <feGaussianBlur stdDeviation="5" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          <filter id="logoDotGlow">
+            <feGaussianBlur stdDeviation="6" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
               <feMergeNode in="SourceGraphic" />
@@ -84,54 +111,95 @@ export const LogoReveal: React.FC<LogoRevealProps> = ({
           </filter>
         </defs>
 
-        {/* Particles converging */}
-        {particles.map((p, i) => {
-          const particleDelay = p.delay * convergeDuration;
-          const particleProgress = interpolate(
-            relativeFrame - particleDelay,
-            [0, convergeDuration - particleDelay],
-            [0, 1],
-            { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
-          );
+        {/* Render in logo's own coordinate space */}
+        <g transform={`translate(${logoX}, ${logoY}) scale(${logoScale})`}>
 
-          const easedProgress = Math.pow(particleProgress, 2);
-          const px = interpolate(
-            easedProgress,
-            [0, 1],
-            [p.startX + width / 2, logoOffsetX + p.targetX * logoScale]
-          );
-          const py = interpolate(
-            easedProgress,
-            [0, 1],
-            [p.startY + height / 2, logoOffsetY + p.targetY * logoScale]
-          );
+          {/* Back depth edges */}
+          {DEPTH_EDGES.map(([a, b], i) => {
+            const ep1 = ENDPOINTS[a];
+            const ep2 = ENDPOINTS[b];
+            return (
+              <line
+                key={i}
+                x1={ep1.x} y1={ep1.y}
+                x2={ep2.x} y2={ep2.y}
+                stroke="#FFFFFF"
+                strokeWidth={1}
+                opacity={depthOpacity}
+              />
+            );
+          })}
+          {/* Back center dot */}
+          <circle
+            cx={130} cy={85} r={3}
+            fill="#FFFFFF"
+            opacity={depthOpacity}
+          />
 
-          const particleOpacity = interpolate(
-            particleProgress,
-            [0, 0.1, 0.8, 1],
-            [0, 0.8, 0.8, solidOpacity > 0.5 ? 0 : 0.6],
-            { extrapolateRight: "clamp" }
-          );
+          {/* Front rays — each draws from endpoint toward center */}
+          {ENDPOINTS.map((ep, i) => {
+            const rayDelay = rayDelays[i] * rayDrawDuration;
+            const progress = interpolate(
+              relativeFrame - rayDelay,
+              [0, rayDrawDuration * (1 - rayDelays[i])],
+              [0, 1],
+              { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+            );
+            // Interpolate from endpoint toward center
+            const x2 = ep.x + (CENTER.x - ep.x) * progress;
+            const y2 = ep.y + (CENTER.y - ep.y) * progress;
+            const rayOpacity = interpolate(progress, [0, 0.05], [0, 1], {
+              extrapolateLeft: "clamp",
+              extrapolateRight: "clamp",
+            });
+            return (
+              <line
+                key={i}
+                x1={ep.x} y1={ep.y}
+                x2={x2}   y2={y2}
+                stroke={ep.color}
+                strokeWidth={3}
+                strokeLinecap="round"
+                opacity={rayOpacity}
+                filter="url(#logoRayGlow)"
+              />
+            );
+          })}
 
-          return (
-            <circle
-              key={i}
-              cx={px}
-              cy={py}
-              r={p.size}
-              fill={COLORS.brand}
-              opacity={particleOpacity}
-            />
-          );
-        })}
+          {/* Endpoint dots — appear after rays */}
+          {ENDPOINTS.map((ep, i) => {
+            const dotOpacity = interpolate(
+              relativeFrame,
+              [dotStartFrame + i * 6, dotEndFrame + i * 6],
+              [0, 1],
+              { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+            );
+            return (
+              <circle
+                key={i}
+                cx={ep.x} cy={ep.y} r={5}
+                fill={ep.color}
+                opacity={dotOpacity}
+                filter="url(#logoDotGlow)"
+              />
+            );
+          })}
 
-        {/* Solid logo (appears after convergence) */}
-        <g
-          transform={`translate(${logoOffsetX}, ${logoOffsetY}) scale(${logoScale})`}
-          opacity={solidOpacity}
-          filter="url(#logoGlow)"
-        >
-          <path d={LOGO_PATH} fill={COLORS.brand} />
+          {/* Center ring + inner dot */}
+          <circle
+            cx={CENTER.x} cy={CENTER.y}
+            r={10 * ringSpring}
+            fill="#07080D"
+            stroke="#FFFFFF"
+            strokeWidth={2}
+            opacity={ringSpring}
+          />
+          <circle
+            cx={CENTER.x} cy={CENTER.y}
+            r={4 * ringSpring}
+            fill="#FFFFFF"
+            opacity={ringSpring}
+          />
         </g>
       </svg>
 
@@ -139,7 +207,7 @@ export const LogoReveal: React.FC<LogoRevealProps> = ({
       <div
         style={{
           position: "absolute",
-          top: height / 2 + 100,
+          top: logoY + logoH + 40,
           left: 0,
           right: 0,
           textAlign: "center",

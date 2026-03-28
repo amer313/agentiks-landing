@@ -1,6 +1,6 @@
 export { TextSlamScene } from "./TextSlamScene";
 export { ProblemMontageScene } from "./ProblemMontageScene";
-export { AvatarScene } from "./AvatarScene";
+// AvatarScene removed -- replaced by PhraseTimeline visuals
 export { AgentiksIntroScene } from "./AgentiksIntroScene";
 export { ProofScene } from "./ProofScene";
 export { CTAEndCardScene } from "./CTAEndCardScene";

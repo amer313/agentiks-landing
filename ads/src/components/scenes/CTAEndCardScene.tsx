@@ -3,7 +3,7 @@ import { AbsoluteFill, useCurrentFrame, interpolate, spring } from "remotion";
 import { DarkBackground } from "../backgrounds/DarkBackground";
 import { CTAButton } from "../brand/CTAButton";
 import { StatsStrip } from "../brand/StatsStrip";
-import { COLORS, FPS, LOGO_PATH } from "../../brand";
+import { COLORS, FPS } from "../../brand";
 import { FONT_FAMILY_SANS } from "../../fonts";
 
 interface CTAEndCardSceneProps {
@@ -53,7 +53,7 @@ export const CTAEndCardScene: React.FC<CTAEndCardSceneProps> = ({
       <AbsoluteFill
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 40%, rgba(37,99,235,0.08) 70%, transparent 100%)",
+            "radial-gradient(ellipse at center, transparent 40%, rgba(180,0,255,0.08) 70%, transparent 100%)",
         }}
       />
 
@@ -66,9 +66,9 @@ export const CTAEndCardScene: React.FC<CTAEndCardSceneProps> = ({
           gap: 40,
         }}
       >
-        {/* Logo */}
+        {/* Logo — three-ray convergence design */}
         <div style={{ opacity: logoOpacity }}>
-          <svg width="100" height="150" viewBox="0 0 120 150">
+          <svg width="120" height="120" viewBox="0 0 200 200">
             <defs>
               <filter id="ctaLogoGlow">
                 <feGaussianBlur stdDeviation="4" result="blur" />
@@ -78,11 +78,25 @@ export const CTAEndCardScene: React.FC<CTAEndCardSceneProps> = ({
                 </feMerge>
               </filter>
             </defs>
-            <path
-              d={LOGO_PATH}
-              fill={COLORS.brand}
-              filter="url(#ctaLogoGlow)"
-            />
+            {/* Back depth edges */}
+            <line x1="130" y1="85" x2="55"  y2="40"  stroke="#FFF" strokeWidth="1" opacity="0.18" />
+            <line x1="130" y1="85" x2="155" y2="50"  stroke="#FFF" strokeWidth="1" opacity="0.18" />
+            <line x1="130" y1="85" x2="100" y2="170" stroke="#FFF" strokeWidth="1" opacity="0.18" />
+            <line x1="55"  y1="40" x2="155" y2="50"  stroke="#FFF" strokeWidth="1" opacity="0.18" />
+            <line x1="155" y1="50" x2="100" y2="170" stroke="#FFF" strokeWidth="1" opacity="0.18" />
+            <line x1="100" y1="170" x2="55" y2="40"  stroke="#FFF" strokeWidth="1" opacity="0.18" />
+            <circle cx="130" cy="85" r="3" fill="#FFF" opacity="0.18" />
+            {/* Front rays */}
+            <line x1="100" y1="100" x2="55"  y2="40"  stroke={COLORS.logoCyan} strokeWidth="3" strokeLinecap="round" filter="url(#ctaLogoGlow)" />
+            <line x1="100" y1="100" x2="155" y2="50"  stroke={COLORS.magenta}  strokeWidth="3" strokeLinecap="round" filter="url(#ctaLogoGlow)" />
+            <line x1="100" y1="100" x2="100" y2="170" stroke={COLORS.purple}   strokeWidth="3" strokeLinecap="round" filter="url(#ctaLogoGlow)" />
+            {/* Endpoint dots */}
+            <circle cx="55"  cy="40"  r="5" fill={COLORS.logoCyan} filter="url(#ctaLogoGlow)" />
+            <circle cx="155" cy="50"  r="5" fill={COLORS.magenta}  filter="url(#ctaLogoGlow)" />
+            <circle cx="100" cy="170" r="5" fill={COLORS.purple}   filter="url(#ctaLogoGlow)" />
+            {/* Center ring + inner dot */}
+            <circle cx="100" cy="100" r="10" fill={COLORS.background} stroke="#FFF" strokeWidth="2" />
+            <circle cx="100" cy="100" r="4"  fill="#FFF" />
           </svg>
         </div>
 
@@ -91,7 +105,7 @@ export const CTAEndCardScene: React.FC<CTAEndCardSceneProps> = ({
           style={{
             opacity: logoOpacity,
             fontFamily: FONT_FAMILY_SANS,
-            fontSize: 48,
+            fontSize: 72,
             fontWeight: 600,
             color: COLORS.foreground,
             letterSpacing: "0.3em",
@@ -107,7 +121,7 @@ export const CTAEndCardScene: React.FC<CTAEndCardSceneProps> = ({
             transform: `translateY(${ctaY}px)`,
           }}
         >
-          <CTAButton text={ctaText} />
+          <CTAButton text={ctaText} fontSize={32} width={540} />
         </div>
 
         {/* Website URL */}
@@ -115,7 +129,7 @@ export const CTAEndCardScene: React.FC<CTAEndCardSceneProps> = ({
           style={{
             opacity: urlOpacity,
             fontFamily: FONT_FAMILY_SANS,
-            fontSize: 22,
+            fontSize: 38,
             color: COLORS.mutedForeground,
             letterSpacing: "0.1em",
           }}

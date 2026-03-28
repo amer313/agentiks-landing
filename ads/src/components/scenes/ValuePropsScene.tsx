@@ -17,8 +17,8 @@ export const ValuePropsScene: React.FC = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          gap: 24,
-          padding: "0 60px",
+          gap: 20,
+          padding: "0 90px",
         }}
       >
         {VALUE_PROPS.map((prop, i) => {
@@ -52,14 +52,14 @@ export const ValuePropsScene: React.FC = () => {
                 opacity: cardOpacity,
                 transform: `translateX(${slideX}px)`,
                 width: "100%",
-                maxWidth: 700,
-                padding: "20px 28px",
+                maxWidth: 900,
+                padding: "28px 36px",
                 backgroundColor: "rgba(10,11,16,0.6)",
                 border: `1px dashed ${COLORS.line}`,
-                borderRadius: 12,
+                borderRadius: 16,
                 display: "flex",
                 alignItems: "flex-start",
-                gap: 20,
+                gap: 24,
                 boxShadow: glowIntensity > 0
                   ? `0 0 ${20 * glowIntensity}px ${prop.iconColor}20, inset 0 0 ${10 * glowIntensity}px ${prop.iconColor}08`
                   : "none",
@@ -68,8 +68,8 @@ export const ValuePropsScene: React.FC = () => {
               {/* Icon placeholder (colored circle) */}
               <div
                 style={{
-                  width: 40,
-                  height: 40,
+                  width: 48,
+                  height: 48,
                   borderRadius: "50%",
                   backgroundColor: `${prop.iconColor}20`,
                   border: `1px solid ${prop.iconColor}40`,
@@ -82,8 +82,8 @@ export const ValuePropsScene: React.FC = () => {
               >
                 <div
                   style={{
-                    width: 16,
-                    height: 16,
+                    width: 24,
+                    height: 24,
                     borderRadius: "50%",
                     backgroundColor: prop.iconColor,
                     opacity: 0.6,
@@ -95,10 +95,10 @@ export const ValuePropsScene: React.FC = () => {
                 <div
                   style={{
                     fontFamily: FONT_FAMILY_SANS,
-                    fontSize: 22,
+                    fontSize: 32,
                     fontWeight: 600,
                     color: COLORS.foreground,
-                    marginBottom: 6,
+                    marginBottom: 8,
                   }}
                 >
                   {prop.title}
@@ -106,7 +106,7 @@ export const ValuePropsScene: React.FC = () => {
                 <div
                   style={{
                     fontFamily: FONT_FAMILY_SANS,
-                    fontSize: 15,
+                    fontSize: 20,
                     fontWeight: 400,
                     color: COLORS.mutedForeground,
                     lineHeight: 1.5,

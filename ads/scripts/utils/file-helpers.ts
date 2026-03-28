@@ -33,17 +33,15 @@ export async function fileExists(filePath: string): Promise<boolean> {
   }
 }
 
-export function loadEnv(): { ELEVENLABS_API_KEY: string; HEYGEN_API_KEY: string } {
+export function loadEnv(): { ELEVENLABS_API_KEY: string } {
   // Load from ads/.env.local
   const envPath = path.join(ADS_ROOT, ".env.local");
 
   if (!existsSync(envPath)) {
     // Fall back to process.env
     const elevenLabsKey = process.env.ELEVENLABS_API_KEY;
-    const heygenKey = process.env.HEYGEN_API_KEY;
     if (!elevenLabsKey) throw new Error("Missing ELEVENLABS_API_KEY (set in ads/.env.local or environment)");
-    if (!heygenKey) throw new Error("Missing HEYGEN_API_KEY (set in ads/.env.local or environment)");
-    return { ELEVENLABS_API_KEY: elevenLabsKey, HEYGEN_API_KEY: heygenKey };
+    return { ELEVENLABS_API_KEY: elevenLabsKey };
   }
 
   // Simple .env parser (no dotenv dependency needed)
@@ -54,6 +52,5 @@ export function loadEnv(): { ELEVENLABS_API_KEY: string; HEYGEN_API_KEY: string 
     if (match) vars[match[1]] = match[2].trim().replace(/^["']|["']$/g, "");
   }
   if (!vars.ELEVENLABS_API_KEY) throw new Error("Missing ELEVENLABS_API_KEY in ads/.env.local");
-  if (!vars.HEYGEN_API_KEY) throw new Error("Missing HEYGEN_API_KEY in ads/.env.local");
-  return vars as { ELEVENLABS_API_KEY: string; HEYGEN_API_KEY: string };
+  return vars as { ELEVENLABS_API_KEY: string };
 }

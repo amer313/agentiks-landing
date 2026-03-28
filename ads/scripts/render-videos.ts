@@ -27,7 +27,7 @@ async function main() {
 
     execSync(
       `npx remotion render ${job.compositionId} "${outputPath}" ` +
-        `--codec h264 --crf 18 --log=warning`,
+        `--codec h264 --crf 18 --log warn`,
       {
         cwd: ADS_ROOT,
         stdio: "inherit",

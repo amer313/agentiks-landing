@@ -6,3 +6,4 @@ public/avatars/*.mp4
 public/output/*.mp4
 public/output/*.png
 .env.local
+.DS_Store

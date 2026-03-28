@@ -35,10 +35,8 @@ async function main() {
 
   const skipTo = process.argv[2]; // Allow skipping to a step: e.g. "avatars"
   const steps = [
-    { name: "audio", script: "generate-audio.ts", desc: "Generate ElevenLabs voiceover" },
+    { name: "audio", script: "generate-audio.ts", desc: "Generate ElevenLabs voiceover with timestamps" },
     { name: "music", script: "generate-music.ts", desc: "Generate background music" },
-    { name: "convert", script: "convert-wav-to-mp3.ts", desc: "Convert audio for HeyGen" },
-    { name: "avatars", script: "generate-avatars.ts", desc: "Generate HeyGen avatar clips" },
     { name: "render-video", script: "render-videos.ts", desc: "Render Remotion video compositions" },
     { name: "render-stills", script: "render-stills.ts", desc: "Render Remotion still compositions" },
     { name: "assemble", script: "assemble-final.ts", desc: "FFmpeg assembly + Meta export" },

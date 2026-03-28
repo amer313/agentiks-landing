@@ -1,6 +1,6 @@
 import React from "react";
 import { useCurrentFrame, interpolate } from "remotion";
-import { FPS } from "../../brand";
+import { FPS, COLORS } from "../../brand";
 
 interface OrchestratorCoreProps {
   cx: number;
@@ -41,10 +41,10 @@ export const OrchestratorCore: React.FC<OrchestratorCoreProps> = ({
     <g>
       <defs>
         <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#3B82F6" stopOpacity="1" />
-          <stop offset="30%" stopColor="#2563EB" stopOpacity="0.6" />
-          <stop offset="60%" stopColor="#1D4ED8" stopOpacity="0.2" />
-          <stop offset="100%" stopColor="#1E40AF" stopOpacity="0" />
+          <stop offset="0%" stopColor={COLORS.cyan} stopOpacity="1" />
+          <stop offset="30%" stopColor={COLORS.brand} stopOpacity="0.6" />
+          <stop offset="60%" stopColor={COLORS.brandDark} stopOpacity="0.2" />
+          <stop offset="100%" stopColor={COLORS.brandDark} stopOpacity="0" />
         </radialGradient>
         <filter id="coreGlowFilter">
           <feGaussianBlur stdDeviation="3" result="blur" />
@@ -79,7 +79,7 @@ export const OrchestratorCore: React.FC<OrchestratorCoreProps> = ({
         cx={cx}
         cy={cy}
         r={size * 0.038}
-        fill="#2563EB"
+        fill={COLORS.brand}
         fillOpacity={pulseOpacity}
       />
 
@@ -88,7 +88,7 @@ export const OrchestratorCore: React.FC<OrchestratorCoreProps> = ({
         cx={cx}
         cy={cy}
         r={size * 0.016}
-        fill="#60A5FA"
+        fill={COLORS.brandLight}
         fillOpacity={0.9}
         filter="url(#coreGlowFilter)"
       />
@@ -99,7 +99,7 @@ export const OrchestratorCore: React.FC<OrchestratorCoreProps> = ({
         cy={cy}
         r={size * 0.055}
         fill="none"
-        stroke="#2563EB"
+        stroke={COLORS.brand}
         strokeWidth={0.8}
         strokeOpacity={0.2}
         strokeDasharray="4 3"
@@ -112,7 +112,7 @@ export const OrchestratorCore: React.FC<OrchestratorCoreProps> = ({
         cy={cy}
         r={size * 0.085}
         fill="none"
-        stroke="#06B6D4"
+        stroke={COLORS.magenta}
         strokeWidth={0.4}
         strokeOpacity={0.1}
         strokeDasharray="2 8"
