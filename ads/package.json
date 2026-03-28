@@ -1,0 +1,33 @@
+{
+  "name": "agentiks-ads",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "studio": "npx remotion studio",
+    "render:videos": "tsx scripts/render-videos.ts",
+    "render:stills": "tsx scripts/render-stills.ts",
+    "generate:audio": "tsx scripts/generate-audio.ts",
+    "generate:music": "tsx scripts/generate-music.ts",
+    "generate:avatars": "tsx scripts/generate-avatars.ts",
+    "assemble": "tsx scripts/assemble-final.ts",
+    "build:all": "tsx scripts/build-all.ts"
+  },
+  "dependencies": {
+    "@elevenlabs/elevenlabs-js": "^2.0.0",
+    "@remotion/cli": "4.0.441",
+    "@remotion/fonts": "4.0.441",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "remotion": "4.0.441",
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "@remotion/renderer": "4.0.441",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}
