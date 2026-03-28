@@ -66,7 +66,7 @@ export function Capabilities() {
 
   return (
     <section className="max-w-[1200px] mx-auto px-6 md:px-12 py-16 relative overflow-visible" id="capabilities">
-      <div className="absolute -top-[200px] -left-[200px] w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(180,0,255,0.04)_0%,rgba(0,240,255,0.02)_40%,transparent_70%)] rounded-full blur-[80px] animate-[drift_25s_ease-in-out_infinite] pointer-events-none z-0" />
+      <div className="absolute -top-[200px] -left-[200px] w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(220,38,38,0.04)_0%,rgba(239,68,68,0.02)_40%,transparent_70%)] rounded-full blur-[80px] animate-[drift_25s_ease-in-out_infinite] pointer-events-none z-0" />
 
       <div className="relative z-10">
         <SectionHeader title="End-to-end agentic solutions." label="capabilities" />

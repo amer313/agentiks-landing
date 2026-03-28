@@ -77,7 +77,7 @@ function buildNeural(cx: number, cy: number, size: number) {
     nodes.push({ x: cx + Math.cos(a) * d, y: cy + Math.sin(a) * d })
   }
   const lines: { x1: number; y1: number; x2: number; y2: number; delay: number; color: string }[] = []
-  const colors = ["#B400FF", "#00F0FF", "#FF00AA", "#B400FF"]
+  const colors = ["#DC2626", "#EF4444", "#FCA5A5", "#DC2626"]
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i + 1; j < nodes.length; j++) {
       const d = Math.sqrt((nodes[i].x - nodes[j].x) ** 2 + (nodes[i].y - nodes[j].y) ** 2)
@@ -92,7 +92,7 @@ function buildNeural(cx: number, cy: number, size: number) {
 /* Deterministic data stream particles */
 function buildStreams(cx: number, cy: number, size: number) {
   const r = mulberry32(55)
-  const colors = ["#B400FF", "#00F0FF", "#FF00AA", "#00F0FF", "#B400FF"]
+  const colors = ["#DC2626", "#EF4444", "#FCA5A5", "#EF4444", "#DC2626"]
   return Array.from({ length: 18 }, (_, i) => {
     const a = (Math.PI * 2 * i) / 18 + r() * 0.4
     const dist = size * (0.15 + r() * 0.25)
@@ -258,9 +258,9 @@ export function Orchestrator() {
           {/* SVG visualization column — client-only to avoid hydration mismatches */}
           <div ref={containerRef} className="relative w-full max-w-[700px] aspect-square mx-auto lg:mx-0">
             {!mounted ? null : <>
-            <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,rgba(180,0,255,0.06)_0%,transparent_60%)]" />
-            <div className="absolute inset-[20%] rounded-full bg-[radial-gradient(circle_at_center,rgba(0,240,255,0.04)_0%,transparent_70%)] animate-[pulse-glow_6s_ease-in-out_infinite]" />
-            <div className="absolute inset-[35%] rounded-full bg-[radial-gradient(circle_at_center,rgba(255,0,170,0.06)_0%,transparent_70%)] animate-[pulse-glow_4s_ease-in-out_infinite_1s]" />
+            <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.06)_0%,transparent_60%)]" />
+            <div className="absolute inset-[20%] rounded-full bg-[radial-gradient(circle_at_center,rgba(239,68,68,0.04)_0%,transparent_70%)] animate-[pulse-glow_6s_ease-in-out_infinite]" />
+            <div className="absolute inset-[35%] rounded-full bg-[radial-gradient(circle_at_center,rgba(252,165,165,0.06)_0%,transparent_70%)] animate-[pulse-glow_4s_ease-in-out_infinite_1s]" />
 
             <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-xl opacity-[0.03]"
               style={{ backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.5) 2px, rgba(255,255,255,0.5) 3px)" }}
@@ -273,10 +273,10 @@ export function Orchestrator() {
                   <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
                 </filter>
                 <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="#00F0FF" stopOpacity="1" />
-                  <stop offset="30%" stopColor="#B400FF" stopOpacity="0.6" />
-                  <stop offset="60%" stopColor="#FF00AA" stopOpacity="0.2" />
-                  <stop offset="100%" stopColor="#B400FF" stopOpacity="0" />
+                  <stop offset="0%" stopColor="#EF4444" stopOpacity="1" />
+                  <stop offset="30%" stopColor="#DC2626" stopOpacity="0.6" />
+                  <stop offset="60%" stopColor="#FCA5A5" stopOpacity="0.2" />
+                  <stop offset="100%" stopColor="#DC2626" stopOpacity="0" />
                 </radialGradient>
               </defs>
 
@@ -285,7 +285,7 @@ export function Orchestrator() {
                 <motion.polygon
                   key={i}
                   points={hexPoints(h.x, h.y, 10)}
-                  fill="none" stroke="rgba(180,0,255,0.08)" strokeWidth={0.5}
+                  fill="none" stroke="rgba(220,38,38,0.08)" strokeWidth={0.5}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: [0, 0.35, 0] }}
                   transition={{ duration: 4, delay: h.delay, repeat: Infinity, ease: "easeInOut" }}
@@ -307,7 +307,7 @@ export function Orchestrator() {
               {/* Scan rings */}
               {[0, 3, 6].map((d) => (
                 <motion.circle
-                  key={d} cx={cx} cy={cy} fill="none" stroke="#B400FF" strokeWidth={0.5}
+                  key={d} cx={cx} cy={cy} fill="none" stroke="#DC2626" strokeWidth={0.5}
                   initial={{ r: size * 0.04, opacity: 0 }}
                   animate={{ r: size * 0.45, opacity: [0, 0.15, 0] }}
                   transition={{ duration: 5, delay: d, repeat: Infinity, ease: "easeOut" }}
@@ -334,16 +334,16 @@ export function Orchestrator() {
               <circle cx={cx} cy={cy} r={size * 0.065} fill="url(#coreGlow)" fillOpacity={0.12} filter="url(#glow2)">
                 <animate attributeName="r" values={`${size * 0.065};${size * 0.073};${size * 0.065}`} dur="4s" repeatCount="indefinite" />
               </circle>
-              <circle cx={cx} cy={cy} r={size * 0.038} fill="#B400FF" fillOpacity={0.5}>
+              <circle cx={cx} cy={cy} r={size * 0.038} fill="#DC2626" fillOpacity={0.5}>
                 <animate attributeName="fill-opacity" values="0.5;0.25;0.5" dur="3s" repeatCount="indefinite" />
               </circle>
-              <circle cx={cx} cy={cy} r={size * 0.016} fill="#00F0FF" fillOpacity={0.9} filter="url(#glow2)" />
+              <circle cx={cx} cy={cy} r={size * 0.016} fill="#EF4444" fillOpacity={0.9} filter="url(#glow2)" />
 
               {/* Rotating rings */}
-              <circle cx={cx} cy={cy} r={size * 0.055} fill="none" stroke="#B400FF" strokeWidth={0.8} strokeOpacity={0.2} strokeDasharray="4 3">
+              <circle cx={cx} cy={cy} r={size * 0.055} fill="none" stroke="#DC2626" strokeWidth={0.8} strokeOpacity={0.2} strokeDasharray="4 3">
                 <animateTransform attributeName="transform" type="rotate" from={`0 ${cx} ${cy}`} to={`360 ${cx} ${cy}`} dur="30s" repeatCount="indefinite" />
               </circle>
-              <circle cx={cx} cy={cy} r={size * 0.085} fill="none" stroke="#00F0FF" strokeWidth={0.4} strokeOpacity={0.1} strokeDasharray="2 8">
+              <circle cx={cx} cy={cy} r={size * 0.085} fill="none" stroke="#EF4444" strokeWidth={0.4} strokeOpacity={0.1} strokeDasharray="2 8">
                 <animateTransform attributeName="transform" type="rotate" from={`360 ${cx} ${cy}`} to={`0 ${cx} ${cy}`} dur="45s" repeatCount="indefinite" />
               </circle>
             </svg>
@@ -382,7 +382,7 @@ export function Orchestrator() {
                           color: terminalLines[line.idx].text.includes("\u2713")
                             ? "#10B981"
                             : terminalLines[line.idx].text.startsWith("\u25b6")
-                              ? "#00F0FF"
+                              ? "#EF4444"
                               : "rgba(255,255,255,0.35)",
                         }}
                       >

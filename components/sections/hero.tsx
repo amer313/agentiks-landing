@@ -20,8 +20,8 @@ export function Hero() {
 
   return (
     <section className="min-h-[90vh] flex flex-col items-center justify-center max-w-[1400px] mx-auto px-6 md:px-12 pt-28 pb-16 relative text-center">
-      <div className="absolute top-[15%] left-[25%] w-[500px] h-[500px] rounded-full bg-[radial-gradient(circle,rgba(180,0,255,0.08),transparent_70%)] animate-[drift_20s_ease-in-out_infinite] pointer-events-none" />
-      <div className="absolute bottom-[20%] right-[20%] w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(0,240,255,0.06),transparent_70%)] animate-[drift_25s_ease-in-out_infinite_reverse] pointer-events-none" />
+      <div className="absolute top-[15%] left-[25%] w-[500px] h-[500px] rounded-full bg-[radial-gradient(circle,rgba(220,38,38,0.08),transparent_70%)] animate-[drift_20s_ease-in-out_infinite] pointer-events-none" />
+      <div className="absolute bottom-[20%] right-[20%] w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(239,68,68,0.06),transparent_70%)] animate-[drift_25s_ease-in-out_infinite_reverse] pointer-events-none" />
 
       <div className="relative z-10">
         <motion.div
@@ -101,7 +101,7 @@ export function Hero() {
             size="100vh"
             rows={40}
             columns={40}
-            lineColor="rgba(180, 0, 255, 0.8)"
+            lineColor="rgba(220, 38, 38, 0.8)"
             lineWidth={2}
             lineHeight={16}
             baseAngle={0}

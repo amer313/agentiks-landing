@@ -30,12 +30,12 @@
   --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: calc(var(--radius) + 8px);
 
-  /* Agentiks brand palette — tri-spark neon */
-  --color-brand: var(--brand, #B400FF);
-  --color-brand-light: var(--brand-light, #CF5FFF);
-  --color-brand-dark: var(--brand-dark, #9000CC);
-  --color-ag-cyan: var(--ag-cyan, #00F0FF);
-  --color-ag-magenta: var(--ag-magenta, #FF00AA);
+  /* Agentiks brand palette — ember black */
+  --color-brand: var(--brand, #DC2626);
+  --color-brand-light: var(--brand-light, #EF4444);
+  --color-brand-dark: var(--brand-dark, #B91C1C);
+  --color-ag-cyan: var(--ag-cyan, #EF4444);
+  --color-ag-magenta: var(--ag-magenta, #FCA5A5);
   --color-ag-green: var(--ag-green, #10B981);
   --color-ag-amber: var(--ag-amber, #F59E0B);
   --color-ag-red: var(--ag-red, #EF4444);
@@ -78,7 +78,7 @@
     --ag-line: rgba(0, 0, 0, 0.08);
     --ag-line-hover: rgba(0, 0, 0, 0.16);
     --ag-dim: rgba(0, 0, 0, 0.04);
-    --brand: #9000CC;
+    --brand: #B91C1C;
 
     background: #ffffff;
     color: #111213;
