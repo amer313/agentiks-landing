@@ -190,49 +190,6 @@ function MiniChart() {
   )
 }
 
-/* ── Keyboard keys overlay for device-power ── */
-function KeyboardOverlay() {
-  const rows = [
-    { keys: 14, height: 5 },
-    { keys: 13, height: 5 },
-    { keys: 12, height: 5 },
-    { keys: 11, height: 5 },
-    { keys: 9, height: 5, hasSpacebar: true },
-  ]
-
-  return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center gap-[1.5px] px-[60px] pointer-events-none">
-      {rows.map((row, ri) => (
-        <div key={ri} className="flex gap-[1.5px] justify-center w-full">
-          {row.hasSpacebar ? (
-            <>
-              {Array.from({ length: 3 }).map((_, i) => (
-                <div key={`l${i}`} className="w-[14px] h-[5px] rounded-[1px] bg-[#2a2a2d] border border-[#3a3a3d]/30" />
-              ))}
-              <div className="w-[80px] h-[5px] rounded-[1px] bg-[#2a2a2d] border border-[#3a3a3d]/30" />
-              {Array.from({ length: 3 }).map((_, i) => (
-                <div key={`r${i}`} className="w-[14px] h-[5px] rounded-[1px] bg-[#2a2a2d] border border-[#3a3a3d]/30" />
-              ))}
-            </>
-          ) : (
-            Array.from({ length: row.keys }).map((_, i) => {
-              const isEdge = i === 0 || i === row.keys - 1
-              return (
-                <div
-                  key={i}
-                  className={`h-[5px] rounded-[1px] bg-[#2a2a2d] border border-[#3a3a3d]/30 ${
-                    isEdge && ri > 0 ? "w-[18px]" : "w-[14px]"
-                  }`}
-                />
-              )
-            })
-          )}
-        </div>
-      ))}
-    </div>
-  )
-}
-
 /* ── Main section ── */
 export function DashboardShowcase() {
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -288,20 +245,15 @@ export function DashboardShowcase() {
           >
             <div className="device device-macbook-pro device-spacegray">
               <div className="device-frame">
-                <div className="device-screen" style={{ overflow: "hidden" }}>
-                  <div style={{ width: "100%", height: "100%", position: "relative" }}>
-                    <DashboardScreen />
-                  </div>
+                <div className="device-screen">
+                  <DashboardScreen />
                 </div>
               </div>
               <div className="device-stripe" />
               <div className="device-header" />
               <div className="device-sensors" />
               <div className="device-btns" />
-              <div className="device-power relative">
-                {/* Keyboard keys overlay */}
-                <KeyboardOverlay />
-              </div>
+              <div className="device-power" />
             </div>
           </motion.div>
         </div>
