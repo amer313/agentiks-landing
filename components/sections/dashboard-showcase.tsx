@@ -1,7 +1,6 @@
 "use client"
 
-import { useRef } from "react"
-import { motion, useScroll, useTransform } from "framer-motion"
+import { MacbookScroll } from "@/components/ui/macbook-scroll"
 
 /* ── Dense dashboard screen ── */
 function DashboardScreen() {
@@ -190,81 +189,25 @@ function MiniChart() {
   )
 }
 
-/* ── Main section — MacBook opens its lid on scroll ── */
+/* ── Main section — Aceternity MacBook lid-opening on scroll ── */
 export function DashboardShowcase() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end end"],
-  })
-
-  // Lid opens from closed (85deg) to fully open (0deg)
-  const lidRotate = useTransform(scrollYProgress, [0.05, 0.6], [85, 0])
-  // Screen content fades in as lid opens past ~45deg
-  const screenOpacity = useTransform(scrollYProgress, [0.25, 0.5], [0, 1])
-  // Whole laptop scales up slightly as lid opens
-  const laptopScale = useTransform(scrollYProgress, [0, 0.6], [0.9, 1])
-  // Text fades in early
-  const textOpacity = useTransform(scrollYProgress, [0, 0.15], [0, 1])
-  const textY = useTransform(scrollYProgress, [0, 0.15], [30, 0])
-
   return (
-    <section ref={sectionRef} className="relative h-[200vh]">
-      <div className="sticky top-0 h-screen flex flex-col items-center justify-center px-4 md:px-8">
-        <div className="max-w-[1200px] w-full mx-auto rounded-3xl bg-[#000] border border-white/[0.04] py-12 md:py-20 px-6 md:px-12 overflow-hidden relative">
-          {/* Ambient glow */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[radial-gradient(ellipse_at_center,rgba(220,38,38,0.06),transparent_70%)] pointer-events-none" />
-
-          {/* Heading */}
-          <motion.div className="text-center mb-10 relative z-10" style={{ opacity: textOpacity, y: textY }}>
-            <p className="font-mono text-xs tracking-[0.2em] uppercase text-brand/70 mb-3">
+    <section className="overflow-hidden bg-[#000] relative">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[radial-gradient(ellipse_at_center,rgba(220,38,38,0.06),transparent_70%)] pointer-events-none" />
+      <MacbookScroll
+        title={
+          <>
+            <span className="font-mono text-xs tracking-[0.2em] uppercase text-brand/70 block mb-4 font-normal">
               Built for your business
-            </p>
-            <h2 className="text-3xl md:text-5xl font-medium tracking-tight text-white">
-              Custom agentic solutions.{" "}
-              <span className="text-brand">Real results.</span>
-            </h2>
-          </motion.div>
-
-          {/* MacBook with opening lid */}
-          <motion.div
-            className="relative z-10 flex justify-center"
-            style={{ scale: laptopScale }}
-          >
-            {/* 3D scene — perspective on this wrapper, low value = dramatic */}
-            <div style={{ perspective: "900px", perspectiveOrigin: "50% 80%" }}>
-              <div className="device device-macbook-pro device-spacegray" style={{ transformStyle: "preserve-3d" }}>
-                {/* Screen/Lid — rotates from hinge at bottom of screen bezel */}
-                <motion.div
-                  className="device-frame"
-                  style={{
-                    rotateX: lidRotate,
-                    transformOrigin: "center bottom",
-                    transformStyle: "preserve-3d",
-                    backfaceVisibility: "hidden",
-                  }}
-                >
-                  <motion.div className="device-screen" style={{ opacity: screenOpacity }}>
-                    <DashboardScreen />
-                  </motion.div>
-                  <div className="device-header" />
-                </motion.div>
-                <div className="device-stripe" />
-                <div className="device-sensors" />
-                <div className="device-btns" />
-                {/* Keyboard base — stays flat, always visible */}
-                <div className="device-power" />
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Screen glow on the base — appears as lid opens */}
-          <motion.div
-            className="mx-auto max-w-[500px] h-[40px] bg-[radial-gradient(ellipse_at_center,rgba(220,38,38,0.08),transparent_70%)] rounded-full blur-xl -mt-2 relative z-0"
-            style={{ opacity: useTransform(scrollYProgress, [0.4, 0.7], [0, 0.6]) }}
-          />
-        </div>
-      </div>
+            </span>
+            Custom agentic solutions.{" "}
+            <span className="text-brand">Real results.</span>
+          </>
+        }
+        showGradient={false}
+      >
+        <DashboardScreen />
+      </MacbookScroll>
     </section>
   )
 }
