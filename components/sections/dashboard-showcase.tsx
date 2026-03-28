@@ -229,27 +229,32 @@ export function DashboardShowcase() {
           {/* MacBook with opening lid */}
           <motion.div
             className="relative z-10 flex justify-center"
-            style={{ scale: laptopScale, perspective: "1800px" }}
+            style={{ scale: laptopScale }}
           >
-            <div className="device device-macbook-pro device-spacegray">
-              {/* Screen/Lid — hinges from the bottom edge */}
-              <motion.div
-                className="device-frame"
-                style={{
-                  rotateX: lidRotate,
-                  transformOrigin: "bottom center",
-                  transformStyle: "preserve-3d",
-                }}
-              >
-                <motion.div className="device-screen" style={{ opacity: screenOpacity }}>
-                  <DashboardScreen />
+            {/* 3D scene — perspective on this wrapper, low value = dramatic */}
+            <div style={{ perspective: "900px", perspectiveOrigin: "50% 80%" }}>
+              <div className="device device-macbook-pro device-spacegray" style={{ transformStyle: "preserve-3d" }}>
+                {/* Screen/Lid — rotates from hinge at bottom of screen bezel */}
+                <motion.div
+                  className="device-frame"
+                  style={{
+                    rotateX: lidRotate,
+                    transformOrigin: "center bottom",
+                    transformStyle: "preserve-3d",
+                    backfaceVisibility: "hidden",
+                  }}
+                >
+                  <motion.div className="device-screen" style={{ opacity: screenOpacity }}>
+                    <DashboardScreen />
+                  </motion.div>
+                  <div className="device-header" />
                 </motion.div>
-                <div className="device-header" />
-              </motion.div>
-              <div className="device-stripe" />
-              <div className="device-sensors" />
-              <div className="device-btns" />
-              <div className="device-power" />
+                <div className="device-stripe" />
+                <div className="device-sensors" />
+                <div className="device-btns" />
+                {/* Keyboard base — stays flat, always visible */}
+                <div className="device-power" />
+              </div>
             </div>
           </motion.div>
 
