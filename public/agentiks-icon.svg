@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120" fill="#1E1B4B">
+  <!-- Visor/Head with chamfered corners and slit -->
+  <path fill-rule="evenodd" d="M14 14L28 0h44l14 14v20H14V14zM34 13h32v10H34z"/>
+  <!-- Chevron 1 (widest) -->
+  <path d="M4 44h92L80 58H20L4 44z"/>
+  <!-- Chevron 2 -->
+  <path d="M16 66h68L72 78H28L16 66z"/>
+  <!-- Chevron 3 -->
+  <path d="M26 86h48L64 96H36L26 86z"/>
+  <!-- Diamond -->
+  <path d="M42 104l8 12 8-12z"/>
+</svg>
