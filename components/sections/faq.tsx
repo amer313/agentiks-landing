@@ -79,14 +79,30 @@ function FAQItem({ q, a, index }: { q: string; a: string; index: number }) {
 }
 
 export function FAQ() {
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.q,
+      acceptedAnswer: { "@type": "Answer", text: faq.a },
+    })),
+  }
+
   return (
-    <section className="max-w-[800px] mx-auto px-6 md:px-12 py-16">
-      <SectionHeader title="Frequently Asked Questions" label="FAQ" />
-      <div>
-        {faqs.map((faq, i) => (
-          <FAQItem key={faq.q} q={faq.q} a={faq.a} index={i} />
-        ))}
-      </div>
-    </section>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <section id="faq" className="max-w-[800px] mx-auto px-6 md:px-12 py-16">
+        <SectionHeader title="Frequently Asked Questions" label="FAQ" />
+        <div>
+          {faqs.map((faq, i) => (
+            <FAQItem key={faq.q} q={faq.q} a={faq.a} index={i} />
+          ))}
+        </div>
+      </section>
+    </>
   )
 }

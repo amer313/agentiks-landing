@@ -20,8 +20,8 @@ export function Hero() {
 
   return (
     <section className="min-h-[90vh] flex flex-col items-center justify-center max-w-[1400px] mx-auto px-6 md:px-12 pt-28 pb-16 relative text-center">
-      <div className="absolute top-[15%] left-[25%] w-[500px] h-[500px] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.08),transparent_70%)] animate-[drift_20s_ease-in-out_infinite] pointer-events-none" />
-      <div className="absolute bottom-[20%] right-[20%] w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(6,182,212,0.06),transparent_70%)] animate-[drift_25s_ease-in-out_infinite_reverse] pointer-events-none" />
+      <div className="absolute top-[15%] left-[25%] w-[500px] h-[500px] rounded-full bg-[radial-gradient(circle,rgba(180,0,255,0.08),transparent_70%)] animate-[drift_20s_ease-in-out_infinite] pointer-events-none" />
+      <div className="absolute bottom-[20%] right-[20%] w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(0,240,255,0.06),transparent_70%)] animate-[drift_25s_ease-in-out_infinite_reverse] pointer-events-none" />
 
       <div className="relative z-10">
         <motion.div
@@ -78,7 +78,9 @@ export function Hero() {
           transition={{ duration: 1, delay: 0.5 }}
         >
           <a
-            href="#contact"
+            href="https://cal.com/agentiks/strategy-call"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-sm font-semibold px-8 py-3.5 rounded-xl bg-brand hover:bg-brand-dark text-white transition-colors"
           >
             Book a Strategy Call <ArrowRight className="w-4 h-4" />
@@ -99,7 +101,7 @@ export function Hero() {
             size="100vh"
             rows={40}
             columns={40}
-            lineColor="rgba(37, 99, 235, 0.8)"
+            lineColor="rgba(180, 0, 255, 0.8)"
             lineWidth={2}
             lineHeight={16}
             baseAngle={0}

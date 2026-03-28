@@ -1,7 +1,6 @@
 import { Nav } from "@/components/sections/nav"
 import { Hero } from "@/components/sections/hero"
 import { HalftoneDivider } from "@/components/sections/halftone-divider"
-import { SocialProof } from "@/components/sections/social-proof"
 import { Setup } from "@/components/sections/setup"
 import { StatsBar } from "@/components/sections/stats-bar"
 import { Orchestrator } from "@/components/sections/orchestrator"
@@ -26,9 +25,8 @@ export default function Home() {
       {/* Transition: dark -> light */}
       <HalftoneDivider direction="dark-to-light" lightColor="#ffffff" darkColor="#050508" />
 
-      {/* Light: Social proof + How it works + stats */}
+      {/* Light: How it works + stats */}
       <div className="light-zone">
-        <SocialProof />
         <Setup />
         <StatsBar />
       </div>

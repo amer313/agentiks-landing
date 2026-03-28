@@ -1,5 +1,5 @@
 import { Separator } from "@/components/ui/separator"
-import { Zap } from "lucide-react"
+import { AgentiksLogo } from "@/components/ui/agentiks-logo"
 
 const footerLinks = {
   Services: [
@@ -14,14 +14,9 @@ const footerLinks = {
     { label: "FAQ", href: "#faq" },
     { label: "Contact", href: "#contact" },
   ],
-  Resources: [
-    { label: "Case Studies", href: "#" },
-    { label: "Blog", href: "#" },
-  ],
   Connect: [
-    { label: "LinkedIn", href: "#", external: true },
-    { label: "GitHub", href: "#", external: true },
     { label: "Email", href: "mailto:team@agentiks.dev" },
+    { label: "Book a Call", href: "https://cal.com/agentiks/strategy-call", external: true },
   ],
 }
 
@@ -33,9 +28,7 @@ export function Footer() {
       <div className="grid grid-cols-2 md:grid-cols-[1fr_repeat(3,auto)] gap-8 md:gap-16 py-12">
         <div className="col-span-2 md:col-span-1">
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-7 h-7 rounded-lg bg-brand/20 border border-brand/30 flex items-center justify-center">
-              <Zap className="w-3.5 h-3.5 text-brand" />
-            </div>
+            <AgentiksLogo className="w-7 h-7" />
             <span className="font-semibold text-base tracking-tight">Agentiks</span>
           </div>
           <p className="text-sm text-muted-foreground/50 max-w-[240px] leading-relaxed">

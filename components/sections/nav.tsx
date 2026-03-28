@@ -4,13 +4,14 @@ import Link from "next/link"
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Menu, X, Zap } from "lucide-react"
+import { Menu, X } from "lucide-react"
+import { AgentiksLogo } from "@/components/ui/agentiks-logo"
 
 const navLinks = [
-  { label: "Services", href: "#services" },
-  { label: "Process", href: "#process" },
-  { label: "Clients", href: "#clients" },
-  { label: "About", href: "#about" },
+  { label: "Services", href: "#capabilities" },
+  { label: "Process", href: "#how" },
+  { label: "Pricing", href: "#pricing" },
+  { label: "FAQ", href: "#faq" },
 ]
 
 function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -61,9 +62,7 @@ export function Nav() {
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all ${scrolled ? "bg-[#06060A]/90 backdrop-blur-xl border-b border-white/[0.06] shadow-[0_1px_20px_rgba(0,0,0,0.4)]" : "bg-transparent border-b border-transparent"}`}>
       <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex items-center justify-between h-[60px]">
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-brand/20 border border-brand/30 flex items-center justify-center">
-            <Zap className="w-4 h-4 text-brand" />
-          </div>
+          <AgentiksLogo className="w-8 h-8" />
           <span className="font-semibold text-lg tracking-tight">Agentiks</span>
         </Link>
 
