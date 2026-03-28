@@ -3,12 +3,13 @@ import { Hero } from "@/components/sections/hero"
 import { HalftoneDivider } from "@/components/sections/halftone-divider"
 import { Setup } from "@/components/sections/setup"
 import { StatsBar } from "@/components/sections/stats-bar"
-import { ScrollStatement } from "@/components/sections/scroll-statement"
 import { Orchestrator } from "@/components/sections/orchestrator"
+import { DashboardShowcase } from "@/components/sections/dashboard-showcase"
 import { AIEdge } from "@/components/sections/ai-edge"
 import { Capabilities } from "@/components/sections/capabilities"
 import { Pricing } from "@/components/sections/pricing"
 import { FAQ } from "@/components/sections/faq"
+import { GlobeSection } from "@/components/sections/globe-section"
 import { CTA } from "@/components/sections/cta"
 import { Footer } from "@/components/sections/footer"
 
@@ -20,8 +21,8 @@ export default function Home() {
       {/* Dark: Hero */}
       <Hero />
 
-      {/* Dark: Scroll-driven statement */}
-      <ScrollStatement />
+      {/* Dark: Dashboard showcase — Fey-style 3D MacBook reveal */}
+      <DashboardShowcase />
 
       {/* Dark: Orchestrator animation */}
       <Orchestrator />
@@ -40,6 +41,9 @@ export default function Home() {
 
       {/* Dark: Capabilities */}
       <Capabilities />
+
+      {/* Dark: Globe network visualization */}
+      <GlobeSection />
 
       {/* Transition: dark -> light */}
       <HalftoneDivider direction="dark-to-light" lightColor="#ffffff" darkColor="#050508" />
