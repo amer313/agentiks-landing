@@ -11,7 +11,7 @@ import { AgentiksLogo } from "@/components/ui/agentiks-logo"
 const navLinks = [
   { label: "Services", href: "#capabilities" },
   { label: "Process", href: "#how" },
-  { label: "Pricing", href: "#pricing" },
+  { label: "Approach", href: "#pricing" },
   { label: "FAQ", href: "#faq" },
 ]
 

@@ -57,7 +57,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.25 }}
         >
-          Agentiks designs and builds custom AI agent systems that automate workflows, scale operations, and give your team superpowers. Any industry. Any size.
+          We build AI agent systems that do the work — handling intake, processing, scheduling, and reporting — so your team focuses on what actually grows the business.
         </motion.p>
 
         <motion.div

@@ -22,10 +22,10 @@ export function CTA() {
 
         <div className="relative z-10">
           <h2 className="text-3xl md:text-5xl font-medium tracking-tight mb-4">
-            Ready to go agentic?
+            Your competitors are already automating.
           </h2>
           <p className="text-lg text-muted-foreground max-w-[520px] mx-auto mb-10">
-            Book a free strategy call. We&apos;ll audit your operations and show you exactly where AI agents will drive the most value.
+            Book a free strategy call — no pitch deck, no commitment. We&apos;ll audit your operations and show you exactly where AI agents will save the most time and money.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <CornerButton href="https://cal.com/agentiks/strategy-call" external>

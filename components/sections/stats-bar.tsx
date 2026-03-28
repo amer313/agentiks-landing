@@ -5,8 +5,8 @@ import { useInView } from "framer-motion"
 import { ScrollReveal } from "@/components/scroll-reveal"
 
 const stats = [
+  { value: 847, suffix: "+", label: "Hours Saved Monthly" },
   { value: 4, suffix: "wk", label: "Avg. Time to Deploy" },
-  { value: 3, suffix: "x", label: "Avg. Efficiency Gain" },
   { value: 0, suffix: "", label: "Vendor Lock-in", override: "Zero" },
   { value: 100, suffix: "%", label: "Code Ownership" },
 ]
