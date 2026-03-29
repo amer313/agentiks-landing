@@ -20,27 +20,30 @@ export function MacbookScroll({
   showGradient?: boolean
 }) {
   const ref = useRef<HTMLDivElement>(null)
-  // "start end" = animation starts when section top enters bottom of viewport
-  // "center center" = animation ends when section center hits viewport center
-  // This means lid is FULLY OPEN by the time user sees the section centered
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "center center"] })
+  // Tall section so there's scroll distance for the animation while sticky
+  // "start start" = starts when section top hits viewport top (sticky kicks in)
+  // "end end" = ends when section bottom hits viewport bottom
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] })
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     if (window.innerWidth < 768) setIsMobile(true)
   }, [])
 
-  // Lid opens from closed to flat as the section scrolls into view
-  const scaleX = useTransform(scrollYProgress, [0, 0.8], [1.2, isMobile ? 1 : 1.1])
-  const scaleY = useTransform(scrollYProgress, [0, 0.8], [0.6, isMobile ? 1 : 1.1])
+  // Phase 1 (0-15%): title visible, laptop closed
+  // Phase 2 (15-60%): title fades, lid opens
+  // Phase 3 (60-100%): laptop fully open, dashboard visible, then scrolls away
+  const scaleX = useTransform(scrollYProgress, [0.1, 0.6], [1.2, isMobile ? 1 : 1.1])
+  const scaleY = useTransform(scrollYProgress, [0.1, 0.6], [0.6, isMobile ? 1 : 1.1])
   const translate = useTransform(scrollYProgress, [0, 1], [0, 0])
-  const rotate = useTransform(scrollYProgress, [0, 0.4, 0.8], [-28, -28, 0])
-  const textTransform = useTransform(scrollYProgress, [0, 0.5], [0, 40])
-  const textOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0])
+  const rotate = useTransform(scrollYProgress, [0.15, 0.55], [-28, 0])
+  const textTransform = useTransform(scrollYProgress, [0.15, 0.4], [0, 60])
+  const textOpacity = useTransform(scrollYProgress, [0.15, 0.35], [1, 0])
   const screenFadeOut = useTransform(scrollYProgress, [0, 1], [1, 1])
 
   return (
-    <div ref={ref} className="flex flex-col items-center py-0 md:py-10 justify-start shrink-0 [perspective:800px] md:scale-100 scale-[0.35] sm:scale-50">
+    <div ref={ref} className="min-h-[180vh] relative">
+      <div className="sticky top-0 h-screen flex flex-col items-center justify-center shrink-0 [perspective:800px] md:scale-100 scale-[0.35] sm:scale-50">
       <motion.h2 style={{ translateY: textTransform, opacity: textOpacity }} className="text-white text-3xl md:text-5xl font-medium mb-12 text-center tracking-tight">
         {title}
       </motion.h2>
@@ -62,6 +65,7 @@ export function MacbookScroll({
         {showGradient && (
           <div className="h-40 w-full absolute bottom-0 inset-x-0 bg-gradient-to-t from-black via-black to-transparent z-50" />
         )}
+      </div>
       </div>
     </div>
   )
