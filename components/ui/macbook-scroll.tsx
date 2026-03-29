@@ -20,23 +20,27 @@ export function MacbookScroll({
   showGradient?: boolean
 }) {
   const ref = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] })
+  // "start end" = animation starts when section top enters bottom of viewport
+  // "center center" = animation ends when section center hits viewport center
+  // This means lid is FULLY OPEN by the time user sees the section centered
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "center center"] })
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     if (window.innerWidth < 768) setIsMobile(true)
   }, [])
 
-  const scaleX = useTransform(scrollYProgress, [0, 0.3], [1.2, isMobile ? 1 : 1.1])
-  const scaleY = useTransform(scrollYProgress, [0, 0.3], [0.6, isMobile ? 1 : 1.1])
+  // Lid opens from closed to flat as the section scrolls into view
+  const scaleX = useTransform(scrollYProgress, [0, 0.8], [1.2, isMobile ? 1 : 1.1])
+  const scaleY = useTransform(scrollYProgress, [0, 0.8], [0.6, isMobile ? 1 : 1.1])
   const translate = useTransform(scrollYProgress, [0, 1], [0, 0])
-  const rotate = useTransform(scrollYProgress, [0.1, 0.12, 0.5], [-28, -28, 0])
-  const textTransform = useTransform(scrollYProgress, [0, 0.3], [0, 60])
-  const textOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0])
+  const rotate = useTransform(scrollYProgress, [0, 0.4, 0.8], [-28, -28, 0])
+  const textTransform = useTransform(scrollYProgress, [0, 0.5], [0, 40])
+  const textOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0])
   const screenFadeOut = useTransform(scrollYProgress, [0, 1], [1, 1])
 
   return (
-    <div ref={ref} className="min-h-[110vh] flex flex-col items-center py-0 md:py-10 justify-start shrink-0 [perspective:800px] md:scale-100 scale-[0.35] sm:scale-50">
+    <div ref={ref} className="flex flex-col items-center py-0 md:py-10 justify-start shrink-0 [perspective:800px] md:scale-100 scale-[0.35] sm:scale-50">
       <motion.h2 style={{ translateY: textTransform, opacity: textOpacity }} className="text-white text-3xl md:text-5xl font-medium mb-12 text-center tracking-tight">
         {title}
       </motion.h2>
