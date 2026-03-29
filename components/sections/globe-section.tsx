@@ -142,7 +142,7 @@ export function GlobeSection() {
                 { value: "∞", label: "Scalable to any workload" },
               ].map((stat) => (
                 <div key={stat.label} className="flex items-baseline gap-4">
-                  <span className="text-2xl font-medium text-brand tabular-nums w-[80px] shrink-0">{stat.value}</span>
+                  <span className="text-2xl font-medium text-brand tabular-nums w-[120px] shrink-0 whitespace-nowrap">{stat.value}</span>
                   <span className="text-sm text-muted-foreground">{stat.label}</span>
                 </div>
               ))}

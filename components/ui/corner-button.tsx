@@ -17,7 +17,7 @@ export function CornerButton({ href, children, external, variant = "primary", cl
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       className={`group relative inline-flex items-center gap-2 text-sm font-semibold px-8 py-3.5 transition-all duration-200 overflow-hidden ${
         isPrimary
-          ? "bg-transparent text-white border border-brand/40"
+          ? "bg-transparent text-brand group-hover:text-white border border-brand/40"
           : "bg-transparent text-foreground/70 hover:text-foreground border border-white/[0.08] hover:border-brand/30"
       } ${className}`}
     >
