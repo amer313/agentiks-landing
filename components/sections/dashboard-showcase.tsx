@@ -192,7 +192,7 @@ function MiniChart() {
 /* ── Main section — Aceternity MacBook lid-opening on scroll ── */
 export function DashboardShowcase() {
   return (
-    <section className="overflow-hidden bg-[#000] relative">
+    <section className="bg-[#000] relative">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[radial-gradient(ellipse_at_center,rgba(220,38,38,0.06),transparent_70%)] pointer-events-none" />
       <MacbookScroll
         title={
