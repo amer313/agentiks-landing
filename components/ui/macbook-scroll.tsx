@@ -37,14 +37,14 @@ export function MacbookScroll({
   const scaleY = useTransform(scrollYProgress, [0.1, 0.6], [0.6, isMobile ? 1 : 1.1])
   const translate = useTransform(scrollYProgress, [0, 1], [0, 0])
   const rotate = useTransform(scrollYProgress, [0.15, 0.55], [-28, 0])
-  const textTransform = useTransform(scrollYProgress, [0.15, 0.4], [0, 60])
-  const textOpacity = useTransform(scrollYProgress, [0.15, 0.35], [1, 0])
+  const textTransform = useTransform(scrollYProgress, [0.05, 0.25], [0, -80])
+  const textOpacity = useTransform(scrollYProgress, [0.08, 0.22], [1, 0])
   const screenFadeOut = useTransform(scrollYProgress, [0, 1], [1, 1])
 
   return (
     <div ref={ref} className="min-h-[180vh] relative">
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center shrink-0 [perspective:800px] md:scale-100 scale-[0.35] sm:scale-50">
-      <motion.h2 style={{ translateY: textTransform, opacity: textOpacity }} className="text-white text-3xl md:text-5xl font-medium mb-12 text-center tracking-tight">
+      <motion.h2 style={{ translateY: textTransform, opacity: textOpacity }} className="text-white text-3xl md:text-5xl font-medium mb-12 text-center tracking-tight relative z-20">
         {title}
       </motion.h2>
       <div className="md:scale-[1.4] origin-top">
