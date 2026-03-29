@@ -47,6 +47,7 @@ export function MacbookScroll({
       <motion.h2 style={{ translateY: textTransform, opacity: textOpacity }} className="text-white text-3xl md:text-5xl font-medium mb-12 text-center tracking-tight">
         {title}
       </motion.h2>
+      <div className="md:scale-[1.25] origin-top">
       <Lid scaleX={scaleX} scaleY={scaleY} rotate={rotate} translate={translate} screenFadeOut={screenFadeOut}>
         {children}
       </Lid>
@@ -65,6 +66,7 @@ export function MacbookScroll({
         {showGradient && (
           <div className="h-40 w-full absolute bottom-0 inset-x-0 bg-gradient-to-t from-black via-black to-transparent z-50" />
         )}
+      </div>
       </div>
       </div>
     </div>
