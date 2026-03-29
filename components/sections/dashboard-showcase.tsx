@@ -56,50 +56,50 @@ const INTEGRATIONS = [
 /* ── Dense dashboard screen ── */
 function DashboardScreen() {
   return (
-    <div className="w-full h-full bg-[#0a0a0c] text-white overflow-hidden select-none text-[7px] font-mono">
+    <div className="w-full h-full bg-[#0a0a0c] text-white overflow-hidden select-none text-[8px] font-mono">
       <div className="flex h-full">
         {/* Sidebar — with integration quick-access */}
-        <div className="w-[42px] bg-[#0e0e11] border-r border-white/[0.04] flex flex-col items-center py-2 gap-1.5 shrink-0">
-          <div className="w-5 h-5 rounded-md bg-brand/20 flex items-center justify-center text-[6px] text-brand font-bold">A</div>
-          <div className="w-[18px] h-px bg-white/[0.06]" />
+        <div className="w-[42px] bg-[#111116] border-r border-white/[0.08] flex flex-col items-center py-2 gap-1.5 shrink-0">
+          <div className="w-5 h-5 rounded-md bg-brand/30 flex items-center justify-center text-[6px] text-brand font-bold">A</div>
+          <div className="w-[18px] h-px bg-white/[0.10]" />
           {["◎", "⊞", "⧉", "⬡", "◈", "⊕"].map((icon, i) => (
-            <div key={i} className={`w-5 h-5 rounded flex items-center justify-center text-[8px] ${i === 0 ? "bg-white/[0.06] text-white/60" : "text-white/20"}`}>
+            <div key={i} className={`w-5 h-5 rounded flex items-center justify-center text-[8px] ${i === 0 ? "bg-white/[0.10] text-white/70" : "text-white/35"}`}>
               {icon}
             </div>
           ))}
-          <div className="w-[18px] h-px bg-white/[0.06] mt-0.5" />
-          <div className="text-[4px] text-white/15 uppercase tracking-wider">Apps</div>
+          <div className="w-[18px] h-px bg-white/[0.10] mt-0.5" />
+          <div className="text-[5px] text-white/30 uppercase tracking-wider">Apps</div>
           {INTEGRATIONS.slice(0, 5).map((app) => (
             <div key={app.name} className="w-4 h-4 rounded-[3px] flex items-center justify-center shrink-0" style={{ background: app.bg, color: app.color }}>
               <BrandIcon name={app.name} size={10} />
             </div>
           ))}
-          <div className="text-[5px] text-white/15">+11</div>
+          <div className="text-[5px] text-white/30">+11</div>
         </div>
 
         {/* Main */}
         <div className="flex-1 flex flex-col min-w-0">
           {/* Top nav */}
-          <div className="flex items-center justify-between px-3 py-1.5 border-b border-white/[0.04] bg-[#0c0c0f]">
+          <div className="flex items-center justify-between px-3 py-1.5 border-b border-white/[0.08] bg-[#0e0e12]">
             <div className="flex items-center gap-3">
-              <span className="text-white/50 font-semibold text-[8px]">Agent Operations</span>
+              <span className="text-white/70 font-semibold text-[9px]">Agent Operations</span>
               <div className="flex gap-1">
                 {["Overview", "Agents", "Integrations", "Workflows", "Logs"].map((tab, i) => (
-                  <span key={tab} className={`px-1.5 py-0.5 rounded text-[6px] ${i === 0 ? "bg-white/[0.08] text-white/70" : "text-white/25"}`}>{tab}</span>
+                  <span key={tab} className={`px-1.5 py-0.5 rounded text-[6.5px] ${i === 0 ? "bg-white/[0.12] text-white/90" : "text-white/40"}`}>{tab}</span>
                 ))}
               </div>
             </div>
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-0.5">
-                <span className="text-white/20 text-[5px]">16 apps</span>
+                <span className="text-white/35 text-[5.5px]">16 apps</span>
                 <div className="flex -space-x-0.5">
                   {INTEGRATIONS.slice(0, 4).map((app) => (
-                    <div key={app.name} className="w-2.5 h-2.5 rounded-full border border-[#0c0c0f]" style={{ background: app.bg }} />
+                    <div key={app.name} className="w-2.5 h-2.5 rounded-full border border-[#0e0e12]" style={{ background: app.bg }} />
                   ))}
                 </div>
               </div>
-              <span className="w-1 h-1 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-green-500/70 text-[6px]">All systems operational</span>
+              <span className="w-1 h-1 rounded-full bg-green-400 animate-pulse" />
+              <span className="text-green-400/80 text-[6.5px]">All systems operational</span>
             </div>
           </div>
 
@@ -115,29 +115,29 @@ function DashboardScreen() {
                 { label: "Cost Saved", val: "$284k", change: "+$42k" },
                 { label: "Error Rate", val: "0.03%", change: "-0.01%" },
               ].map((m) => (
-                <div key={m.label} className="bg-white/[0.02] border border-white/[0.04] rounded px-1.5 py-1">
-                  <div className="text-white/25 text-[5px] uppercase tracking-wider">{m.label}</div>
-                  <div className="text-white/90 text-[10px] font-semibold mt-0.5">{m.val}</div>
-                  <div className="text-[5px] mt-0.5 text-green-500/70">{m.change}</div>
+                <div key={m.label} className="bg-white/[0.04] border border-white/[0.08] rounded px-1.5 py-1">
+                  <div className="text-white/45 text-[5.5px] uppercase tracking-wider">{m.label}</div>
+                  <div className="text-white/95 text-[11px] font-semibold mt-0.5">{m.val}</div>
+                  <div className="text-[5.5px] mt-0.5 text-green-400/80">{m.change}</div>
                 </div>
               ))}
             </div>
 
             {/* Connected integrations strip */}
-            <div className="bg-white/[0.02] border border-white/[0.04] rounded px-2 py-1 mb-1.5 flex items-center gap-2">
-              <span className="text-white/20 text-[5px] uppercase tracking-wider shrink-0">Connected</span>
+            <div className="bg-white/[0.04] border border-white/[0.08] rounded px-2 py-1 mb-1.5 flex items-center gap-2">
+              <span className="text-white/40 text-[5.5px] uppercase tracking-wider shrink-0">Connected</span>
               <div className="flex gap-1.5 flex-1 overflow-hidden">
                 {INTEGRATIONS.map((app) => (
                   <div key={app.name} className="flex items-center gap-0.5 shrink-0">
                     <div className="w-3 h-3 rounded-[2px] flex items-center justify-center" style={{ background: app.bg, color: app.color }}>
                       <BrandIcon name={app.name} size={8} />
                     </div>
-                    <span className="text-white/30 text-[5px]">{app.name}</span>
-                    <span className="w-1 h-1 rounded-full bg-green-500/60" />
+                    <span className="text-white/50 text-[5.5px]">{app.name}</span>
+                    <span className="w-1 h-1 rounded-full bg-green-400/70" />
                   </div>
                 ))}
               </div>
-              <span className="text-brand/50 text-[5px] shrink-0">+ Add</span>
+              <span className="text-brand/70 text-[5.5px] shrink-0">+ Add</span>
             </div>
 
             {/* Grid */}
@@ -145,12 +145,12 @@ function DashboardScreen() {
               {/* Left — chart + agent table */}
               <div className="flex flex-col gap-1.5">
                 {/* Chart */}
-                <div className="bg-white/[0.02] border border-white/[0.04] rounded p-1.5">
+                <div className="bg-white/[0.04] border border-white/[0.08] rounded p-1.5">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-white/30 text-[5px] uppercase tracking-wider">Task Volume — 30d</span>
+                    <span className="text-white/50 text-[5.5px] uppercase tracking-wider">Task Volume — 30d</span>
                     <div className="flex gap-1">
                       {["1D", "7D", "30D", "ALL"].map((t, i) => (
-                        <span key={t} className={`text-[5px] px-1 py-px rounded ${i === 2 ? "bg-brand/20 text-brand" : "text-white/20"}`}>{t}</span>
+                        <span key={t} className={`text-[5.5px] px-1 py-px rounded ${i === 2 ? "bg-brand/25 text-brand" : "text-white/35"}`}>{t}</span>
                       ))}
                     </div>
                   </div>
@@ -158,9 +158,9 @@ function DashboardScreen() {
                 </div>
 
                 {/* Agent table with integration sources */}
-                <div className="bg-white/[0.02] border border-white/[0.04] rounded p-1.5 flex-1">
-                  <div className="text-white/30 text-[5px] uppercase tracking-wider mb-1">Live Agents</div>
-                  <div className="grid grid-cols-[1fr_0.7fr_0.5fr_0.3fr_0.3fr] gap-1 text-[5px] text-white/20 uppercase tracking-wider pb-0.5 border-b border-white/[0.04] mb-0.5">
+                <div className="bg-white/[0.04] border border-white/[0.08] rounded p-1.5 flex-1">
+                  <div className="text-white/50 text-[5.5px] uppercase tracking-wider mb-1">Live Agents</div>
+                  <div className="grid grid-cols-[1fr_0.7fr_0.5fr_0.3fr_0.3fr] gap-1 text-[5.5px] text-white/40 uppercase tracking-wider pb-0.5 border-b border-white/[0.08] mb-0.5">
                     <span>Agent</span><span>Status</span><span>Output</span><span>Source</span><span>HP</span>
                   </div>
                   {[
@@ -173,20 +173,20 @@ function DashboardScreen() {
                     { name: "Data Agent", status: "ETL pipeline", output: "12TB", health: 99, src: "Sheets", srcBg: "#0F9D58" },
                     { name: "Legal Agent", status: "NDA analysis", output: "12", health: 96, src: "Gmail", srcBg: "#EA4335" },
                   ].map((a) => (
-                    <div key={a.name} className="grid grid-cols-[1fr_0.7fr_0.5fr_0.3fr_0.3fr] gap-1 py-[3px] border-b border-white/[0.02] items-center">
-                      <span className="text-white/60 text-[6px] font-medium flex items-center gap-1">
-                        <span className="w-1 h-1 rounded-full bg-green-500/70" />{a.name}
+                    <div key={a.name} className="grid grid-cols-[1fr_0.7fr_0.5fr_0.3fr_0.3fr] gap-1 py-[3px] border-b border-white/[0.05] items-center">
+                      <span className="text-white/80 text-[6.5px] font-medium flex items-center gap-1">
+                        <span className="w-1 h-1 rounded-full bg-green-400/80" />{a.name}
                       </span>
-                      <span className="text-white/30 text-[6px]">{a.status}</span>
-                      <span className="text-white/50 text-[6px]">{a.output}</span>
+                      <span className="text-white/50 text-[6.5px]">{a.status}</span>
+                      <span className="text-white/70 text-[6.5px]">{a.output}</span>
                       <div className="flex items-center gap-0.5">
                         <div className="w-2.5 h-2.5 rounded-[1px] flex items-center justify-center" style={{ background: a.srcBg, color: "#fff" }}>
                           <BrandIcon name={a.src} size={6} />
                         </div>
-                        <span className="text-white/25 text-[5px]">{a.src}</span>
+                        <span className="text-white/40 text-[5.5px]">{a.src}</span>
                       </div>
-                      <div className="h-[3px] rounded-full bg-white/[0.06] overflow-hidden">
-                        <div className="h-full rounded-full bg-green-500/60" style={{ width: `${a.health}%` }} />
+                      <div className="h-[3px] rounded-full bg-white/[0.08] overflow-hidden">
+                        <div className="h-full rounded-full bg-green-400/70" style={{ width: `${a.health}%` }} />
                       </div>
                     </div>
                   ))}
@@ -196,8 +196,8 @@ function DashboardScreen() {
               {/* Middle — Workflows + Data Flow */}
               <div className="flex flex-col gap-1.5">
                 {/* Integration data flow */}
-                <div className="bg-white/[0.02] border border-white/[0.04] rounded p-1.5">
-                  <div className="text-white/30 text-[5px] uppercase tracking-wider mb-1">Data Flow — Live</div>
+                <div className="bg-white/[0.04] border border-white/[0.08] rounded p-1.5">
+                  <div className="text-white/50 text-[5.5px] uppercase tracking-wider mb-1">Data Flow — Live</div>
                   {[
                     { from: "HubSpot", fromBg: "#FF7A59", to: "Sales Agent", arrow: "→", msg: "1,240 contacts synced", rate: "2.1k/hr" },
                     { from: "Stripe", fromBg: "#635BFF", to: "Finance Agent", arrow: "→", msg: "340 invoices queued", rate: "890/hr" },
@@ -206,21 +206,21 @@ function DashboardScreen() {
                     { from: "GitHub", fromBg: "#24292e", to: "QA Agent", arrow: "→", msg: "PR checks active", rate: "47/hr" },
                     { from: "Gmail", fromBg: "#EA4335", to: "Legal Agent", arrow: "→", msg: "Contract inbox scan", rate: "12/hr" },
                   ].map((flow, i) => (
-                    <div key={i} className="flex items-center gap-1 py-[3px] border-b border-white/[0.02] last:border-none">
+                    <div key={i} className="flex items-center gap-1 py-[3px] border-b border-white/[0.05] last:border-none">
                       <div className="w-2.5 h-2.5 rounded-[2px] shrink-0 flex items-center justify-center text-white" style={{ background: flow.fromBg }}>
                         <BrandIcon name={flow.from} size={7} />
                       </div>
-                      <span className="text-white/40 text-[5px] w-[32px] shrink-0 truncate">{flow.from}</span>
-                      <span className="text-brand/40 text-[6px]">{flow.arrow}</span>
-                      <span className="text-white/30 text-[5px] flex-1 truncate">{flow.to}</span>
-                      <span className="text-white/15 text-[4px] shrink-0">{flow.rate}</span>
+                      <span className="text-white/60 text-[5.5px] w-[32px] shrink-0 truncate">{flow.from}</span>
+                      <span className="text-brand/70 text-[7px]">{flow.arrow}</span>
+                      <span className="text-white/50 text-[5.5px] flex-1 truncate">{flow.to}</span>
+                      <span className="text-white/30 text-[5px] shrink-0">{flow.rate}</span>
                     </div>
                   ))}
                 </div>
 
                 {/* Workflows with integration labels */}
-                <div className="bg-white/[0.02] border border-white/[0.04] rounded p-1.5 flex-1">
-                  <div className="text-white/30 text-[5px] uppercase tracking-wider mb-1">Active Workflows</div>
+                <div className="bg-white/[0.04] border border-white/[0.08] rounded p-1.5 flex-1">
+                  <div className="text-white/50 text-[5.5px] uppercase tracking-wider mb-1">Active Workflows</div>
                   {[
                     { name: "HubSpot → Score → Route → Salesforce", steps: 4, at: 3, color: "#EF4444", apps: [{ n: "HubSpot", bg: "#FF7A59" }, { n: "Salesforce", bg: "#00A1E0" }] },
                     { name: "Stripe → Parse → Match → Slack notify", steps: 4, at: 4, color: "#10B981", apps: [{ n: "Stripe", bg: "#635BFF" }, { n: "Slack", bg: "#4A154B" }] },
@@ -228,7 +228,7 @@ function DashboardScreen() {
                     { name: "LinkedIn → Screen → Score → Notion", steps: 4, at: 4, color: "#A855F7", apps: [{ n: "LinkedIn", bg: "#0A66C2" }, { n: "Notion", bg: "#191919" }] },
                     { name: "Gmail → Extract → Jira → Slack alert", steps: 4, at: 1, color: "#F59E0B", apps: [{ n: "Gmail", bg: "#EA4335" }, { n: "Jira", bg: "#0052CC" }, { n: "Slack", bg: "#4A154B" }] },
                   ].map((wf) => (
-                    <div key={wf.name} className="py-1 border-b border-white/[0.03] last:border-none">
+                    <div key={wf.name} className="py-1 border-b border-white/[0.06] last:border-none">
                       <div className="flex items-center gap-1 mb-0.5">
                         <div className="flex -space-x-0.5">
                           {wf.apps.map((app, i) => (
@@ -237,11 +237,11 @@ function DashboardScreen() {
                             </div>
                           ))}
                         </div>
-                        <span className="text-white/50 text-[5px] truncate">{wf.name}</span>
+                        <span className="text-white/65 text-[5.5px] truncate">{wf.name}</span>
                       </div>
                       <div className="flex gap-0.5">
                         {Array.from({ length: wf.steps }).map((_, i) => (
-                          <div key={i} className="flex-1 h-[3px] rounded-full" style={{ background: i < wf.at ? wf.color : "rgba(255,255,255,0.04)" }} />
+                          <div key={i} className="flex-1 h-[3px] rounded-full" style={{ background: i < wf.at ? wf.color : "rgba(255,255,255,0.06)" }} />
                         ))}
                       </div>
                     </div>
@@ -252,55 +252,55 @@ function DashboardScreen() {
               {/* Right — Activity + Integration Health */}
               <div className="flex flex-col gap-1.5">
                 {/* Activity feed with app references */}
-                <div className="bg-white/[0.02] border border-white/[0.04] rounded p-1.5 flex-1">
-                  <div className="text-white/30 text-[5px] uppercase tracking-wider mb-1">Activity Feed</div>
+                <div className="bg-white/[0.04] border border-white/[0.08] rounded p-1.5 flex-1">
+                  <div className="text-white/50 text-[5.5px] uppercase tracking-wider mb-1">Activity Feed</div>
                   {[
-                    { t: "2s", app: "HubSpot", bg: "#FF7A59", e: "HubSpot → Sales Agent scored 127 leads", c: "text-green-500/50" },
-                    { t: "8s", app: "Slack", bg: "#4A154B", e: "Slack alert sent → VP notified (VIP)", c: "text-yellow-500/50" },
-                    { t: "14s", app: "Stripe", bg: "#635BFF", e: "Stripe webhook → $2.4M batch approved", c: "text-green-500/50" },
-                    { t: "45s", app: "Salesforce", bg: "#00A1E0", e: "Salesforce sync → 340 records updated", c: "text-blue-400/50" },
-                    { t: "1m", app: "Jira", bg: "#0052CC", e: "Jira → 12 compliance tasks created", c: "text-blue-400/50" },
-                    { t: "3m", app: "LinkedIn", bg: "#0A66C2", e: "LinkedIn → 47 candidates imported", c: "text-green-500/50" },
-                    { t: "5m", app: "Gmail", bg: "#EA4335", e: "Gmail → 3 NDAs flagged for review", c: "text-yellow-500/50" },
-                    { t: "8m", app: "Sheets", bg: "#0F9D58", e: "Sheets → Q3 forecast updated", c: "text-green-500/50" },
-                    { t: "12m", app: "Zapier", bg: "#FF4A00", e: "Zapier trigger → onboarding flow started", c: "text-blue-400/50" },
-                    { t: "15m", app: "Discord", bg: "#5865F2", e: "Discord bot → dev deploy notification", c: "text-blue-400/50" },
+                    { t: "2s", app: "HubSpot", bg: "#FF7A59", e: "HubSpot → Sales Agent scored 127 leads", c: "text-green-400/80" },
+                    { t: "8s", app: "Slack", bg: "#4A154B", e: "Slack alert sent → VP notified (VIP)", c: "text-yellow-400/80" },
+                    { t: "14s", app: "Stripe", bg: "#635BFF", e: "Stripe webhook → $2.4M batch approved", c: "text-green-400/80" },
+                    { t: "45s", app: "Salesforce", bg: "#00A1E0", e: "Salesforce sync → 340 records updated", c: "text-blue-400/80" },
+                    { t: "1m", app: "Jira", bg: "#0052CC", e: "Jira → 12 compliance tasks created", c: "text-blue-400/80" },
+                    { t: "3m", app: "LinkedIn", bg: "#0A66C2", e: "LinkedIn → 47 candidates imported", c: "text-green-400/80" },
+                    { t: "5m", app: "Gmail", bg: "#EA4335", e: "Gmail → 3 NDAs flagged for review", c: "text-yellow-400/80" },
+                    { t: "8m", app: "Sheets", bg: "#0F9D58", e: "Sheets → Q3 forecast updated", c: "text-green-400/80" },
+                    { t: "12m", app: "Zapier", bg: "#FF4A00", e: "Zapier trigger → onboarding flow started", c: "text-blue-400/80" },
+                    { t: "15m", app: "Discord", bg: "#5865F2", e: "Discord bot → dev deploy notification", c: "text-blue-400/80" },
                   ].map((a, i) => (
-                    <div key={i} className="flex gap-1 py-[3px] border-b border-white/[0.02] last:border-none items-start">
-                      <span className="text-white/15 text-[5px] w-[16px] shrink-0 text-right">{a.t}</span>
+                    <div key={i} className="flex gap-1 py-[3px] border-b border-white/[0.05] last:border-none items-start">
+                      <span className="text-white/35 text-[5.5px] w-[16px] shrink-0 text-right">{a.t}</span>
                       <div className="w-2.5 h-2.5 rounded-[1px] shrink-0 mt-px flex items-center justify-center text-white" style={{ background: a.bg }}>
                         <BrandIcon name={a.app} size={6} />
                       </div>
-                      <span className={`text-[5px] leading-tight ${a.c}`}>{a.e}</span>
+                      <span className={`text-[5.5px] leading-tight ${a.c}`}>{a.e}</span>
                     </div>
                   ))}
                 </div>
 
                 {/* Integration health grid */}
-                <div className="bg-white/[0.02] border border-white/[0.04] rounded p-1.5">
-                  <div className="text-white/30 text-[5px] uppercase tracking-wider mb-1">Integration Health</div>
+                <div className="bg-white/[0.04] border border-white/[0.08] rounded p-1.5">
+                  <div className="text-white/50 text-[5.5px] uppercase tracking-wider mb-1">Integration Health</div>
                   <div className="grid grid-cols-4 gap-1">
                     {INTEGRATIONS.slice(0, 12).map((app) => (
                       <div key={app.name} className="flex flex-col items-center gap-0.5 py-0.5">
                         <div className="w-3.5 h-3.5 rounded-[2px] flex items-center justify-center" style={{ background: app.bg, color: app.color }}>
                           <BrandIcon name={app.name} size={9} />
                         </div>
-                        <span className="text-white/20 text-[4px]">{app.name}</span>
-                        <span className="w-1 h-1 rounded-full bg-green-500/60" />
+                        <span className="text-white/40 text-[4.5px]">{app.name}</span>
+                        <span className="w-1 h-1 rounded-full bg-green-400/70" />
                       </div>
                     ))}
                   </div>
-                  <div className="flex items-center justify-between mt-1 pt-1 border-t border-white/[0.03]">
-                    <span className="text-white/15 text-[5px]">API calls / 24h</span>
-                    <span className="text-white/40 text-[6px] font-semibold">1.2M</span>
+                  <div className="flex items-center justify-between mt-1 pt-1 border-t border-white/[0.06]">
+                    <span className="text-white/35 text-[5.5px]">API calls / 24h</span>
+                    <span className="text-white/60 text-[6.5px] font-semibold">1.2M</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-white/15 text-[5px]">Avg latency</span>
-                    <span className="text-green-500/60 text-[6px] font-semibold">142ms</span>
+                    <span className="text-white/35 text-[5.5px]">Avg latency</span>
+                    <span className="text-green-400/80 text-[6.5px] font-semibold">142ms</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-white/15 text-[5px]">Success rate</span>
-                    <span className="text-green-500/60 text-[6px] font-semibold">99.98%</span>
+                    <span className="text-white/35 text-[5.5px]">Success rate</span>
+                    <span className="text-green-400/80 text-[6.5px] font-semibold">99.98%</span>
                   </div>
                 </div>
               </div>
