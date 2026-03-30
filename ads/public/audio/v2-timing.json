@@ -1,7 +1,7 @@
 {
   "videoId": "video2",
   "fps": 30,
-  "totalDurationFrames": 999,
+  "totalDurationFrames": 1088,
   "sentences": [
     {
       "key": "v2-s1",
@@ -15,49 +15,49 @@
       "key": "v2-s2",
       "visual": "ThursdayBurnout",
       "startFrame": 90,
-      "durationFrames": 166,
+      "durationFrames": 190,
       "audioFile": "v2-s2.mp3"
     },
     {
       "key": "v2-s3",
       "visual": "CostOfBusiness",
-      "startFrame": 256,
-      "durationFrames": 95,
+      "startFrame": 280,
+      "durationFrames": 105,
       "audioFile": "v2-s3.mp3"
     },
     {
       "key": "v2-s4",
       "visual": "AgentsReason",
-      "startFrame": 351,
-      "durationFrames": 155,
+      "startFrame": 385,
+      "durationFrames": 175,
       "audioFile": "v2-s4.mp3"
     },
     {
       "key": "v2-s5",
       "visual": "PerfectTeammate",
-      "startFrame": 506,
-      "durationFrames": 151,
+      "startFrame": 560,
+      "durationFrames": 154,
       "audioFile": "v2-s5.mp3"
     },
     {
       "key": "v2-s6",
       "visual": "WorkloadCounter",
-      "startFrame": 657,
-      "durationFrames": 95,
+      "startFrame": 714,
+      "durationFrames": 98,
       "audioFile": "v2-s6.mp3"
     },
     {
       "key": "v2-s7",
       "visual": "RevenueUpCostsDown",
-      "startFrame": 752,
+      "startFrame": 812,
       "durationFrames": 136,
       "audioFile": "v2-s7.mp3"
     },
     {
       "key": "v2-s8",
       "visual": "CTAEndCard",
-      "startFrame": 888,
-      "durationFrames": 111,
+      "startFrame": 948,
+      "durationFrames": 80,
       "audioFile": "v2-s8.mp3"
     }
   ]

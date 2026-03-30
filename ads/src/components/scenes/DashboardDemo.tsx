@@ -3,71 +3,861 @@ import {
   AbsoluteFill,
   useCurrentFrame,
   interpolate,
-  spring,
 } from "remotion";
-import { COLORS, FPS } from "../../brand";
-import { FONT_FAMILY_SANS } from "../../fonts";
-import {
-  DashboardShell,
-  Sidebar,
-  OrchestratorGraph,
-  MetricsPanel,
-  TaskQueue,
-  MouseCursor,
-} from "../dashboard";
+import { COLORS } from "../../brand";
+import { FONT_FAMILY_SANS, FONT_FAMILY_MONO } from "../../fonts";
 
-const CURSOR_PATH = [
-  { x: 960, y: 400, frame: 90 },
-  { x: 700, y: 540, frame: 110 },
-  { x: 960, y: 620, frame: 130 },
+/* ---- Integration data for the dashboard ---- */
+const INTEGRATIONS = [
+  { name: "Slack", bg: "#4A154B" },
+  { name: "Salesforce", bg: "#00A1E0" },
+  { name: "HubSpot", bg: "#FF7A59" },
+  { name: "Stripe", bg: "#635BFF" },
+  { name: "Gmail", bg: "#EA4335" },
+  { name: "GitHub", bg: "#24292e" },
+  { name: "Jira", bg: "#0052CC" },
+  { name: "Notion", bg: "#191919" },
+  { name: "Zapier", bg: "#FF4A00" },
+  { name: "Sheets", bg: "#0F9D58" },
+  { name: "Twilio", bg: "#F22F46" },
+  { name: "Discord", bg: "#5865F2" },
+  { name: "LinkedIn", bg: "#0A66C2" },
+  { name: "Shopify", bg: "#96BF48" },
+  { name: "Zendesk", bg: "#03363D" },
+  { name: "Airtable", bg: "#18BFFF" },
 ];
 
+const METRICS = [
+  { label: "Active Agents", val: "16", change: "+3", changeColor: "#10B981" },
+  { label: "Connected Apps", val: "16", change: "+2", changeColor: "#10B981" },
+  { label: "Tasks / 24h", val: "12,847", change: "+847", changeColor: "#10B981" },
+  { label: "Avg Response", val: "0.8s", change: "-0.2s", changeColor: "#10B981" },
+  { label: "Cost Saved", val: "$284k", change: "+$42k", changeColor: "#10B981" },
+  { label: "Error Rate", val: "0.03%", change: "-0.01%", changeColor: "#10B981" },
+];
+
+const AGENTS = [
+  { name: "Sales Agent", status: "Scoring leads", output: "3,847", health: 98, src: "HubSpot", srcBg: "#FF7A59" },
+  { name: "Finance Agent", status: "Invoice batch", output: "$2.4M", health: 100, src: "Stripe", srcBg: "#635BFF" },
+  { name: "Support Agent", status: "Routing", output: "238", health: 95, src: "Zendesk", srcBg: "#03363D" },
+  { name: "Marketing", status: "Campaign opt.", output: "+340%", health: 100, src: "LinkedIn", srcBg: "#0A66C2" },
+  { name: "HR Agent", status: "Screening", output: "142", health: 97, src: "Notion", srcBg: "#191919" },
+  { name: "Compliance", status: "SOC2 checks", output: "Pass", health: 100, src: "Jira", srcBg: "#0052CC" },
+  { name: "Data Agent", status: "ETL pipeline", output: "12TB", health: 99, src: "Sheets", srcBg: "#0F9D58" },
+  { name: "Legal Agent", status: "NDA analysis", output: "12", health: 96, src: "Gmail", srcBg: "#EA4335" },
+];
+
+const ACTIVITY_FEED = [
+  { t: "2s", e: "Sales Agent scored 127 leads", color: "#10B981" },
+  { t: "8s", e: "Slack alert sent to VP (VIP)", color: "#F59E0B" },
+  { t: "14s", e: "$2.4M invoice batch approved", color: "#10B981" },
+  { t: "45s", e: "Salesforce sync: 340 records", color: "#3B82F6" },
+  { t: "1m", e: "12 compliance tasks created", color: "#3B82F6" },
+  { t: "3m", e: "47 candidates imported", color: "#10B981" },
+  { t: "5m", e: "3 NDAs flagged for review", color: "#F59E0B" },
+  { t: "8m", e: "Q3 forecast updated", color: "#10B981" },
+  { t: "12m", e: "Onboarding flow started", color: "#3B82F6" },
+  { t: "15m", e: "Dev deploy notification sent", color: "#3B82F6" },
+];
+
+/* ---- Dashboard caption overlay ---- */
+const DashboardCaption: React.FC<{ text: string; opacity: number }> = ({
+  text,
+  opacity,
+}) => (
+  <div
+    style={{
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      right: 0,
+      height: 120,
+      background: "linear-gradient(transparent, rgba(0,0,0,0.85))",
+      display: "flex",
+      alignItems: "flex-end",
+      justifyContent: "center",
+      paddingBottom: 32,
+      opacity,
+      zIndex: 50,
+    }}
+  >
+    <div
+      style={{
+        fontFamily: FONT_FAMILY_SANS,
+        fontSize: 42,
+        fontWeight: 400,
+        color: "#FFFFFF",
+        textShadow: "0 2px 20px rgba(0,0,0,0.9)",
+        letterSpacing: "-0.01em",
+      }}
+    >
+      {text}
+    </div>
+  </div>
+);
+
+/* ---- Mini chart SVG ---- */
+const MiniChart: React.FC<{ frame: number }> = ({ frame }) => {
+  const points = [
+    12, 18, 15, 22, 28, 25, 35, 30, 38, 42, 36, 45, 50, 48, 55, 52, 60, 58, 65, 62,
+    68, 72, 70, 75, 78, 74, 80, 85, 82, 88,
+  ];
+
+  const visiblePoints = Math.min(
+    points.length,
+    Math.floor(interpolate(frame, [0, 120], [0, points.length], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+    }))
+  );
+
+  const pathD = points
+    .slice(0, visiblePoints)
+    .map((y, i) => `${i === 0 ? "M" : "L"} ${i * 18} ${100 - y}`)
+    .join(" ");
+
+  return (
+    <svg width="100%" height={80} viewBox="0 0 540 100" preserveAspectRatio="none">
+      <path
+        d={pathD}
+        fill="none"
+        stroke={COLORS.brand}
+        strokeWidth={2}
+        opacity={0.8}
+      />
+      {/* Area fill */}
+      {visiblePoints > 1 && (
+        <path
+          d={`${pathD} L ${(visiblePoints - 1) * 18} 100 L 0 100 Z`}
+          fill={`${COLORS.brand}15`}
+        />
+      )}
+    </svg>
+  );
+};
+
+/* ---- The large dashboard panel (rendered at 2x size for zoom) ---- */
+const FullDashboard: React.FC<{ frame: number }> = ({ frame }) => {
+  // Pulsing dots
+  const pulse = 0.5 + 0.5 * Math.sin(frame * 0.12);
+
+  // Metric counter animation
+  const counterProgress = interpolate(frame, [30, 90], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+
+  // Activity feed items appear over time
+  const visibleActivities = Math.min(
+    ACTIVITY_FEED.length,
+    Math.floor(interpolate(frame, [100, 250], [0, ACTIVITY_FEED.length], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+    }))
+  );
+
+  return (
+    <div
+      style={{
+        width: 3200,
+        height: 1800,
+        backgroundColor: "#0a0a0c",
+        fontFamily: FONT_FAMILY_MONO,
+        fontSize: 14,
+        color: "#FFFFFF",
+        display: "flex",
+        position: "relative",
+      }}
+    >
+      {/* Sidebar */}
+      <div
+        style={{
+          width: 80,
+          backgroundColor: "#111116",
+          borderRight: "1px solid rgba(255,255,255,0.08)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          padding: "16px 0",
+          gap: 12,
+          flexShrink: 0,
+        }}
+      >
+        {/* Logo */}
+        <div
+          style={{
+            width: 36,
+            height: 36,
+            borderRadius: 8,
+            background: `${COLORS.brand}30`,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: COLORS.brand,
+            fontWeight: 700,
+            fontSize: 14,
+          }}
+        >
+          A
+        </div>
+        <div style={{ width: 30, height: 1, background: "rgba(255,255,255,0.1)" }} />
+        {["Dashboard", "Agents", "Integrations", "Workflows", "Logs", "Settings"].map((label, i) => (
+          <div
+            key={label}
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: 6,
+              background: i === 0 ? "rgba(255,255,255,0.1)" : "transparent",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 16,
+              color: i === 0 ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.35)",
+            }}
+          >
+            {["O", "A", "I", "W", "L", "S"][i]}
+          </div>
+        ))}
+        <div style={{ width: 30, height: 1, background: "rgba(255,255,255,0.1)", marginTop: 4 }} />
+        <div
+          style={{
+            fontSize: 9,
+            color: "rgba(255,255,255,0.3)",
+            textTransform: "uppercase",
+            letterSpacing: "0.1em",
+          }}
+        >
+          Apps
+        </div>
+        {INTEGRATIONS.slice(0, 6).map((app) => (
+          <div
+            key={app.name}
+            style={{
+              width: 28,
+              height: 28,
+              borderRadius: 5,
+              background: app.bg,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 10,
+              color: "#fff",
+              fontWeight: 700,
+            }}
+          >
+            {app.name[0]}
+          </div>
+        ))}
+        <div style={{ fontSize: 9, color: "rgba(255,255,255,0.3)" }}>+10</div>
+      </div>
+
+      {/* Main content */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
+        {/* Top nav */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "12px 24px",
+            borderBottom: "1px solid rgba(255,255,255,0.08)",
+            backgroundColor: "#0e0e12",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
+            <span
+              style={{
+                fontFamily: FONT_FAMILY_SANS,
+                color: "rgba(255,255,255,0.7)",
+                fontWeight: 600,
+                fontSize: 16,
+              }}
+            >
+              Agent Operations
+            </span>
+            <div style={{ display: "flex", gap: 6 }}>
+              {["Overview", "Agents", "Integrations", "Workflows", "Logs"].map((tab, i) => (
+                <span
+                  key={tab}
+                  style={{
+                    padding: "4px 10px",
+                    borderRadius: 4,
+                    fontSize: 12,
+                    background: i === 0 ? "rgba(255,255,255,0.12)" : "transparent",
+                    color: i === 0 ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.4)",
+                  }}
+                >
+                  {tab}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <div
+              style={{
+                width: 8,
+                height: 8,
+                borderRadius: "50%",
+                backgroundColor: "#10B981",
+                opacity: 0.5 + pulse * 0.5,
+                boxShadow: "0 0 6px rgba(16,185,129,0.4)",
+              }}
+            />
+            <span style={{ color: "rgba(16,185,129,0.8)", fontSize: 12 }}>
+              All systems operational
+            </span>
+          </div>
+        </div>
+
+        {/* Body */}
+        <div style={{ flex: 1, padding: 20, overflow: "hidden" }}>
+          {/* Metrics strip */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(6, 1fr)",
+              gap: 12,
+              marginBottom: 16,
+            }}
+          >
+            {METRICS.map((m, i) => {
+              const animVal = m.val.includes(",")
+                ? Math.floor(
+                    interpolate(counterProgress, [0, 1], [0, parseInt(m.val.replace(",", ""))], {
+                      extrapolateLeft: "clamp",
+                      extrapolateRight: "clamp",
+                    })
+                  ).toLocaleString()
+                : m.val;
+
+              return (
+                <div
+                  key={m.label}
+                  style={{
+                    background: "rgba(255,255,255,0.04)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    borderRadius: 6,
+                    padding: "10px 14px",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: 10,
+                      color: "rgba(255,255,255,0.45)",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.08em",
+                    }}
+                  >
+                    {m.label}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: FONT_FAMILY_SANS,
+                      fontSize: 22,
+                      fontWeight: 600,
+                      color: "rgba(255,255,255,0.95)",
+                      marginTop: 4,
+                    }}
+                  >
+                    {animVal}
+                  </div>
+                  <div style={{ fontSize: 10, color: m.changeColor, marginTop: 2 }}>
+                    {m.change}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Integration strip */}
+          <div
+            style={{
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              borderRadius: 6,
+              padding: "8px 14px",
+              marginBottom: 16,
+              display: "flex",
+              alignItems: "center",
+              gap: 16,
+            }}
+          >
+            <span
+              style={{
+                fontSize: 10,
+                color: "rgba(255,255,255,0.4)",
+                textTransform: "uppercase",
+                letterSpacing: "0.08em",
+                flexShrink: 0,
+              }}
+            >
+              Connected
+            </span>
+            <div style={{ display: "flex", gap: 12, flex: 1, overflow: "hidden" }}>
+              {INTEGRATIONS.map((app) => (
+                <div
+                  key={app.name}
+                  style={{ display: "flex", alignItems: "center", gap: 4, flexShrink: 0 }}
+                >
+                  <div
+                    style={{
+                      width: 18,
+                      height: 18,
+                      borderRadius: 3,
+                      background: app.bg,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: 9,
+                      fontWeight: 700,
+                      color: "#fff",
+                    }}
+                  >
+                    {app.name[0]}
+                  </div>
+                  <span style={{ fontSize: 10, color: "rgba(255,255,255,0.5)" }}>{app.name}</span>
+                  <div
+                    style={{
+                      width: 6,
+                      height: 6,
+                      borderRadius: "50%",
+                      background: "rgba(16,185,129,0.7)",
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+            <span style={{ fontSize: 10, color: `${COLORS.brand}99`, flexShrink: 0 }}>+ Add</span>
+          </div>
+
+          {/* Main grid: agent table + chart left, activity feed right */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1.4fr 0.6fr",
+              gap: 16,
+              height: "calc(100% - 140px)",
+            }}
+          >
+            {/* Left column */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              {/* Chart */}
+              <div
+                style={{
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: 6,
+                  padding: 14,
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginBottom: 8,
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: 10,
+                      color: "rgba(255,255,255,0.5)",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.08em",
+                    }}
+                  >
+                    Task Volume - 30d
+                  </span>
+                  <div style={{ display: "flex", gap: 6 }}>
+                    {["1D", "7D", "30D", "ALL"].map((t, i) => (
+                      <span
+                        key={t}
+                        style={{
+                          fontSize: 10,
+                          padding: "2px 6px",
+                          borderRadius: 3,
+                          background: i === 2 ? `${COLORS.brand}40` : "transparent",
+                          color: i === 2 ? COLORS.brand : "rgba(255,255,255,0.35)",
+                        }}
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <MiniChart frame={frame} />
+              </div>
+
+              {/* Agent table */}
+              <div
+                style={{
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: 6,
+                  padding: 14,
+                  flex: 1,
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 10,
+                    color: "rgba(255,255,255,0.5)",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.08em",
+                    marginBottom: 10,
+                  }}
+                >
+                  Live Agents
+                </div>
+                {/* Table header */}
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1.2fr 0.8fr 0.5fr 0.5fr 0.4fr",
+                    gap: 8,
+                    fontSize: 10,
+                    color: "rgba(255,255,255,0.4)",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.06em",
+                    paddingBottom: 6,
+                    borderBottom: "1px solid rgba(255,255,255,0.08)",
+                    marginBottom: 4,
+                  }}
+                >
+                  <span>Agent</span>
+                  <span>Status</span>
+                  <span>Output</span>
+                  <span>Source</span>
+                  <span>Health</span>
+                </div>
+                {/* Table rows */}
+                {AGENTS.map((a, i) => {
+                  const rowOpacity = interpolate(frame, [20 + i * 8, 28 + i * 8], [0, 1], {
+                    extrapolateLeft: "clamp",
+                    extrapolateRight: "clamp",
+                  });
+                  return (
+                    <div
+                      key={a.name}
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "1.2fr 0.8fr 0.5fr 0.5fr 0.4fr",
+                        gap: 8,
+                        padding: "6px 0",
+                        borderBottom: "1px solid rgba(255,255,255,0.05)",
+                        alignItems: "center",
+                        opacity: rowOpacity,
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: 13,
+                          color: "rgba(255,255,255,0.8)",
+                          fontWeight: 500,
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 6,
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: 7,
+                            height: 7,
+                            borderRadius: "50%",
+                            background: "rgba(16,185,129,0.8)",
+                            opacity: 0.5 + pulse * 0.5,
+                          }}
+                        />
+                        {a.name}
+                      </span>
+                      <span style={{ fontSize: 12, color: "rgba(255,255,255,0.5)" }}>
+                        {a.status}
+                      </span>
+                      <span style={{ fontSize: 12, color: "rgba(255,255,255,0.7)" }}>
+                        {a.output}
+                      </span>
+                      <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                        <div
+                          style={{
+                            width: 16,
+                            height: 16,
+                            borderRadius: 2,
+                            background: a.srcBg,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: 8,
+                            fontWeight: 700,
+                            color: "#fff",
+                          }}
+                        >
+                          {a.src[0]}
+                        </div>
+                        <span style={{ fontSize: 10, color: "rgba(255,255,255,0.4)" }}>
+                          {a.src}
+                        </span>
+                      </div>
+                      <div
+                        style={{
+                          height: 5,
+                          borderRadius: 3,
+                          background: "rgba(255,255,255,0.08)",
+                          overflow: "hidden",
+                        }}
+                      >
+                        <div
+                          style={{
+                            height: "100%",
+                            borderRadius: 3,
+                            background: "rgba(16,185,129,0.7)",
+                            width: `${a.health}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Right column: Activity feed */}
+            <div
+              style={{
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                borderRadius: 6,
+                padding: 14,
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 10,
+                  color: "rgba(255,255,255,0.5)",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.08em",
+                  marginBottom: 10,
+                }}
+              >
+                Activity Feed
+              </div>
+              {ACTIVITY_FEED.map((a, i) => (
+                <div
+                  key={i}
+                  style={{
+                    display: "flex",
+                    gap: 8,
+                    padding: "6px 0",
+                    borderBottom: "1px solid rgba(255,255,255,0.05)",
+                    alignItems: "flex-start",
+                    opacity: i < visibleActivities ? 1 : 0,
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: 10,
+                      color: "rgba(255,255,255,0.35)",
+                      width: 24,
+                      flexShrink: 0,
+                      textAlign: "right",
+                    }}
+                  >
+                    {a.t}
+                  </span>
+                  <div
+                    style={{
+                      width: 6,
+                      height: 6,
+                      borderRadius: "50%",
+                      background: a.color,
+                      marginTop: 4,
+                      flexShrink: 0,
+                    }}
+                  />
+                  <span style={{ fontSize: 12, color: a.color, lineHeight: 1.3 }}>
+                    {a.e}
+                  </span>
+                </div>
+              ))}
+
+              {/* Integration health section */}
+              <div style={{ marginTop: "auto", paddingTop: 14 }}>
+                <div
+                  style={{
+                    fontSize: 10,
+                    color: "rgba(255,255,255,0.5)",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.08em",
+                    marginBottom: 8,
+                  }}
+                >
+                  Integration Health
+                </div>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(4, 1fr)",
+                    gap: 8,
+                  }}
+                >
+                  {INTEGRATIONS.slice(0, 8).map((app) => (
+                    <div
+                      key={app.name}
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: 3,
+                        padding: "4px 0",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 22,
+                          height: 22,
+                          borderRadius: 4,
+                          background: app.bg,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: 10,
+                          fontWeight: 700,
+                          color: "#fff",
+                        }}
+                      >
+                        {app.name[0]}
+                      </div>
+                      <span style={{ fontSize: 8, color: "rgba(255,255,255,0.4)" }}>
+                        {app.name}
+                      </span>
+                      <div
+                        style={{
+                          width: 6,
+                          height: 6,
+                          borderRadius: "50%",
+                          background: "rgba(16,185,129,0.7)",
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginTop: 8,
+                    paddingTop: 6,
+                    borderTop: "1px solid rgba(255,255,255,0.06)",
+                  }}
+                >
+                  <span style={{ fontSize: 10, color: "rgba(255,255,255,0.35)" }}>
+                    API calls / 24h
+                  </span>
+                  <span
+                    style={{
+                      fontSize: 12,
+                      fontWeight: 600,
+                      color: "rgba(255,255,255,0.6)",
+                    }}
+                  >
+                    1.2M
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ---- Pan-zoom phases ---- */
+// Dashboard is 3200x1800, viewport is 1920x1080
+// Phase 1 (0-30): Wide shot at 60% zoom, centered
+// Phase 2 (30-70): Zoom to metrics area (top-left)
+// Phase 3 (70-120): Pan down to agent table
+// Phase 4 (120-160): Pan to activity feed (right)
+// Phase 5 (160-180): Zoom back out to full view
+// Extended for 300 frames total:
+// Phase 1 (0-50): Wide shot
+// Phase 2 (50-120): Zoom to metrics
+// Phase 3 (120-200): Pan to agent table
+// Phase 4 (200-260): Pan to activity feed
+// Phase 5 (260-300): Zoom back out
+
+function usePanZoom(frame: number) {
+  // Scale: from 0.6 (wide) to 1.2 (zoomed in) and back
+  const scale = interpolate(
+    frame,
+    [0, 50, 60, 120, 130, 200, 210, 260, 270, 300],
+    [0.6, 0.6, 1.05, 1.05, 1.05, 1.05, 1.05, 1.05, 0.6, 0.6],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
+
+  // TranslateX: centered at wide, shift left for metrics, shift right for activity
+  const tx = interpolate(
+    frame,
+    [0, 50, 60, 120, 130, 200, 210, 260, 270, 300],
+    [0, 0, -200, -200, -200, -200, 500, 500, 0, 0],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
+
+  // TranslateY: centered, shift up for metrics, shift down for agents, shift up for activity
+  const ty = interpolate(
+    frame,
+    [0, 50, 60, 120, 130, 200, 210, 260, 270, 300],
+    [0, 0, -300, -300, 100, 100, -100, -100, 0, 0],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
+
+  return { scale, tx, ty };
+}
+
+/* ---- Captions by phase ---- */
+function useCaptions(frame: number) {
+  // Phase 1: "Your operations. One dashboard." (0-50)
+  const c1Opacity = interpolate(frame, [10, 20, 40, 50], [0, 1, 1, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  // Phase 2: "Real-time visibility." (50-120)
+  const c2Opacity = interpolate(frame, [60, 70, 105, 115], [0, 1, 1, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  // Phase 3: "Every agent. Always running." (120-200)
+  const c3Opacity = interpolate(frame, [135, 145, 185, 195], [0, 1, 1, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  // Phase 4: "24/7. Zero downtime." (200-260)
+  const c4Opacity = interpolate(frame, [215, 225, 245, 255], [0, 1, 1, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+
+  return { c1Opacity, c2Opacity, c3Opacity, c4Opacity };
+}
+
+/* ---- Main exported component ---- */
 export const DashboardDemo: React.FC = () => {
   const frame = useCurrentFrame();
 
-  // Frames 0-30: Dashboard fade in
-  const dashboardOpacity = interpolate(frame, [0, 30], [0, 1], {
+  // Fade in
+  const dashboardOpacity = interpolate(frame, [0, 20], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
-  const dashboardScale = spring({
-    frame,
-    fps: FPS,
-    config: { damping: 14, stiffness: 80 },
-    from: 0.85,
-    to: 1,
-  });
-
-  // Frames 30-90: Sidebar agents populate
-  const sidebarCount =
-    frame < 30 ? 0 : Math.min(8, Math.floor((frame - 30) / 7.5));
-
-  // Frames 60-120: Orchestrator graph
-  const orchestratorProgress = interpolate(frame, [60, 120], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-
-  // Frames 100-180: Metrics panel
-  const metricsFrame = Math.max(0, frame - 100);
-
-  // Frames 120-180: Task queue
-  const taskFrame = Math.max(0, frame - 120);
-
-  // Deploy Agent button click at frame 130
-  const isClickFrame =
-    frame >= 130 && frame < 135;
-  const buttonScale = isClickFrame ? 0.95 : 1;
-
-  // Text overlay frames 140-180
-  const textOpacity = interpolate(frame, [140, 155], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
+  const { scale, tx, ty } = usePanZoom(frame);
+  const { c1Opacity, c2Opacity, c3Opacity, c4Opacity } = useCaptions(frame);
 
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.background }}>
+      {/* Dashboard container with pan-zoom */}
       <div
         style={{
           position: "absolute",
@@ -75,81 +865,32 @@ export const DashboardDemo: React.FC = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          transform: `scale(${dashboardScale})`,
+          opacity: dashboardOpacity,
+          overflow: "hidden",
         }}
       >
-        <DashboardShell opacity={dashboardOpacity}>
-          {/* Sidebar */}
-          <Sidebar visibleCount={sidebarCount} />
-
-          {/* Orchestrator Graph */}
-          <OrchestratorGraph progress={orchestratorProgress} />
-
-          {/* Deploy Agent button */}
-          <div
-            style={{
-              position: "absolute",
-              left: 700,
-              top: 600,
-              zIndex: 3,
-            }}
-          >
-            <div
-              style={{
-                backgroundColor: COLORS.brand,
-                color: "#FFFFFF",
-                fontFamily: FONT_FAMILY_SANS,
-                fontSize: 16,
-                fontWeight: 700,
-                padding: "12px 24px",
-                borderRadius: 8,
-                transform: `scale(${buttonScale})`,
-                boxShadow: `0 0 20px ${COLORS.brand}40`,
-                cursor: "pointer",
-              }}
-            >
-              Deploy Agent
-            </div>
-          </div>
-
-          {/* Task Queue */}
-          {frame >= 120 && <TaskQueue frame={taskFrame} />}
-
-          {/* Metrics Panel */}
-          {frame >= 100 && <MetricsPanel frame={metricsFrame} />}
-
-          {/* Mouse Cursor */}
-          {frame >= 90 && (
-            <MouseCursor path={CURSOR_PATH} clickFrame={130} />
-          )}
-        </DashboardShell>
-      </div>
-
-      {/* Text overlay */}
-      {frame >= 140 && (
         <div
           style={{
-            position: "absolute",
-            bottom: 40,
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            opacity: textOpacity,
-            zIndex: 200,
+            transform: `scale(${scale}) translate(${tx}px, ${ty}px)`,
+            transformOrigin: "center center",
           }}
         >
-          <div
-            style={{
-              fontFamily: FONT_FAMILY_SANS,
-              fontSize: 36,
-              fontWeight: 300,
-              color: COLORS.foreground,
-              textShadow: "0 2px 20px rgba(0,0,0,0.8)",
-            }}
-          >
-            AI agents that run your workflows. 24/7.
-          </div>
+          <FullDashboard frame={frame} />
         </div>
+      </div>
+
+      {/* Captions overlay */}
+      {c1Opacity > 0 && (
+        <DashboardCaption text="Your operations. One dashboard." opacity={c1Opacity} />
+      )}
+      {c2Opacity > 0 && (
+        <DashboardCaption text="Real-time visibility." opacity={c2Opacity} />
+      )}
+      {c3Opacity > 0 && (
+        <DashboardCaption text="Every agent. Always running." opacity={c3Opacity} />
+      )}
+      {c4Opacity > 0 && (
+        <DashboardCaption text="24/7. Zero downtime." opacity={c4Opacity} />
       )}
     </AbsoluteFill>
   );

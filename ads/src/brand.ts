@@ -58,12 +58,12 @@ export const FPS = 30;
 export const TRAILER_DURATION_FRAMES = 1050;
 
 export const SCENE_TIMING = {
-  hook:      { from: 0,   duration: 150 },
-  problem:   { from: 150, duration: 210 },
-  reveal:    { from: 360, duration: 60 },
-  dashboard: { from: 420, duration: 180 },
-  impact:    { from: 600, duration: 240 },
-  endCard:   { from: 840, duration: 210 },
+  hook:      { from: 0,   duration: 150 },   // 5s
+  problem:   { from: 150, duration: 180 },   // 6s
+  reveal:    { from: 330, duration: 90 },    // 3s
+  dashboard: { from: 420, duration: 300 },   // 10s (HERO)
+  impact:    { from: 720, duration: 150 },   // 5s
+  endCard:   { from: 870, duration: 180 },   // 6s
 } as const;
 
 export function mulberry32(seed: number) {

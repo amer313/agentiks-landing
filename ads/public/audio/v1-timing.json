@@ -1,7 +1,7 @@
 {
   "videoId": "video1",
   "fps": 30,
-  "totalDurationFrames": 1185,
+  "totalDurationFrames": 1196,
   "sentences": [
     {
       "key": "v1-s1",
@@ -15,63 +15,63 @@
       "key": "v1-s2",
       "visual": "SpreadsheetCopyPaste",
       "startFrame": 90,
-      "durationFrames": 169,
+      "durationFrames": 137,
       "audioFile": "v1-s2.mp3"
     },
     {
       "key": "v1-s3",
       "visual": "TicketRouting",
-      "startFrame": 259,
-      "durationFrames": 131,
+      "startFrame": 227,
+      "durationFrames": 148,
       "audioFile": "v1-s3.mp3"
     },
     {
       "key": "v1-s4",
       "visual": "EveryCompany",
-      "startFrame": 390,
-      "durationFrames": 98,
+      "startFrame": 375,
+      "durationFrames": 104,
       "audioFile": "v1-s4.mp3"
     },
     {
       "key": "v1-s5",
       "visual": "SadChatbot",
-      "startFrame": 488,
-      "durationFrames": 91,
+      "startFrame": 479,
+      "durationFrames": 104,
       "audioFile": "v1-s5.mp3"
     },
     {
       "key": "v1-s6",
       "visual": "ThatsAdorable",
-      "startFrame": 579,
+      "startFrame": 583,
       "durationFrames": 48,
       "audioFile": "v1-s6.mp3"
     },
     {
       "key": "v1-s7",
       "visual": "LogoRevealSync",
-      "startFrame": 627,
-      "durationFrames": 122,
+      "startFrame": 631,
+      "durationFrames": 127,
       "audioFile": "v1-s7.mp3"
     },
     {
       "key": "v1-s8",
       "visual": "PillarCards",
-      "startFrame": 749,
-      "durationFrames": 180,
+      "startFrame": 758,
+      "durationFrames": 168,
       "audioFile": "v1-s8.mp3"
     },
     {
       "key": "v1-s9",
       "visual": "PercentCounter",
-      "startFrame": 929,
-      "durationFrames": 113,
+      "startFrame": 926,
+      "durationFrames": 127,
       "audioFile": "v1-s9.mp3"
     },
     {
       "key": "v1-s10",
       "visual": "CTAEndCard",
-      "startFrame": 1042,
-      "durationFrames": 143,
+      "startFrame": 1053,
+      "durationFrames": 83,
       "audioFile": "v1-s10.mp3"
     }
   ]

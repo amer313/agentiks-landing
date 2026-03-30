@@ -7,49 +7,49 @@ import { AnimatedCounter } from "../typography/AnimatedCounter";
 export const ImpactStats: React.FC = () => {
   const frame = useCurrentFrame();
 
-  // Stat 1: "60%" -- visible frames 0-80
-  const stat1Opacity = interpolate(frame, [0, 8, 55, 75], [0, 1, 1, 0], {
+  // Stat 1: "60%" -- visible frames 0-50
+  const stat1Opacity = interpolate(frame, [0, 6, 35, 48], [0, 1, 1, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
-  const label1Opacity = interpolate(frame, [10, 25], [0, 1], {
+  const label1Opacity = interpolate(frame, [8, 18], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
-  // Stat 2: "3x" -- visible frames 70-150
+  // Stat 2: "3x" -- visible frames 45-95
   const stat2Opacity = interpolate(
     frame,
-    [70, 78, 125, 145],
+    [45, 51, 80, 93],
     [0, 1, 1, 0],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
-  const label2Opacity = interpolate(frame, [80, 95], [0, 1], {
+  const label2Opacity = interpolate(frame, [53, 63], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
-  // Stat 3: "4 wk" -- visible frames 140-210
+  // Stat 3: "4 wk" -- visible frames 90-135
   const stat3Opacity = interpolate(
     frame,
-    [140, 148, 195, 210],
+    [90, 96, 120, 133],
     [0, 1, 1, 0],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
-  const label3Opacity = interpolate(frame, [150, 165], [0, 1], {
+  const label3Opacity = interpolate(frame, [98, 108], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
-  // Summary text: frames 210-240
-  const summaryOpacity = interpolate(frame, [210, 225], [0, 1], {
+  // Summary text: frames 130-150
+  const summaryOpacity = interpolate(frame, [130, 142], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.background }}>
-      {/* Stat 1: 60% */}
+      {/* Stat 1: 60% -- massive */}
       <div
         style={{
           position: "absolute",
@@ -64,18 +64,18 @@ export const ImpactStats: React.FC = () => {
         <AnimatedCounter
           startValue={0}
           endValue={60}
-          durationFrames={40}
+          durationFrames={30}
           suffix="%"
-          startFrame={5}
-          fontSize={120}
+          startFrame={3}
+          fontSize={220}
           color={COLORS.foreground}
         />
         <div
           style={{
             fontFamily: FONT_FAMILY_SANS,
-            fontSize: 32,
+            fontSize: 40,
             color: COLORS.mutedForeground,
-            marginTop: 8,
+            marginTop: 12,
             opacity: label1Opacity,
           }}
         >
@@ -83,7 +83,7 @@ export const ImpactStats: React.FC = () => {
         </div>
       </div>
 
-      {/* Stat 2: 3x */}
+      {/* Stat 2: 3x -- massive */}
       <div
         style={{
           position: "absolute",
@@ -98,18 +98,18 @@ export const ImpactStats: React.FC = () => {
         <AnimatedCounter
           startValue={0}
           endValue={3}
-          durationFrames={30}
+          durationFrames={20}
           suffix="x"
-          startFrame={75}
-          fontSize={120}
+          startFrame={48}
+          fontSize={220}
           color={COLORS.foreground}
         />
         <div
           style={{
             fontFamily: FONT_FAMILY_SANS,
-            fontSize: 32,
+            fontSize: 40,
             color: COLORS.mutedForeground,
-            marginTop: 8,
+            marginTop: 12,
             opacity: label2Opacity,
           }}
         >
@@ -117,7 +117,7 @@ export const ImpactStats: React.FC = () => {
         </div>
       </div>
 
-      {/* Stat 3: 4 wk */}
+      {/* Stat 3: 4 wk -- massive */}
       <div
         style={{
           position: "absolute",
@@ -132,18 +132,18 @@ export const ImpactStats: React.FC = () => {
         <AnimatedCounter
           startValue={0}
           endValue={4}
-          durationFrames={25}
+          durationFrames={15}
           suffix=" wk"
-          startFrame={145}
-          fontSize={120}
+          startFrame={93}
+          fontSize={220}
           color={COLORS.foreground}
         />
         <div
           style={{
             fontFamily: FONT_FAMILY_SANS,
-            fontSize: 32,
+            fontSize: 40,
             color: COLORS.mutedForeground,
-            marginTop: 8,
+            marginTop: 12,
             opacity: label3Opacity,
           }}
         >
@@ -165,7 +165,7 @@ export const ImpactStats: React.FC = () => {
         <div
           style={{
             fontFamily: FONT_FAMILY_SANS,
-            fontSize: 36,
+            fontSize: 44,
             fontWeight: 300,
             color: COLORS.foreground,
             textAlign: "center",

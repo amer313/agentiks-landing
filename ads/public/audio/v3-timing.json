@@ -1,62 +1,62 @@
 {
   "videoId": "video3",
   "fps": 30,
-  "totalDurationFrames": 908,
+  "totalDurationFrames": 1020,
   "sentences": [
     {
       "key": "v3-s1",
       "visual": "ModelDrop",
       "startFrame": 0,
-      "durationFrames": 164,
+      "durationFrames": 169,
       "audioFile": "v3-s1.mp3"
     },
     {
       "key": "v3-s2",
       "visual": "NewModelsWeekly",
-      "startFrame": 164,
-      "durationFrames": 143,
+      "startFrame": 169,
+      "durationFrames": 166,
       "audioFile": "v3-s2.mp3"
     },
     {
       "key": "v3-s3",
       "visual": "ThatsOurJob",
-      "startFrame": 307,
-      "durationFrames": 34,
+      "startFrame": 335,
+      "durationFrames": 35,
       "audioFile": "v3-s3.mp3"
     },
     {
       "key": "v3-s4",
       "visual": "TrackBreakthroughs",
-      "startFrame": 341,
-      "durationFrames": 133,
+      "startFrame": 370,
+      "durationFrames": 145,
       "audioFile": "v3-s4.mp3"
     },
     {
       "key": "v3-s5",
       "visual": "BuildAndDisappear",
-      "startFrame": 474,
-      "durationFrames": 158,
+      "startFrame": 515,
+      "durationFrames": 164,
       "audioFile": "v3-s5.mp3"
     },
     {
       "key": "v3-s6",
       "visual": "Untouchable",
-      "startFrame": 632,
-      "durationFrames": 118,
+      "startFrame": 679,
+      "durationFrames": 133,
       "audioFile": "v3-s6.mp3"
     },
     {
       "key": "v3-s7",
       "visual": "CatchUpCost",
-      "startFrame": 750,
-      "durationFrames": 52,
+      "startFrame": 812,
+      "durationFrames": 63,
       "audioFile": "v3-s7.mp3"
     },
     {
       "key": "v3-s8",
       "visual": "CTAEndCard",
-      "startFrame": 802,
-      "durationFrames": 106,
+      "startFrame": 875,
+      "durationFrames": 85,
       "audioFile": "v3-s8.mp3"
     }
   ]

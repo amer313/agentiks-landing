@@ -7,25 +7,31 @@ import { LogoReveal } from "../brand/LogoReveal";
 export const LogoRevealScene: React.FC = () => {
   const frame = useCurrentFrame();
 
-  // Text fade in frames 30-50
-  const textOpacity = interpolate(frame, [30, 50], [0, 1], {
+  // Text fade in frames 40-60 (adjusted for 90-frame duration)
+  const textOpacity = interpolate(frame, [40, 60], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.background }}>
-      <LogoReveal startFrame={0} durationFrames={50} showText={false} />
+      {/* Logo centered via flex in LogoReveal */}
+      <LogoReveal
+        startFrame={0}
+        durationFrames={60}
+        logoSize={300}
+        showText={false}
+      />
 
-      {/* "Meet Agentiks." text */}
+      {/* "Meet Agentiks." text below logo */}
       <div
         style={{
           position: "absolute",
-          top: "50%",
-          left: 0,
-          right: 0,
-          marginTop: 280,
-          textAlign: "center",
+          inset: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          paddingTop: 400,
           opacity: textOpacity,
         }}
       >

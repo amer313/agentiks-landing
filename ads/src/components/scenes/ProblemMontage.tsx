@@ -14,31 +14,31 @@ const EmailPanel: React.FC = () => {
   const frame = useCurrentFrame();
 
   const counter = Math.floor(
-    interpolate(frame, [0, 45], [47, 238], {
+    interpolate(frame, [0, 35], [47, 238], {
       extrapolateLeft: "clamp",
       extrapolateRight: "clamp",
     })
   );
 
   const captionScale = spring({
-    frame: Math.max(0, frame - 10),
+    frame: Math.max(0, frame - 8),
     fps: FPS,
     config: { damping: 12, stiffness: 200 },
   });
 
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.background }}>
-      {/* Email inbox card */}
+      {/* Email inbox card -- larger */}
       <div
         style={{
           position: "absolute",
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -60%)",
-          width: 700,
+          width: 800,
           background: COLORS.surface,
-          borderRadius: 16,
-          padding: 24,
+          borderRadius: 20,
+          padding: 32,
           border: `1px solid ${COLORS.line}`,
         }}
       >
@@ -48,13 +48,13 @@ const EmailPanel: React.FC = () => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBottom: 16,
+            marginBottom: 20,
           }}
         >
           <div
             style={{
               fontFamily: FONT_FAMILY_SANS,
-              fontSize: 18,
+              fontSize: 28,
               fontWeight: 600,
               color: COLORS.foreground,
             }}
@@ -66,21 +66,21 @@ const EmailPanel: React.FC = () => {
               background: COLORS.brand,
               color: "#fff",
               fontFamily: FONT_FAMILY_MONO,
-              fontSize: 14,
+              fontSize: 22,
               fontWeight: 700,
-              padding: "4px 12px",
-              borderRadius: 12,
+              padding: "6px 16px",
+              borderRadius: 14,
             }}
           >
             {counter}
           </div>
         </div>
 
-        {/* Email rows */}
-        {Array.from({ length: 6 }).map((_, i) => {
+        {/* Email rows -- larger */}
+        {Array.from({ length: 5 }).map((_, i) => {
           const slideIn = interpolate(
             frame,
-            [i * 4, i * 4 + 12],
+            [i * 4, i * 4 + 10],
             [100, 0],
             { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
           );
@@ -94,10 +94,10 @@ const EmailPanel: React.FC = () => {
             <div
               key={i}
               style={{
-                height: 40,
+                height: 52,
                 background: COLORS.surface2,
-                borderRadius: 8,
-                marginBottom: 8,
+                borderRadius: 10,
+                marginBottom: 10,
                 opacity: rowOpacity,
                 transform: `translateX(${slideIn}px)`,
               }}
@@ -106,11 +106,11 @@ const EmailPanel: React.FC = () => {
         })}
       </div>
 
-      {/* Caption */}
+      {/* Caption -- larger */}
       <div
         style={{
           position: "absolute",
-          bottom: 120,
+          bottom: 100,
           left: 0,
           right: 0,
           textAlign: "center",
@@ -121,7 +121,7 @@ const EmailPanel: React.FC = () => {
         <span
           style={{
             fontFamily: FONT_FAMILY_SANS,
-            fontSize: 40,
+            fontSize: 56,
             fontWeight: 700,
             color: COLORS.foreground,
           }}
@@ -139,13 +139,13 @@ const SpreadsheetPanel: React.FC = () => {
   const rng = mulberry32(frame * 7);
 
   const captionScale = spring({
-    frame: Math.max(0, frame - 10),
+    frame: Math.max(0, frame - 8),
     fps: FPS,
     config: { damping: 12, stiffness: 200 },
   });
 
-  const ROWS = 6;
-  const COLS = 8;
+  const ROWS = 5;
+  const COLS = 7;
 
   // Pick 3-4 random cells to flash red
   const flashCells = new Set<string>();
@@ -169,10 +169,10 @@ const SpreadsheetPanel: React.FC = () => {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: `repeat(${COLS}, 80px)`,
-            gridTemplateRows: `repeat(${ROWS}, 40px)`,
+            gridTemplateColumns: `repeat(${COLS}, 100px)`,
+            gridTemplateRows: `repeat(${ROWS}, 52px)`,
             border: `1px solid ${COLORS.line}`,
-            borderRadius: 8,
+            borderRadius: 10,
             overflow: "hidden",
           }}
         >
@@ -197,11 +197,11 @@ const SpreadsheetPanel: React.FC = () => {
         </div>
       </div>
 
-      {/* Caption */}
+      {/* Caption -- larger */}
       <div
         style={{
           position: "absolute",
-          bottom: 120,
+          bottom: 100,
           left: 0,
           right: 0,
           textAlign: "center",
@@ -212,7 +212,7 @@ const SpreadsheetPanel: React.FC = () => {
         <span
           style={{
             fontFamily: FONT_FAMILY_SANS,
-            fontSize: 40,
+            fontSize: 56,
             fontWeight: 700,
             color: COLORS.foreground,
           }}
@@ -237,39 +237,39 @@ const ChatPanel: React.FC = () => {
   ];
 
   const notifCount = Math.floor(
-    interpolate(frame, [0, 40], [3, 12], {
+    interpolate(frame, [0, 30], [3, 12], {
       extrapolateLeft: "clamp",
       extrapolateRight: "clamp",
     })
   );
 
   const captionScale = spring({
-    frame: Math.max(0, frame - 10),
+    frame: Math.max(0, frame - 8),
     fps: FPS,
     config: { damping: 12, stiffness: 200 },
   });
 
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.background }}>
-      {/* Notification badge */}
+      {/* Notification badge -- larger */}
       <div
         style={{
           position: "absolute",
           top: 80,
-          right: 200,
+          right: 240,
           background: COLORS.brand,
           color: "#fff",
           fontFamily: FONT_FAMILY_MONO,
-          fontSize: 16,
+          fontSize: 22,
           fontWeight: 700,
-          padding: "6px 14px",
-          borderRadius: 16,
+          padding: "8px 18px",
+          borderRadius: 20,
         }}
       >
         {notifCount}
       </div>
 
-      {/* Chat bubbles */}
+      {/* Chat bubbles -- larger */}
       <div
         style={{
           position: "absolute",
@@ -278,20 +278,20 @@ const ChatPanel: React.FC = () => {
           transform: "translate(-50%, -55%)",
           display: "flex",
           flexDirection: "column",
-          gap: 12,
-          width: 500,
+          gap: 16,
+          width: 600,
         }}
       >
         {messages.map((msg, i) => {
           const slideIn = interpolate(
             frame,
-            [i * 6, i * 6 + 12],
+            [i * 5, i * 5 + 10],
             [80, 0],
             { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
           );
           const bubbleOpacity = interpolate(
             frame,
-            [i * 6, i * 6 + 8],
+            [i * 5, i * 5 + 8],
             [0, 1],
             { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
           );
@@ -302,9 +302,9 @@ const ChatPanel: React.FC = () => {
               style={{
                 alignSelf: isRight ? "flex-end" : "flex-start",
                 background: COLORS.surface2,
-                padding: "12px 20px",
-                borderRadius: 16,
-                maxWidth: 400,
+                padding: "16px 24px",
+                borderRadius: 20,
+                maxWidth: 480,
                 opacity: bubbleOpacity,
                 transform: `translateX(${isRight ? slideIn : -slideIn}px)`,
               }}
@@ -312,7 +312,7 @@ const ChatPanel: React.FC = () => {
               <span
                 style={{
                   fontFamily: FONT_FAMILY_SANS,
-                  fontSize: 16,
+                  fontSize: 22,
                   color: COLORS.foreground,
                 }}
               >
@@ -323,11 +323,11 @@ const ChatPanel: React.FC = () => {
         })}
       </div>
 
-      {/* Caption */}
+      {/* Caption -- larger */}
       <div
         style={{
           position: "absolute",
-          bottom: 120,
+          bottom: 100,
           left: 0,
           right: 0,
           textAlign: "center",
@@ -338,7 +338,7 @@ const ChatPanel: React.FC = () => {
         <span
           style={{
             fontFamily: FONT_FAMILY_SANS,
-            fontSize: 40,
+            fontSize: 56,
             fontWeight: 700,
             color: COLORS.foreground,
           }}
@@ -354,12 +354,12 @@ const ChatPanel: React.FC = () => {
 const ClockPanel: React.FC = () => {
   const frame = useCurrentFrame();
 
-  const rotation = interpolate(frame, [0, 40], [0, 330], {
+  const rotation = interpolate(frame, [0, 35], [0, 330], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
-  const timeOpacity = interpolate(frame, [24, 30], [0, 1], {
+  const timeOpacity = interpolate(frame, [20, 28], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -374,10 +374,10 @@ const ClockPanel: React.FC = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          gap: 32,
+          gap: 40,
         }}
       >
-        <svg width={300} height={300} viewBox="0 0 200 200">
+        <svg width={400} height={400} viewBox="0 0 200 200">
           {/* Clock face */}
           <circle
             cx={100}
@@ -430,11 +430,11 @@ const ClockPanel: React.FC = () => {
           <circle cx={100} cy={100} r={4} fill={COLORS.brand} />
         </svg>
 
-        {/* 11 PM text */}
+        {/* 11 PM text -- larger */}
         <div
           style={{
             fontFamily: FONT_FAMILY_MONO,
-            fontSize: 48,
+            fontSize: 64,
             fontWeight: 700,
             color: COLORS.brand,
             opacity: timeOpacity,
@@ -447,38 +447,39 @@ const ClockPanel: React.FC = () => {
   );
 };
 
-/* ---------- Main ProblemMontage ---------- */
+/* ---------- Main ProblemMontage (180 frames = 6s) ---------- */
 export const ProblemMontage: React.FC = () => {
   const frame = useCurrentFrame();
 
-  // White flash opacity (frames 200-209 relative)
+  // Panel timing for 180 frames: 4 panels x 45 frames each
+  // White flash transition at end
   const flashOpacity = interpolate(
     frame,
-    [200, 203, 209],
+    [170, 173, 179],
     [0, 0.8, 0],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
 
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.background }}>
-      <Sequence from={0} durationInFrames={52}>
+      <Sequence from={0} durationInFrames={45}>
         <EmailPanel />
       </Sequence>
 
-      <Sequence from={52} durationInFrames={52}>
+      <Sequence from={45} durationInFrames={45}>
         <SpreadsheetPanel />
       </Sequence>
 
-      <Sequence from={104} durationInFrames={52}>
+      <Sequence from={90} durationInFrames={45}>
         <ChatPanel />
       </Sequence>
 
-      <Sequence from={156} durationInFrames={44}>
+      <Sequence from={135} durationInFrames={45}>
         <ClockPanel />
       </Sequence>
 
       {/* White flash transition */}
-      <Sequence from={200} durationInFrames={10}>
+      <Sequence from={170} durationInFrames={10}>
         <AbsoluteFill
           style={{
             backgroundColor: "#FFFFFF",

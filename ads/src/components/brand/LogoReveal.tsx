@@ -6,8 +6,7 @@ import { FONT_FAMILY_SANS } from "../../fonts";
 interface LogoRevealProps {
   startFrame?: number;
   durationFrames: number;
-  width?: number;
-  height?: number;
+  logoSize?: number;
   showText?: boolean;
 }
 
@@ -28,8 +27,7 @@ const PATHS_ORDERED: Array<{
 export const LogoReveal: React.FC<LogoRevealProps> = ({
   startFrame = 0,
   durationFrames,
-  width = 1920,
-  height = 1080,
+  logoSize = 300,
   showText = true,
 }) => {
   const frame = useCurrentFrame();
@@ -56,11 +54,9 @@ export const LogoReveal: React.FC<LogoRevealProps> = ({
       )
     : 0;
 
-  const scale = 2.5;
-  const svgW = 149 * scale;
-  const svgH = 157 * scale;
-  const logoX = (width - svgW) / 2;
-  const logoY = (height - svgH) / 2 - (showText ? 40 : 0);
+  // SVG viewBox is 149x157. Calculate height proportionally.
+  const svgWidth = logoSize;
+  const svgHeight = logoSize * (157 / 149);
 
   return (
     <div
@@ -74,91 +70,86 @@ export const LogoReveal: React.FC<LogoRevealProps> = ({
       }}
     >
       <svg
-        width={width}
-        height={height}
-        viewBox={`0 0 ${width} ${height}`}
-        style={{ position: "absolute", inset: 0 }}
+        width={svgWidth}
+        height={svgHeight}
+        viewBox="0 0 149 157"
+        style={{ display: "block" }}
       >
         <defs>
           <filter id="brandGlow">
-            <feGaussianBlur stdDeviation="8" result="blur" />
+            <feGaussianBlur stdDeviation="3" result="blur" />
             <feComposite in="blur" in2="SourceGraphic" operator="over" />
           </filter>
         </defs>
 
-        <g transform={`translate(${logoX}, ${logoY}) scale(${scale})`}>
-          {PATHS_ORDERED.map((pathDef) => {
-            const [phaseStart, phaseEnd] = pathDef.phase;
+        {PATHS_ORDERED.map((pathDef) => {
+          const [phaseStart, phaseEnd] = pathDef.phase;
 
-            if (pathDef.key === "diamond") {
-              // Diamond uses spring scale
-              const cx = 74.4;
-              const cy = 148.9;
-              return (
-                <path
-                  key={pathDef.key}
-                  d={pathDef.d}
-                  fill={COLORS.brand}
-                  opacity={diamondSpring}
-                  transform={`translate(${cx}, ${cy}) scale(${diamondSpring}) translate(${-cx}, ${-cy})`}
-                />
-              );
-            }
-
-            if (pathDef.isCutout) {
-              // Visor slit -- fades in as cutout
-              const slitOpacity = interpolate(
-                progress,
-                [phaseStart, phaseEnd],
-                [0, 1],
-                { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
-              );
-              return (
-                <path
-                  key={pathDef.key}
-                  d={pathDef.d}
-                  fill={COLORS.background}
-                  opacity={slitOpacity}
-                />
-              );
-            }
-
-            // Chevrons and visor -- clip-path reveal via translateY
-            const reveal = interpolate(
-              progress,
-              [phaseStart, phaseEnd],
-              [0, 1],
-              { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
-            );
-
-            const pathOpacity = interpolate(
-              reveal,
-              [0, 0.1],
-              [0, 1],
-              { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
-            );
-
+          if (pathDef.key === "diamond") {
+            // Diamond uses spring scale
+            const cx = 74.4;
+            const cy = 148.9;
             return (
               <path
                 key={pathDef.key}
                 d={pathDef.d}
                 fill={COLORS.brand}
-                opacity={pathOpacity}
-                filter={reveal > 0.5 ? "url(#brandGlow)" : undefined}
+                opacity={diamondSpring}
+                transform={`translate(${cx}, ${cy}) scale(${diamondSpring}) translate(${-cx}, ${-cy})`}
               />
             );
-          })}
-        </g>
+          }
+
+          if (pathDef.isCutout) {
+            // Visor slit -- fades in as cutout
+            const slitOpacity = interpolate(
+              progress,
+              [phaseStart, phaseEnd],
+              [0, 1],
+              { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+            );
+            return (
+              <path
+                key={pathDef.key}
+                d={pathDef.d}
+                fill={COLORS.background}
+                opacity={slitOpacity}
+              />
+            );
+          }
+
+          // Chevrons and visor -- clip-path reveal via translateY
+          const reveal = interpolate(
+            progress,
+            [phaseStart, phaseEnd],
+            [0, 1],
+            { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+          );
+
+          const pathOpacity = interpolate(
+            reveal,
+            [0, 0.1],
+            [0, 1],
+            { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+          );
+
+          return (
+            <path
+              key={pathDef.key}
+              d={pathDef.d}
+              fill={COLORS.brand}
+              opacity={pathOpacity}
+              filter={reveal > 0.5 ? "url(#brandGlow)" : undefined}
+            />
+          );
+        })}
       </svg>
 
       {/* AGENTIKS text */}
       {showText && (
         <div
           style={{
-            position: "absolute",
-            top: logoY + svgH + 30,
-            left: 0,
-            right: 0,
+            marginTop: 30,
             textAlign: "center",
             opacity: textOpacity,
           }}

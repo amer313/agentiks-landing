@@ -7,21 +7,21 @@ import { LogoReveal } from "../brand/LogoReveal";
 export const EndCard: React.FC = () => {
   const frame = useCurrentFrame();
 
-  // Tagline fade in frames 80-100
-  const taglineOpacity = interpolate(frame, [80, 100], [0, 1], {
+  // Tagline fade in frames 70-90
+  const taglineOpacity = interpolate(frame, [70, 90], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
-  // URL fade in frames 120-140
-  const urlOpacity = interpolate(frame, [120, 140], [0, 1], {
+  // URL fade in frames 100-120
+  const urlOpacity = interpolate(frame, [100, 120], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
-  // Pulsing brand glow for frames 150+
+  // Pulsing brand glow for frames 120+
   const glowOpacity =
-    frame >= 150
+    frame >= 120
       ? 0.03 + 0.05 * Math.sin(frame * 0.08)
       : 0;
 
@@ -36,11 +36,12 @@ export const EndCard: React.FC = () => {
         }}
       />
 
-      {/* Logo reveal -- starts at frame 30 */}
-      {frame >= 30 && (
+      {/* Logo reveal -- centered, large (220px wide), starts at frame 20 */}
+      {frame >= 20 && (
         <LogoReveal
-          startFrame={30}
+          startFrame={20}
           durationFrames={50}
+          logoSize={220}
           showText={false}
         />
       )}
@@ -49,11 +50,11 @@ export const EndCard: React.FC = () => {
       <div
         style={{
           position: "absolute",
-          top: "50%",
-          left: 0,
-          right: 0,
-          marginTop: 280,
-          textAlign: "center",
+          inset: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          paddingTop: 380,
           opacity: taglineOpacity,
         }}
       >
@@ -73,18 +74,18 @@ export const EndCard: React.FC = () => {
       <div
         style={{
           position: "absolute",
-          top: "50%",
-          left: 0,
-          right: 0,
-          marginTop: 340,
-          textAlign: "center",
+          inset: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          paddingTop: 460,
           opacity: urlOpacity,
         }}
       >
         <div
           style={{
             fontFamily: FONT_FAMILY_MONO,
-            fontSize: 24,
+            fontSize: 28,
             color: COLORS.brand,
           }}
         >

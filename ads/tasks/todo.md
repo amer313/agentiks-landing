@@ -1,16 +1,14 @@
-# Audio-Visual Sync Rebuild -- Per-Sentence Architecture
+# Trailer Visual Fixes
 
 ## Steps
-- [x] 1. Update brand.ts: new sentence-based VO_SCRIPTS + voice settings (stability=0.25, speed=1.05)
-- [x] 2. Add SentenceTiming type to types.ts
-- [x] 3. Create SentenceVisual component (maps visual names to phrase-visual components)
-- [x] 4. Rewrite generate-audio.ts for per-sentence generation + timing JSON output
-- [x] 5. Rewrite Video1TheProblem.tsx for per-sentence Sequences
-- [x] 6. Rewrite Video2TheTransformation.tsx for per-sentence Sequences
-- [x] 7. Rewrite Video3TheEdge.tsx for per-sentence Sequences
-- [x] 8. Update Root.tsx with new estimated durations (~1050 frames each)
+- [x] 1. Update SCENE_TIMING in brand.ts (new timing: hook 150, problem 180, reveal 90, dashboard 300, impact 150, endCard 180)
+- [x] 2. Fix LogoReveal.tsx centering -- use flex centering with SVG viewBox directly
+- [x] 3. Fix LogoRevealScene.tsx -- logo centered
+- [x] 4. Fix EndCard.tsx -- center logo, make it larger (220px wide)
+- [x] 5. Rebuild DashboardDemo.tsx -- pan-zoom approach with large dashboard, 5 phases with captions
+- [x] 6. Update ProblemMontage.tsx -- bigger icons/text, fit in 180-frame duration
+- [x] 7. Update ImpactStats.tsx -- massive numbers (220px), fit in 150 frames
+- [x] 8. TrailerComposition.tsx already uses SCENE_TIMING dynamically -- no changes needed
 - [x] 9. TypeScript check (npx tsc --noEmit) -- PASS, zero errors
-- [x] 10. Generate audio -- V1: 1185fr/39.5s, V2: 999fr/33.3s, V3: 908fr/30.3s
-- [x] 11. Update durations in Root.tsx, re-check TypeScript -- PASS
-- [x] 12. Render videos, stills, assemble -- V1: 39.5s, V2: 33.3s, V3: 30.3s
-- [ ] 13. Commit and push
+- [ ] 10. Generate music, render, assemble
+- [ ] 11. Commit and push
