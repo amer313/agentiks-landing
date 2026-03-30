@@ -1,135 +1,102 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+"use client"
+
+import { motion } from "framer-motion"
+import { Fingerprint, Blocks, ShieldCheck, ArrowRight, Check } from "lucide-react"
 import { SectionHeader } from "@/components/section-header"
 import { ScrollReveal } from "@/components/scroll-reveal"
-import { ShineBorder } from "@/components/ui/shine-border"
-import { cn } from "@/lib/utils"
+import { CornerButton } from "@/components/ui/corner-button"
 
-const tiers = [
+const pillars = [
   {
-    name: "Discovery",
-    price: "Free",
-    note: "1-hour strategy call",
-    features: [
-      "Operational workflow audit",
-      "AI opportunity assessment",
-      "High-level roadmap",
-      "No commitment",
-      "ROI ballpark estimates",
-    ],
-    cta: { label: "Book a Call", href: "#contact", variant: "outline" as const },
-    highlight: false,
+    icon: Fingerprint,
+    title: "Built around your business",
+    desc: "No templates. No cookie-cutter bots. We study your operations, your team, and your industry — then design agent systems that fit like they were always there.",
   },
   {
-    name: "Sprint",
-    price: "$15k",
-    note: "single agent, 4 weeks",
-    features: [
-      "One custom AI agent",
-      "Tool calling & integrations",
-      "Deployed to your infra",
-      "30 days post-launch support",
-      "Full source code ownership",
-    ],
-    cta: { label: "Get Started", href: "#contact", variant: "default" as const },
-    highlight: false,
+    icon: Blocks,
+    title: "Your stack, your rules",
+    desc: "We integrate with whatever you already run — CRMs, ERPs, internal tools, legacy systems. You keep full ownership of the code and infrastructure.",
   },
   {
-    name: "Scale",
-    price: "$40k",
-    priceSuffix: "+",
-    note: "multi-agent system",
-    features: [
-      "Everything in Sprint",
-      "Multi-agent orchestration",
-      "Durable workflows",
-      "Human-in-the-loop approvals",
-      "90 days support & optimization",
-    ],
-    cta: { label: "Get Started", href: "#contact", variant: "default" as const },
-    highlight: true,
-  },
-  {
-    name: "Enterprise",
-    price: "Custom",
-    note: "ongoing partnership",
-    features: [
-      "Everything in Scale",
-      "Dedicated engineering team",
-      "Unlimited agents & workflows",
-      "SLA & priority support",
-      "On-prem / air-gapped options",
-    ],
-    cta: { label: "Contact Us", href: "#contact", variant: "outline" as const },
-    highlight: false,
+    icon: ShieldCheck,
+    title: "Scoped to your goals",
+    desc: "Every engagement starts with a free strategy call. We scope work to your goals and constraints — whether that's a single agent or an enterprise-wide system.",
   },
 ]
 
 export function Pricing() {
   return (
-    <section className="max-w-[1200px] mx-auto px-6 md:px-12 py-16 pb-16" id="pricing">
-      <SectionHeader title="Pricing" label="pricing" center />
+    <section className="max-w-[1200px] mx-auto px-6 md:px-12 py-16" id="pricing">
+      <SectionHeader title="Custom solutions, not packages." label="how we engage" center />
 
-      <ScrollReveal variant="scale-up">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-          {tiers.map((tier) => {
-            const card = (
-              <Card
-                key={tier.name}
-                className={cn(
-                  "bg-card border-border h-full flex flex-col",
-                  tier.highlight && "border-brand/20"
-                )}
-              >
-                <CardHeader>
-                  <div className={cn(
-                    "font-mono text-xs tracking-[0.15em] uppercase mb-4",
-                    tier.highlight ? "text-foreground" : "text-muted-foreground"
-                  )}>
-                    {tier.name}
-                  </div>
-                  <CardTitle className="text-4xl font-medium">
-                    {tier.price}
-                    {tier.priceSuffix && (
-                      <span className="text-sm text-muted-foreground ml-1">{tier.priceSuffix}</span>
-                    )}
-                  </CardTitle>
-                  <p className="text-xs text-muted-foreground font-mono">{tier.note}</p>
-                </CardHeader>
+      <ScrollReveal>
+        <p className="text-center text-lg text-muted-foreground max-w-[600px] mx-auto leading-relaxed mb-14">
+          Every company has different workflows, tools, and goals.
+          We don&apos;t sell tiers — we build the exact system your business needs.
+        </p>
+      </ScrollReveal>
 
-                <CardContent>
-                  <ul className="space-y-0">
-                    {tier.features.map((feature) => (
-                      <li
-                        key={feature}
-                        className="flex items-center gap-3 text-sm text-muted-foreground py-2.5 border-b border-border last:border-none"
-                      >
-                        <span className={cn(
-                          "w-1.5 h-1.5 rounded-full shrink-0",
-                          tier.highlight ? "bg-foreground" : "bg-foreground/20"
-                        )} />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+        {pillars.map((p, i) => {
+          const Icon = p.icon
+          return (
+            <ScrollReveal key={p.title} delay={i * 0.1}>
+              <div className="h-full rounded-xl border border-dashed border-ag-line bg-card p-8 flex flex-col">
+                <div className="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center mb-5">
+                  <Icon className="w-5 h-5 text-brand" strokeWidth={1.5} />
+                </div>
+                <h3 className="text-lg font-medium mb-3">{p.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
+              </div>
+            </ScrollReveal>
+          )
+        })}
+      </div>
 
-                <CardFooter className="mt-auto">
-                  <Button variant={tier.cta.variant} className="w-full py-5 text-sm font-semibold rounded-xl" asChild>
-                    <a href={tier.cta.href}>{tier.cta.label}</a>
-                  </Button>
-                </CardFooter>
-              </Card>
-            )
-            return tier.highlight ? (
-              <ShineBorder key={tier.name} color="rgba(139, 92, 246, 0.4)" duration={6} borderRadius={12} className="h-full">
-                {card}
-              </ShineBorder>
-            ) : (
-              <div key={tier.name} className="h-full">{card}</div>
-            )
-          })}
+      {/* What you get */}
+      <ScrollReveal>
+        <div className="rounded-xl border border-dashed border-ag-line bg-card p-8 md:p-10 mb-14">
+          <h3 className="font-mono text-[10px] tracking-[0.2em] uppercase text-muted-foreground/60 mb-6">
+            Every engagement includes
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {[
+              "Full source code + documentation",
+              "Deployed to your infrastructure",
+              "Monitoring & alerting dashboard",
+              "Team training session",
+              "Post-launch support period",
+              "Knowledge transfer & handoff",
+            ].map((item) => (
+              <div key={item} className="flex items-center gap-2.5">
+                <Check className="w-4 h-4 text-brand shrink-0" strokeWidth={2} />
+                <span className="text-sm text-muted-foreground">{item}</span>
+              </div>
+            ))}
+          </div>
         </div>
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <motion.div
+          className="rounded-xl border border-brand/15 bg-gradient-to-br from-brand/[0.04] to-transparent p-10 md:p-14 text-center"
+          whileHover={{ borderColor: "rgba(220, 38, 38, 0.25)" }}
+          transition={{ duration: 0.3 }}
+        >
+          <p className="font-mono text-xs tracking-[0.2em] uppercase text-brand/60 mb-3">
+            Start here
+          </p>
+          <h3 className="text-2xl md:text-3xl font-medium mb-3">
+            Free strategy call
+          </h3>
+          <p className="text-muted-foreground max-w-[500px] mx-auto mb-8 leading-relaxed">
+            We&apos;ll audit your operations, identify the highest-impact automation opportunities,
+            and give you a clear roadmap — no strings attached.
+          </p>
+          <CornerButton href="https://cal.com/agentiks/strategy-call" external>
+            Book a Call <ArrowRight className="w-4 h-4" />
+          </CornerButton>
+        </motion.div>
       </ScrollReveal>
     </section>
   )

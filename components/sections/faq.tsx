@@ -21,7 +21,7 @@ const faqs = [
   },
   {
     q: "How long does a typical engagement take?",
-    a: "A single-agent sprint takes about 4 weeks from kickoff to deployment. Multi-agent systems typically take 8-12 weeks depending on complexity. Every engagement starts with a 1-week discovery phase.",
+    a: "It depends on the scope. A focused single-agent build takes about 4 weeks from kickoff to deployment. Multi-agent systems typically take 8-12 weeks. Every engagement starts with a discovery phase where we map your workflows and define the scope together.",
   },
   {
     q: "Who owns the code?",
@@ -29,7 +29,7 @@ const faqs = [
   },
   {
     q: "What happens after launch?",
-    a: "Every engagement includes post-launch support (30-90 days depending on tier). We monitor agent performance, fix issues, and optimize. After support ends, we offer optional ongoing retainers for teams that want continuous improvement.",
+    a: "Every engagement includes post-launch support — we monitor agent performance, fix issues, and optimize. The duration depends on the scope we agree on. After the initial support period, we offer optional ongoing retainers for teams that want continuous improvement.",
   },
   {
     q: "How do you ensure agents are safe and reliable?",

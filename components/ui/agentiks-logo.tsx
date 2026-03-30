@@ -1,32 +1,21 @@
-export function AgentiksLogo({ className = "w-4 h-4" }: { className?: string }) {
+export function AgentiksLogo({ className = "w-6 h-6" }: { className?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 200 200"
+      viewBox="0 0 149 157"
+      fill="currentColor"
       className={className}
     >
-      {/* Back depth edges */}
-      <line x1="130" y1="85" x2="55" y2="40" stroke="#FFF" strokeWidth="1" opacity="0.18" />
-      <line x1="130" y1="85" x2="155" y2="50" stroke="#FFF" strokeWidth="1" opacity="0.18" />
-      <line x1="130" y1="85" x2="100" y2="170" stroke="#FFF" strokeWidth="1" opacity="0.18" />
-      <line x1="55" y1="40" x2="155" y2="50" stroke="#FFF" strokeWidth="1" opacity="0.18" />
-      <line x1="155" y1="50" x2="100" y2="170" stroke="#FFF" strokeWidth="1" opacity="0.18" />
-      <line x1="100" y1="170" x2="55" y2="40" stroke="#FFF" strokeWidth="1" opacity="0.18" />
-      <circle cx="130" cy="85" r="3" fill="#FFF" opacity="0.18" />
-
-      {/* Front rays */}
-      <line x1="100" y1="100" x2="55" y2="40" stroke="#00F0FF" strokeWidth="3" strokeLinecap="round" />
-      <line x1="100" y1="100" x2="155" y2="50" stroke="#FF00AA" strokeWidth="3" strokeLinecap="round" />
-      <line x1="100" y1="100" x2="100" y2="170" stroke="#B400FF" strokeWidth="3" strokeLinecap="round" />
-
-      {/* Endpoints */}
-      <circle cx="55" cy="40" r="5" fill="#00F0FF" />
-      <circle cx="155" cy="50" r="5" fill="#FF00AA" />
-      <circle cx="100" cy="170" r="5" fill="#B400FF" />
-
-      {/* Center */}
-      <circle cx="100" cy="100" r="10" fill="#07080D" stroke="#FFF" strokeWidth="2" />
-      <circle cx="100" cy="100" r="4" fill="#FFF" />
+      {/* Visor with chamfered corners and slit cutout */}
+      <path fillRule="evenodd" d="M32.2 0h84.4l12.4 12.4v34.7H19.8V12.4L32.2 0zm5 27.3h74.4v9.9H37.2v-9.9z" />
+      {/* Chevron 1 */}
+      <path d="M0 64.5l74.4-12.4 74.4 12.4v17.3L74.4 69.4 0 81.8V64.5z" />
+      {/* Chevron 2 */}
+      <path d="M17.4 94.2l57-9.9 57 9.9v14.9l-57-9.9-57 9.9V94.2z" />
+      {/* Chevron 3 */}
+      <path d="M32.2 119.1l42.2-7.5 42.4 7.5v12.4l-42.4-8.5-42.2 8.5v-12.4z" />
+      {/* Diamond */}
+      <path d="M44.6 141.4l29.8-7.5 29.8 7.5-29.8 14.9-29.8-14.9z" />
     </svg>
   )
 }
