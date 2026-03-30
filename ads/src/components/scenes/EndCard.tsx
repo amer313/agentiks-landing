@@ -7,21 +7,25 @@ import { LogoReveal } from "../brand/LogoReveal";
 export const EndCard: React.FC = () => {
   const frame = useCurrentFrame();
 
-  // Tagline fade in frames 70-90
-  const taglineOpacity = interpolate(frame, [70, 90], [0, 1], {
+  // Duration: 165 frames (5.5s)
+  // Logo reveal starts at frame 15, runs for 45 frames
+  // Tagline fades in at frame 60-80
+  // URL fades in at frame 85-105
+  // Hold with glow from 105+
+
+  const taglineOpacity = interpolate(frame, [60, 80], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
-  // URL fade in frames 100-120
-  const urlOpacity = interpolate(frame, [100, 120], [0, 1], {
+  const urlOpacity = interpolate(frame, [85, 105], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
-  // Pulsing brand glow for frames 120+
+  // Pulsing brand glow for frames 105+
   const glowOpacity =
-    frame >= 120
+    frame >= 105
       ? 0.03 + 0.05 * Math.sin(frame * 0.08)
       : 0;
 
@@ -36,11 +40,11 @@ export const EndCard: React.FC = () => {
         }}
       />
 
-      {/* Logo reveal -- centered, large (220px wide), starts at frame 20 */}
-      {frame >= 20 && (
+      {/* Logo reveal -- centered, large, starts at frame 15 */}
+      {frame >= 15 && (
         <LogoReveal
-          startFrame={20}
-          durationFrames={50}
+          startFrame={15}
+          durationFrames={45}
           logoSize={220}
           showText={false}
         />

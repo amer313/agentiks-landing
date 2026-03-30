@@ -7,8 +7,9 @@ import { AnimatedCounter } from "../typography/AnimatedCounter";
 export const ImpactStats: React.FC = () => {
   const frame = useCurrentFrame();
 
-  // Stat 1: "60%" -- visible frames 0-50
-  const stat1Opacity = interpolate(frame, [0, 6, 35, 48], [0, 1, 1, 0], {
+  // Total duration: 195 frames (6.5s at 30fps)
+  // Stat 1: "60%" -- visible frames 0-55
+  const stat1Opacity = interpolate(frame, [0, 6, 40, 53], [0, 1, 1, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -17,39 +18,44 @@ export const ImpactStats: React.FC = () => {
     extrapolateRight: "clamp",
   });
 
-  // Stat 2: "3x" -- visible frames 45-95
+  // Stat 2: "3x" -- visible frames 50-105
   const stat2Opacity = interpolate(
     frame,
-    [45, 51, 80, 93],
+    [50, 56, 90, 103],
     [0, 1, 1, 0],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
-  const label2Opacity = interpolate(frame, [53, 63], [0, 1], {
+  const label2Opacity = interpolate(frame, [58, 68], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
-  // Stat 3: "4 wk" -- visible frames 90-135
+  // Stat 3: "4 wk" -- visible frames 100-150
   const stat3Opacity = interpolate(
     frame,
-    [90, 96, 120, 133],
+    [100, 106, 135, 148],
     [0, 1, 1, 0],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
-  const label3Opacity = interpolate(frame, [98, 108], [0, 1], {
+  const label3Opacity = interpolate(frame, [108, 118], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
-  // Summary text: frames 130-150
-  const summaryOpacity = interpolate(frame, [130, 142], [0, 1], {
+  // Summary text: "Strategy. Development. Orchestration. All of it."
+  // frames 145-195 (50 frames = ~1.67s, was only 20 frames before)
+  const summaryOpacity = interpolate(frame, [145, 158], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const summaryFadeOut = interpolate(frame, [185, 195], [1, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.background }}>
-      {/* Stat 1: 60% -- massive */}
+      {/* Stat 1: 60% */}
       <div
         style={{
           position: "absolute",
@@ -83,7 +89,7 @@ export const ImpactStats: React.FC = () => {
         </div>
       </div>
 
-      {/* Stat 2: 3x -- massive */}
+      {/* Stat 2: 3x */}
       <div
         style={{
           position: "absolute",
@@ -100,7 +106,7 @@ export const ImpactStats: React.FC = () => {
           endValue={3}
           durationFrames={20}
           suffix="x"
-          startFrame={48}
+          startFrame={53}
           fontSize={220}
           color={COLORS.foreground}
         />
@@ -117,7 +123,7 @@ export const ImpactStats: React.FC = () => {
         </div>
       </div>
 
-      {/* Stat 3: 4 wk -- massive */}
+      {/* Stat 3: 4 wk */}
       <div
         style={{
           position: "absolute",
@@ -134,7 +140,7 @@ export const ImpactStats: React.FC = () => {
           endValue={4}
           durationFrames={15}
           suffix=" wk"
-          startFrame={93}
+          startFrame={103}
           fontSize={220}
           color={COLORS.foreground}
         />
@@ -151,7 +157,7 @@ export const ImpactStats: React.FC = () => {
         </div>
       </div>
 
-      {/* Summary text */}
+      {/* Summary text -- extended duration for "Strategy. Development. Orchestration." */}
       <div
         style={{
           position: "absolute",
@@ -159,7 +165,7 @@ export const ImpactStats: React.FC = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          opacity: summaryOpacity,
+          opacity: summaryOpacity * summaryFadeOut,
         }}
       >
         <div
