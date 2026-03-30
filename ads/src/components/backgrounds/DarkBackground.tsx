@@ -24,7 +24,7 @@ export const DarkBackground: React.FC<DarkBackgroundProps> = ({
           style={{
             position: "absolute",
             inset: 0,
-            background: `radial-gradient(circle at center, rgba(180,0,255,${0.06 * glowIntensity}) 0%, transparent 60%)`,
+            background: `radial-gradient(circle at center, rgba(220,38,38,${0.06 * glowIntensity}) 0%, transparent 60%)`,
           }}
         />
       )}

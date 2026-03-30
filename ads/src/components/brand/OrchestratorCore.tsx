@@ -41,7 +41,7 @@ export const OrchestratorCore: React.FC<OrchestratorCoreProps> = ({
     <g>
       <defs>
         <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor={COLORS.cyan} stopOpacity="1" />
+          <stop offset="0%" stopColor={COLORS.brandLight} stopOpacity="1" />
           <stop offset="30%" stopColor={COLORS.brand} stopOpacity="0.6" />
           <stop offset="60%" stopColor={COLORS.brandDark} stopOpacity="0.2" />
           <stop offset="100%" stopColor={COLORS.brandDark} stopOpacity="0" />

@@ -77,6 +77,7 @@ async function main() {
     { name: "music-v1.wav", duration: 45 },
     { name: "music-v2.wav", duration: 42 },
     { name: "music-v3.wav", duration: 48 },
+    { name: "music-trailer.wav", duration: 38 },
   ];
 
   for (const track of tracks) {

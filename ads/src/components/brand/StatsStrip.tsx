@@ -67,7 +67,7 @@ export const StatsStrip: React.FC<StatsStripProps> = ({
                 startFrame={cellStartFrame}
                 fontSize={36}
                 color={COLORS.foreground}
-                override={stat.override}
+                override={undefined}
               />
             </div>
             <div
